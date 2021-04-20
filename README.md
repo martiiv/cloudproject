@@ -52,26 +52,83 @@ When the user searches by an actor, all movies the actor has appeared in will be
 Further the user are able to ask to get similar movies to the search result, which will return information about those movies.
 Lastly the user are able to get movie providers and where they can see the chosen movie.
 
-### Request
+### Request: Get movie information
 ```
 Method: GET
-Path: /{root_endpoint_path}/v1/{endpoint_1}/{movie_title}/
+/{root_endpoint_path}/v1/movies/Will Smith/
 ```
+
+
+`{movie_title}` refers to the English name of the movie provided by the ***Implement the API link here***.
+
+
+Example request 1: `/{root_endpoint_path}/v1/movies/Bad Boys 2/` 
+Example request 1: `/{root_endpoint_path}/v1/movies/Will Smith/` 
+
+### Response
+```
+{
+    "Title": "Bad Boys II",
+    "Original Language": "English",
+    "Release Date": "2003-07-18",
+    "Services": [
+                {
+                  "Name": "Netflix"
+                },
+                {
+                  "Name": "Viaplay"
+                },
+
+                ]
+    "Cast": [{
+              "Actor": "Will Smith",
+              "Character": "Detective Mike Lowrey"
+              },
+              {
+              "Martin Lawrence",
+              "Character": "Detective Marcus Burnett"
+              },
+              {
+               "Actor": "Gabrielle Union",
+               "Character": "Sydney 'Syd' Burnett"
+              }...]
+}
+```
+
+### Request: Get actor information
+
 
 ```
 Method: GET
 Path: /{root_endpoint_path}/v1/{endpoint_1}/{movie_actor}/
 ```
-
-`{movie_title}` refers to the English name of the movie provided by the ***Implement the API link here***.
-
 `{movie_actor}` refers to the English name of the actor provided by the ***Implement the API link here***.
 
-Example request 1: `/{root_endpoint_path}/v1/movies/Bad Boys 2/` \
-Example request 1: `/{root_endpoint_path}/v1/movies/Will Smith/` 
+###Response
 
-### Response
-***Implement response***
+```
+{
+    "Name": "Will Smith"
+    "Birthdate": "1968-09-25",
+    "Place of birth": "Philadelphia, Pennsylvania, USA ",
+    "Deathday": null,
+    "Movies":[
+        {
+            "Title": "Independence Day"
+        },
+        {
+            "Title": "The Pursuit of Happyness"
+        },
+        {
+            "Title": "I Am Legend"
+        }
+     ]
+}
+
+```
+
+
+
 
 ##Music
 ### Request

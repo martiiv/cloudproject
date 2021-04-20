@@ -1,8 +1,11 @@
 package database
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
-func Diag(w http.ResponseWriter, r http.Request) {
+func diag(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var movieDB int
@@ -14,4 +17,10 @@ func Diag(w http.ResponseWriter, r http.Request) {
 	} else {
 		movieDB = res.StatusCode
 	}
+
+	fmt.Fprintf(w, `{
+		"movieDB": "%v",
+   		"version": "v1"
+ 		}`, movieDB)
+
 }

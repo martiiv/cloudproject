@@ -6,24 +6,20 @@ This project is made by Group 2: *implement group name here*.
 
 In this project the focus is on the use of a REST web application created with the use of third party APIs, and the
 creation and use of webhooks. It is created with the programming language Golang and then deployed to a server using
-OpenStack, which provides the client with the possibility to retrieve information about movies, music or comics.
+OpenStack **SHOULD WE USE DOCKER?**, which provides the client with the possibility to retrieve information about a 
+travel plan using car. Here the client can get information about *route*, *nearby filling- and EV stations*, *traffic 
+incidents and flow*. **UPDATE IF MORE INFORMATION IS USED**
 ___
 ###The REST services in use are:
 
-***Related movies API:***
-- https://tastedive.com/read/api
+***Related route API:***
+- https://openrouteservice.org/
 
-***Movie metadata:***
-- https://tivovideometadata.api-docs.io/v3/content-enrichment/id-lookup
+***Traffic news- and filling station API:***
+- https://developer.tomtom.com
 
-***Spotify related API:***
-- https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-track
-
-***Lyrics API (might be used):***
-- https://lyricsovh.docs.apiary.io/#reference/0/lyrics-of-a-song/search?console=1
-
-***IMDB Movie API***
-- https://rapidapi.com/blog/movie-api/
+***Position related API:***
+- https://positionstack.com
 ___
 
 ## Endpoints
@@ -44,45 +40,89 @@ http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_3}/
 http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_4}/
 ```
 
-##Movies
-The ***Movies***-endpoint focuses on returning movies based on the **title** of the movie, or a specific **actor**.
-The user is able to search for a specific movie based on title, and get information/metadata about that movie. 
-When the user searches by an actor, all movies the actor has appeared in will be returned.
-
-Further the user are able to ask to get similar movies to the search result, which will return information about those movies.
-Lastly the user are able to get movie providers and where they can see the chosen movie.
+##Route
+The ***Routes***-endpoint focuses on returning a travel route based on the longitude and latitude of the start- and end 
+location. The user is able to enter their destination to the Position API, which then sends their longitude and latitude 
+to the Route-API. From there the client is able to get a detailed description about which exits to take in the roundabouts,
+where to turn left and right etc...
 
 ### Request
+Main request method:
 ```
 Method: GET
-Path: /{root_endpoint_path}/v1/{endpoint_1}/{movie_title}/
+Path: /{root_endpoint_path}/v1/{endpoint_1}/{start_address}/{end_address}/
 ```
 
+Alternative request method:
 ```
 Method: GET
-Path: /{root_endpoint_path}/v1/{endpoint_1}/{movie_actor}/
+Path: /{root_endpoint_path}/v1/{endpoint_1}/{latitude_start}-{longitude_start}/{latitude_end}-{longitude_end}/
 ```
+We find the use of an alternative request method necessary due to the possibility of not being on an address accepted by
+the Position API. Therefore, the user will be able to manually enter their destination-coordinates. 
 
-`{movie_title}` refers to the English name of the movie provided by the ***Implement the API link here***.
+`{start_address}` refers to the address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
+provided by the ***Implement the API link here***.
 
-`{movie_actor}` refers to the English name of the actor provided by the ***Implement the API link here***.
+`{end_address}` refers to the address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
+provided by the ***Implement the API link here***.
 
-Example request 1: `/{root_endpoint_path}/v1/movies/Bad Boys 2/` \
-Example request 1: `/{root_endpoint_path}/v1/movies/Will Smith/` 
+`{latitude_start}` refers to the latitude of the **start**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
+
+`{logitude_start}` refers to the longitude of the **start**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
+
+`{latitude_end}` refers to the latitude of the **end**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
+
+`{logitude_end}` refers to the longitude of the **end**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
+
+Example request 1: `/{root_endpoint_path}/v1/route/Gjøvik/Lillehammer` \
+Example request 1: `/{root_endpoint_path}/v1/route/60.786489-10.685456/61.122137-10.464437` 
 
 ### Response
 ***Implement response***
 
-##Music
+##Traffic news- and filling stations
 ### Request
 ***Implement request***
 
 ### Response
 ***Implement response***
 
-##Comics
+##Notifications
 ### Request
 ***Implement request***
 
 ### Response
 ***Implement response***
+
+##Diagnostics interface
+### Request
+The diagnostics interface indicates the availability of all individual services this service depends on.
+The reporting occurs based on status codes returned by the dependent services. The diag interface further provides
+information about the number of registered webhooks, and the uptime of the service.
+
+```
+Method: GET
+Path: /diag/
+```
+
+Example request: `/diag/`
+
+### Response
+***Implement response***
+Body (Example):
+
+```
+{
+   "positionstack": "500"
+   "tomtom": "200",
+   "openrouteservice": "200",
+   "registered": 4,
+   "version": "v1",
+   "uptime": 412 seconds
+}
+```
+
+#Extra:
+- If snowing - notify 15 minutes before planned take-off. If not, sleep and notify at take-off.
+- 

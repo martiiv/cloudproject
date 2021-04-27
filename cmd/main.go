@@ -24,6 +24,5 @@ func getPort() string {
 
 func handlers() {
 	//Todo Add endpoints
-	http.HandleFunc("/", diag)
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

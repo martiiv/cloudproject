@@ -1,17 +1,20 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 )
 
 func main() {
 
 	log.Println("Listening on port: " + getPort())
-
-	handlers() //HTTP handlers
-
+	handlers()
 }
 
 func getPort() string {
@@ -23,6 +26,6 @@ func getPort() string {
 }
 
 func handlers() {
-	//Todo Add endpoints
+	http.HandleFunc("charge", evStations)
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

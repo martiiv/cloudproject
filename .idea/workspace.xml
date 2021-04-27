@@ -16,20 +16,17 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="feb059e2-3092-402f-b9ca-87b18c48ef19" name="Default Changelist" comment="Update README.md, added diag function and created a body in main">
-      <change afterPath="$PROJECT_DIR$/extra/structs.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/exampleDB.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/documentation/testDocDocument" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endpoints/comicsEndpoint.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/EV-Charge.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endpoints/movieEndpoint.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/traffic_incidents.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endpoints/musicEndpoint.go" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/extra/diag.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

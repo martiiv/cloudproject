@@ -1,21 +1,12 @@
 package main
 
 import (
-	"encoding/json"
+	endpoint "cloudproject/endpoints"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
-	"strings"
 )
-
-func main() {
-
-	log.Println("Listening on port: " + getPort())
-	handlers()
-}
 
 func getPort() string {
 	var port = os.Getenv("PORT")
@@ -25,7 +16,16 @@ func getPort() string {
 	return ":" + port
 }
 
+func main() {
+
+	log.Println("Listening on port: " + getPort())
+	handlers()
+}
+
 func handlers() {
-	http.HandleFunc("charge", evStations)
+	fmt.Println(2)
+	http.HandleFunc("/charge/", endpoint.EVStations)
+	fmt.Println(3)
 	log.Println(http.ListenAndServe(getPort(), nil))
+	fmt.Println(4)
 }

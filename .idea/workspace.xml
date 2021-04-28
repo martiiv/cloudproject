@@ -26,7 +26,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="feb059e2-3092-402f-b9ca-87b18c48ef19" name="Default Changelist" comment="Update README.md, added diag function and created a body in main">
-      <change afterPath="$PROJECT_DIR$/extra/diag.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/ev-stations.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/ev-stations.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extra/functions.go" beforeDir="false" afterPath="$PROJECT_DIR$/extra/functions.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,32 +49,50 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1rFfjC7tzCifEKBnMismgSzfpQc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="GO_FMT" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/cmd" />
-      <recent name="$PROJECT_DIR$/database" />
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/cmd" />
+      <recent name="$PROJECT_DIR$/database" />
+    </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go (1)">
-    <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Build.go build cloudproject/">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="cloudproject" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build cloudproject/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="cloudproject" />
       <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
+      <kind value="DIRECTORY" />
       <filePath value="$PROJECT_DIR$/cmd/main.go" />
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
@@ -94,14 +116,21 @@
       <output_directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="cloudproject" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Go Build.go build main.go" />
       <item itemvalue="Go Build.go build " />
-      <item itemvalue="Go Build.go build main.go (1)" />
+      <item itemvalue="Go Build.go build cloudproject/" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build main.go (1)" />
+        <item itemvalue="Go Build.go build cloudproject/" />
         <item itemvalue="Go Build.go build " />
       </list>
     </recent_temporary>
@@ -161,67 +190,83 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Update README.md" />
     <MESSAGE value="Update README.md, added diag function and created a body in main" />
     <option name="LAST_COMMIT_MESSAGE" value="Update README.md, added diag function and created a body in main" />
   </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
   <component name="WindowStateProjectService">
-    <state x="676" y="508" key="#GOROOT" timestamp="1619080111710">
+    <state x="465" y="397" key="#Go_Modules" timestamp="1619525217820">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="676" y="508" key="#GOROOT/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619080111710" />
-    <state width="1750" height="2" key="GridCell.Tab.0.bottom" timestamp="1619248859672">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.0.bottom/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431815" />
-    <state width="1750" height="2" key="GridCell.Tab.0.bottom/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859672" />
-    <state width="1750" height="2" key="GridCell.Tab.0.center" timestamp="1619248859671">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.0.center/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431813" />
-    <state width="1750" height="2" key="GridCell.Tab.0.center/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859671" />
-    <state width="1750" height="2" key="GridCell.Tab.0.left" timestamp="1619248859671">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.0.left/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431807" />
-    <state width="1750" height="2" key="GridCell.Tab.0.left/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859671" />
-    <state width="1750" height="2" key="GridCell.Tab.0.right" timestamp="1619248859671">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.0.right/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431814" />
-    <state width="1750" height="2" key="GridCell.Tab.0.right/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859671" />
-    <state width="1750" height="2" key="GridCell.Tab.1.bottom" timestamp="1619248859672">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.1.bottom/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431687" />
-    <state width="1750" height="2" key="GridCell.Tab.1.bottom/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859672" />
-    <state width="1750" height="2" key="GridCell.Tab.1.center" timestamp="1619248859672">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.1.center/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431684" />
-    <state width="1750" height="2" key="GridCell.Tab.1.center/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859672" />
-    <state width="1750" height="2" key="GridCell.Tab.1.left" timestamp="1619248859672">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.1.left/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431683" />
-    <state width="1750" height="2" key="GridCell.Tab.1.left/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859672" />
-    <state width="1750" height="2" key="GridCell.Tab.1.right" timestamp="1619248859672">
-      <screen x="0" y="25" width="1792" height="1012" />
-    </state>
-    <state width="1750" height="380" key="GridCell.Tab.1.right/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092431685" />
-    <state width="1750" height="2" key="GridCell.Tab.1.right/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619248859672" />
-    <state width="896" height="546" key="XDebugger.FullValuePopup" timestamp="1619092351116">
+    <state x="465" y="397" key="#Go_Modules/0.0.1792.1120@0.0.1792.1120" timestamp="1619525217820" />
+    <state x="129" y="219" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1619526217336">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="896" height="546" key="XDebugger.FullValuePopup/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619092351116" />
+    <state x="129" y="219" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1619526217336" />
+    <state x="592" y="366" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1619526120745">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="592" y="366" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1792.1120@0.0.1792.1120" timestamp="1619526120745" />
+    <state x="361" y="204" key="#go_build_cloudproject" timestamp="1619524820814">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="361" y="204" key="#go_build_cloudproject/0.0.1792.1120@0.0.1792.1120" timestamp="1619524820814" />
+    <state x="566" y="426" key="EnvironmentVariablesDialog" timestamp="1619525711909">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="566" y="426" key="EnvironmentVariablesDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1619525711909" />
+    <state width="1750" height="251" key="GridCell.Tab.0.bottom" timestamp="1619527285470">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="251" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285470" />
+    <state width="1750" height="251" key="GridCell.Tab.0.center" timestamp="1619527285467">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="251" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285467" />
+    <state width="1750" height="251" key="GridCell.Tab.0.left" timestamp="1619527285465">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="251" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285465" />
+    <state width="1750" height="251" key="GridCell.Tab.0.right" timestamp="1619527285468">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="251" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285468" />
+    <state width="1750" height="316" key="GridCell.Tab.1.bottom" timestamp="1619526837121">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="316" key="GridCell.Tab.1.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837121" />
+    <state width="1750" height="316" key="GridCell.Tab.1.bottom/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825390" />
+    <state width="1750" height="316" key="GridCell.Tab.1.center" timestamp="1619526837120">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="316" key="GridCell.Tab.1.center/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837120" />
+    <state width="1750" height="316" key="GridCell.Tab.1.center/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825389" />
+    <state width="1750" height="316" key="GridCell.Tab.1.left" timestamp="1619526837119">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="316" key="GridCell.Tab.1.left/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837119" />
+    <state width="1750" height="316" key="GridCell.Tab.1.left/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825389" />
+    <state width="1750" height="316" key="GridCell.Tab.1.right" timestamp="1619526837120">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1750" height="316" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837120" />
+    <state width="1750" height="316" key="GridCell.Tab.1.right/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825390" />
+    <state x="174" y="196" key="SettingsEditor" timestamp="1619525714254">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="174" y="196" key="SettingsEditor/0.0.1792.1120@0.0.1792.1120" timestamp="1619525714254" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/cmd/main.go</url>
-          <line>42</line>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/endpoints/ev-stations.go</url>
+          <line>14</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

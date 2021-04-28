@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func getLocation(address string) (float64, float64, error) {
+func GetLocation(address string) (float64, float64, error) {
 
 	address = strings.Replace(address, " ", "%20", -1)
 

@@ -2,7 +2,6 @@ package main
 
 import (
 	endpoint "cloudproject/endpoints"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -23,9 +22,6 @@ func main() {
 }
 
 func handlers() {
-	fmt.Println(2)
 	http.HandleFunc("/charge/", endpoint.EVStations)
-	fmt.Println(3)
 	log.Println(http.ListenAndServe(getPort(), nil))
-	fmt.Println(4)
 }

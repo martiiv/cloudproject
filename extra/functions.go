@@ -4,30 +4,34 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
-func GetLocation(address string) (float64, float64, error) {
+func GetLocation(address string) (string, string, error) {
 
-	address = strings.Replace(address, " ", "%20", -1) //Replaces the spaces in location with %20, that will please the url-condition
+	address = strings.Replace(address, " ", "+", -1) //Replaces the spaces in location with %20, that will please the url-condition
 
-	response, err := http.Get("http://api.positionstack.com/v1/forward?access_key=3a2c0bbe3ee774328656aebd577398c3&query=" + address)
+	response, err := http.Get("https://www.mapquestapi.com/geocoding/v1/address?key=UvCctIMBPNYcpfiAkTCkVjakeCjoPpPR&inFormat=kvp&outFormat=json&location=" + address)
 	if err != nil {
-		return 0, 0, err
+		return "", "", err
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return 0, 0, err
+		return "", "", err
 	}
 
 	var location geoLocation
 	if err = json.Unmarshal(body, &location); err != nil {
-		return 0, 0, err
+		return "", "", err
 	}
 
-	latitude := location.Data[0].Latitude
-	longitude := location.Data[0].Longitude
+	latitude := location.Results[0].Locations[0].LatLng.Lat
+	longitude := location.Results[0].Locations[0].LatLng.Lng
 
-	return latitude, longitude, nil //Returning the latitude and longitude to the location
+	longitudeS := strconv.FormatFloat(longitude, 'f', 6, 64) //Formatting the coordinates to string
+	latitudeS := strconv.FormatFloat(latitude, 'f', 6, 64)
+
+	return latitudeS, longitudeS, nil //Returning the latitude and longitude to the location
 }

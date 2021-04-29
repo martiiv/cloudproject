@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func getPort() string {
@@ -17,11 +18,15 @@ func getPort() string {
 
 func main() {
 
+	// Starts uptime of program
+	endpoint.Uptime = time.Now()
+
 	log.Println("Listening on port: " + getPort())
 	handlers()
 }
 
 func handlers() {
+	http.HandleFunc("/diag", endpoint.Diag)
 	http.HandleFunc("/charge/", endpoint.EVStations)
 	http.HandleFunc("/petrol/", endpoint.PetrolStation)
 

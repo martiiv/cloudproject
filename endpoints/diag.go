@@ -1,4 +1,4 @@
-package database
+package endpoints
 
 import (
 	"fmt"
@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"time"
 )
+
+// Uptime of the program
+var Uptime time.Time
 
 // APIs
 // https://apilayer.com
@@ -18,7 +21,6 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 	var positionstackStatusCode int
 	var tomtomStatusCode int
 	var openRouteServiceStatusCode int
-	var startTime = time.Now()
 
 	// Does a request to the posistionstack API.
 	respPositionStack, err := http.Get("https://api.positionstack.com")
@@ -26,7 +28,7 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 	// otherwise set the status code to the received status code
 	if err != nil {
 		log.Printf("Something went wrong with the mMedia API, %v", err)
-		positionstackStatusCode = 500
+		positionstackStatusCode = http.StatusInternalServerError
 	} else {
 		positionstackStatusCode = respPositionStack.StatusCode
 		defer respPositionStack.Body.Close()
@@ -38,24 +40,24 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 	// otherwise set the status code to the received status code
 	if err != nil {
 		log.Printf("Something went wrong with the TomTom API, %v", err)
-		tomtomStatusCode = 500
+		tomtomStatusCode = http.StatusInternalServerError
 	} else {
 		tomtomStatusCode = respTomTom.StatusCode
 		defer respTomTom.Body.Close()
 	}
 
 	// Does a request to the TomTom API.
-	respOpenRouteService, err := http.Get("https://openroute......") // Must be fixed
+	respOpenRouteService, err := http.Get("https://openrouteservice.org")
 	// If any errors occur, log it and set the status code to 500,
 	// otherwise set the status code to the received status code
 	if err != nil {
 		log.Printf("Something went wrong with the OpenRouteService API, %v", err)
-		openRouteServiceStatusCode = 500
+		openRouteServiceStatusCode = http.StatusInternalServerError
 	} else {
 		openRouteServiceStatusCode = respOpenRouteService.StatusCode
 		defer respOpenRouteService.Body.Close()
 	}
 
 	fmt.Fprintf(w, `{"positionstack": "%v", "tomtom": "%v", "openrouteservice": "%v", "version": "v1", "uptime": %v}`,
-		positionstackStatusCode, tomtomStatusCode, openRouteServiceStatusCode, int(time.Since(startTime)/time.Second))
+		positionstackStatusCode, tomtomStatusCode, openRouteServiceStatusCode, int(time.Since(Uptime)/time.Second))
 }

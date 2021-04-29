@@ -2,6 +2,7 @@ package main
 
 import (
 	endpoint "cloudproject/endpoints"
+	extra "cloudproject/extra"
 	"fmt"
 	"log"
 	"net/http"
@@ -29,6 +30,7 @@ func main() {
 }
 
 func handlers() {
+	http.HandleFunc("/weather/", extra.CurrentWeather)
 	http.HandleFunc("/diag", endpoint.Diag)
 	http.HandleFunc("/charge/", endpoint.EVStations)
 	http.HandleFunc("/petrol/", endpoint.PetrolStation)

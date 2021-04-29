@@ -25,9 +25,13 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="feb059e2-3092-402f-b9ca-87b18c48ef19" name="Default Changelist" comment="Added support for new GeoCoder">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="23a649a6-991f-4ba0-8bb0-3546319d09e6" name="Default Changelist" comment="Last touch on the ev-charge function, for better json output">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/diag.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/ev-stations.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extra/functions.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/extra/struct.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,11 +47,6 @@
   </component>
   <component name="GOROOT" path="$USER_HOME$/sdk/go1.15.7" />
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1rFfjC7tzCifEKBnMismgSzfpQc" />
@@ -87,7 +86,6 @@
   <component name="RunManager" selected="Go Build.go build cloudproject/">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="cloudproject" />
-      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <kind value="FILE" />
       <method v="2" />
@@ -121,7 +119,6 @@
     </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="cloudproject" />
-      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="DIRECTORY" />
@@ -156,7 +153,6 @@
       <workItem from="1619080060415" duration="5928000" />
       <workItem from="1619261414591" duration="212000" />
       <workItem from="1619511832918" duration="1190000" />
-      <workItem from="1619684159768" duration="7084000" />
     </task>
     <task id="LOCAL−00001" summary="Update README.md">
       <created>1618577077799</created>
@@ -176,37 +172,7 @@
       <option name="presentableId" value="LOCAL−00003" />
       <updated>1618902807892</updated>
     </task>
-    <task id="LOCAL−00004" summary="Created PetrolStation.go">
-      <created>1619693296809</created>
-      <option name="number" value="LOCAL−00004" />
-      <option name="presentableId" value="LOCAL−00004" />
-      <updated>1619693296809</updated>
-    </task>
-    <task id="LOCAL−00005" summary="Changed the geoCoder API, as the old one shut down">
-      <created>1619693344616</created>
-      <option name="number" value="LOCAL−00005" />
-      <option name="presentableId" value="LOCAL−00005" />
-      <updated>1619693344616</updated>
-    </task>
-    <task id="LOCAL−00006" summary="Added petrol endpoint">
-      <created>1619693400173</created>
-      <option name="number" value="LOCAL−00006" />
-      <option name="presentableId" value="LOCAL−00006" />
-      <updated>1619693400173</updated>
-    </task>
-    <task id="LOCAL−00007" summary="Added struct to support petrol and new geoCoder">
-      <created>1619693429811</created>
-      <option name="number" value="LOCAL−00007" />
-      <option name="presentableId" value="LOCAL−00007" />
-      <updated>1619693429811</updated>
-    </task>
-    <task id="LOCAL−00008" summary="Added support for new GeoCoder">
-      <created>1619693447405</created>
-      <option name="number" value="LOCAL−00008" />
-      <option name="presentableId" value="LOCAL−00008" />
-      <updated>1619693447405</updated>
-    </task>
-    <option name="localTasksCounter" value="9" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,39 +183,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="master" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="origin/Karin" />
-                </option>
-              </RecentGroup>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="origin/master" />
-                </option>
-              </RecentGroup>
-            </list>
+            <State />
           </value>
         </entry>
       </map>
@@ -260,12 +194,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Update README.md" />
     <MESSAGE value="Update README.md, added diag function and created a body in main" />
-    <MESSAGE value="Created PetrolStation.go" />
-    <MESSAGE value="Changed the geoCoder API, as the old one shut down" />
-    <MESSAGE value="Added petrol endpoint" />
-    <MESSAGE value="Added struct to support petrol and new geoCoder" />
-    <MESSAGE value="Added support for new GeoCoder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added support for new GeoCoder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md, added diag function and created a body in main" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -291,83 +220,62 @@
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="566" y="426" key="EnvironmentVariablesDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1619525711909" />
-    <state width="1750" height="2" key="GridCell.Tab.0.bottom" timestamp="1619693286634">
+    <state width="1750" height="68" key="GridCell.Tab.0.bottom" timestamp="1619624464585">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1483" height="77" key="GridCell.Tab.0.bottom/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078799" />
-    <state width="1750" height="2" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1619693286634" />
-    <state width="1750" height="228" key="GridCell.Tab.0.bottom/0.25.1792.1012@0.25.1792.1012" timestamp="1619688212466" />
-    <state width="1750" height="2" key="GridCell.Tab.0.center" timestamp="1619693286633">
+    <state width="1750" height="68" key="GridCell.Tab.0.bottom/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619624464585" />
+    <state width="1750" height="251" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285470" />
+    <state width="1750" height="68" key="GridCell.Tab.0.center" timestamp="1619624464584">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1483" height="77" key="GridCell.Tab.0.center/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078798" />
-    <state width="1750" height="2" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1619693286633" />
-    <state width="1750" height="228" key="GridCell.Tab.0.center/0.25.1792.1012@0.25.1792.1012" timestamp="1619688212466" />
-    <state width="1750" height="2" key="GridCell.Tab.0.left" timestamp="1619693286633">
+    <state width="1750" height="68" key="GridCell.Tab.0.center/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619624464584" />
+    <state width="1750" height="251" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285467" />
+    <state width="1750" height="68" key="GridCell.Tab.0.left" timestamp="1619624464583">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1483" height="77" key="GridCell.Tab.0.left/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078797" />
-    <state width="1750" height="2" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1619693286633" />
-    <state width="1750" height="228" key="GridCell.Tab.0.left/0.25.1792.1012@0.25.1792.1012" timestamp="1619688212465" />
-    <state width="1750" height="2" key="GridCell.Tab.0.right" timestamp="1619693286634">
+    <state width="1750" height="68" key="GridCell.Tab.0.left/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619624464583" />
+    <state width="1750" height="251" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285465" />
+    <state width="1750" height="68" key="GridCell.Tab.0.right" timestamp="1619624464585">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1483" height="77" key="GridCell.Tab.0.right/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078798" />
-    <state width="1750" height="2" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1619693286634" />
-    <state width="1750" height="228" key="GridCell.Tab.0.right/0.25.1792.1012@0.25.1792.1012" timestamp="1619688212466" />
-    <state width="1750" height="228" key="GridCell.Tab.1.bottom" timestamp="1619688653797">
+    <state width="1750" height="68" key="GridCell.Tab.0.right/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619624464585" />
+    <state width="1750" height="251" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1619527285468" />
+    <state width="1750" height="316" key="GridCell.Tab.1.bottom" timestamp="1619526837121">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1750" height="344" key="GridCell.Tab.1.bottom/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078795" />
-    <state width="1750" height="228" key="GridCell.Tab.1.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1619688653797" />
-    <state width="1750" height="228" key="GridCell.Tab.1.bottom/0.25.1792.1012@0.25.1792.1012" timestamp="1619688213734" />
-    <state width="1750" height="228" key="GridCell.Tab.1.center" timestamp="1619688653796">
+    <state width="1750" height="316" key="GridCell.Tab.1.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837121" />
+    <state width="1750" height="316" key="GridCell.Tab.1.bottom/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825390" />
+    <state width="1750" height="316" key="GridCell.Tab.1.center" timestamp="1619526837120">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1750" height="344" key="GridCell.Tab.1.center/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078794" />
-    <state width="1750" height="228" key="GridCell.Tab.1.center/0.0.1792.1120@0.0.1792.1120" timestamp="1619688653796" />
-    <state width="1750" height="228" key="GridCell.Tab.1.center/0.25.1792.1012@0.25.1792.1012" timestamp="1619688213733" />
-    <state width="1750" height="228" key="GridCell.Tab.1.left" timestamp="1619688653795">
+    <state width="1750" height="316" key="GridCell.Tab.1.center/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837120" />
+    <state width="1750" height="316" key="GridCell.Tab.1.center/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825389" />
+    <state width="1750" height="316" key="GridCell.Tab.1.left" timestamp="1619526837119">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1750" height="344" key="GridCell.Tab.1.left/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078793" />
-    <state width="1750" height="228" key="GridCell.Tab.1.left/0.0.1792.1120@0.0.1792.1120" timestamp="1619688653795" />
-    <state width="1750" height="228" key="GridCell.Tab.1.left/0.25.1792.1012@0.25.1792.1012" timestamp="1619688213733" />
-    <state width="1750" height="228" key="GridCell.Tab.1.right" timestamp="1619688653796">
+    <state width="1750" height="316" key="GridCell.Tab.1.left/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837119" />
+    <state width="1750" height="316" key="GridCell.Tab.1.left/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825389" />
+    <state width="1750" height="316" key="GridCell.Tab.1.right" timestamp="1619526837120">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1750" height="344" key="GridCell.Tab.1.right/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625078795" />
-    <state width="1750" height="228" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1619688653796" />
-    <state width="1750" height="228" key="GridCell.Tab.1.right/0.25.1792.1012@0.25.1792.1012" timestamp="1619688213734" />
+    <state width="1750" height="316" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1619526837120" />
+    <state width="1750" height="316" key="GridCell.Tab.1.right/0.25.1792.1012@0.25.1792.1012" timestamp="1619526825390" />
     <state x="174" y="196" key="SettingsEditor" timestamp="1619525714254">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="174" y="196" key="SettingsEditor/0.0.1792.1120@0.0.1792.1120" timestamp="1619525714254" />
-    <state x="496" y="297" key="Vcs.Push.Dialog.v2" timestamp="1619693516767">
+    <state x="518" y="352" key="git4idea.merge.GitMergeDialog" timestamp="1619624493787">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="496" y="297" key="Vcs.Push.Dialog.v2/0.0.1792.1120@0.0.1792.1120" timestamp="1619693516767" />
-    <state width="896" height="560" key="XDebugger.FullValuePopup" timestamp="1619687426393">
-      <screen x="0" y="0" width="1792" height="1120" />
-    </state>
-    <state width="896" height="560" key="XDebugger.FullValuePopup/0.0.1792.1120@0.0.1792.1120" timestamp="1619687426393" />
-    <state x="687" y="478" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619625016677">
-      <screen x="0" y="0" width="1792" height="1120" />
-    </state>
-    <state x="687" y="478" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619625016677" />
+    <state x="518" y="352" key="git4idea.merge.GitMergeDialog/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619624493787" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/extra/functions.go</url>
-          <line>10</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/endpoints/ev-stations.go</url>
           <line>14</line>
-          <option name="timeStamp" value="12" />
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -10,7 +10,7 @@ OpenStack **SHOULD WE USE DOCKER?**, which provides the client with the possibil
 travel plan using car. Here the client can get information about *route*, *nearby filling- and EV stations*, *traffic 
 incidents and flow*. **UPDATE IF MORE INFORMATION IS USED**
 ___
-###The REST services in use are:
+### The REST services in use are:
 
 ***Related route API:***
 - https://openrouteservice.org/

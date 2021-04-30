@@ -284,7 +284,6 @@ type outputWeather struct {
 	FeelsLike  float64
 	TempMin    float64
 	TempMax    float64
-	Pressure   int
 	Humidity   int
 	Visibility int
 	WindSpeed  float64

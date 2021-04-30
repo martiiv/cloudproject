@@ -62,7 +62,6 @@ func currentWeatherHandler(rw http.ResponseWriter, url string) {
 	tempFeelsLike := weather.Main.FeelsLike
 	tempMin := weather.Main.TempMin
 	tempMax := weather.Main.TempMax
-	pressure := weather.Main.Pressure
 	humidity := weather.Main.Humidity
 	visibility := weather.Visibility
 	windSpeed := weather.Wind.Speed
@@ -71,7 +70,7 @@ func currentWeatherHandler(rw http.ResponseWriter, url string) {
 	sunset := weather.Sys.Sunset
 
 	jsonStruct := outputWeather{Main: main, Temp: tempActual, FeelsLike: tempFeelsLike, TempMin: tempMin, TempMax: tempMax,
-		Pressure: pressure, Humidity: humidity, Visibility: visibility, WindSpeed: windSpeed, WindDeg: windDeg, Sunrise: sunrise, Sunset: sunset}
+		Humidity: humidity, Visibility: visibility, WindSpeed: windSpeed, WindDeg: windDeg, Sunrise: sunrise, Sunset: sunset}
 
 	data = append(data, jsonStruct)
 

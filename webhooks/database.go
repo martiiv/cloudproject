@@ -14,8 +14,10 @@ import (
  * Class database.go
  * Will contain all database related functionality
  * Contains the following functions:
- *
- *
+ *									Init() 		For initializing the database connection
+ *									Add() 		For adding an entry to the database
+ *									Delete() 	For deleting an entry from the database
+ *									Update() 	For updating an entry in the database
  * @author Martin Iversen
  * @date 01.05.2021
  * @version 0.1
@@ -28,7 +30,7 @@ var client *firestore.Client
 const Collection = "RouteInformation" //Defining the name of the collection we will be dealing with
 
 /*
- * Function for initializing the database, will be used when starting the pp
+ * Function for initializing the database, will be used when starting the app
  */
 func Init() error {
 	// Firebase initialisation
@@ -53,7 +55,7 @@ func Init() error {
  * Function for adding RouteInformation to the database
  * Returns the ID an object is given when the database creates
  */
-func AddWebhook(RouteInformation interface{}) (string, error) {
+func Add(RouteInformation interface{}) (string, error) {
 	newEntry, _, err := client.Collection(Collection).Add(ctx, RouteInformation) //Adds to the database
 	if err != nil {
 		return "", errors.New("Error occurred when adding RouteInformation to database: " + err.Error())
@@ -64,7 +66,7 @@ func AddWebhook(RouteInformation interface{}) (string, error) {
 /*
  * Function for deleting a webhook from the database
  */
-func DeleteWebhook(id string) error {
+func Delete(id string) error {
 	_, err := client.Collection(Collection).Doc(id).Delete(ctx) //Deletes from the database
 	if err != nil {
 		return errors.New("Error occurred when trying to delete entry. RouteInformation ID: " + id)
@@ -97,7 +99,7 @@ func GetAll() ([]*firestore.DocumentSnapshot, error) {
 /*
  * Function for updating information on an entry in the database
  */
-func update(id string, data interface{}) error {
+func Update(id string, data interface{}) error {
 	_, err := client.Collection(Collection).Doc(id).Set(ctx, data)
 	if err != nil {
 		return errors.New("Error while updating Route Information entry in the database: " + err.Error())

@@ -2,8 +2,11 @@ package main
 
 import (
 	endpoint "cloudproject/endpoints"
+	extra "cloudproject/extra"
+	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 )
@@ -17,6 +20,7 @@ func getPort() string {
 }
 
 func main() {
+	fmt.Println(url.QueryEscape("10.430053,60.79012,10.699832,61.116501"))
 
 	// Starts uptime of program
 	endpoint.Uptime = time.Now()
@@ -26,6 +30,7 @@ func main() {
 }
 
 func handlers() {
+	http.HandleFunc("/weather/", extra.CurrentWeather)
 	http.HandleFunc("/diag", endpoint.Diag)
 	http.HandleFunc("/charge/", endpoint.EVStations)
 	http.HandleFunc("/petrol/", endpoint.PetrolStation)

@@ -259,8 +259,13 @@ type weatherData struct {
 		Deg   int     `json:"deg"`
 	} `json:"wind"`
 	Snow struct {
-		OneH int `json:"1h"`
+		OneH   int `json:"1h"`
+		ThreeH int `json:"3h"`
 	} `json:"snow"`
+	Rain struct {
+		OneH   int `json:"1h"`
+		ThreeH int `json:"3h"`
+	} `json:"rain"`
 	Clouds struct {
 		All int `json:"all"`
 	} `json:"clouds"`
@@ -280,6 +285,8 @@ type weatherData struct {
 
 type outputWeather struct {
 	Main       string
+	Rain1h     int
+	Snow1h     int
 	Temp       float64
 	FeelsLike  float64
 	TempMin    float64

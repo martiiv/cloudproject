@@ -25,10 +25,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23a649a6-991f-4ba0-8bb0-3546319d09e6" name="Default Changelist" comment="Copied some database structure code from Assignment 2, the code will be modified to our use case">
+    <list default="true" id="23a649a6-991f-4ba0-8bb0-3546319d09e6" name="Default Changelist" comment="Added git ignore file">
       <change afterPath="$PROJECT_DIR$/webhooks/road-trip-api-a6264-firebase-adminsdk-ms03b-0cbfbe8e79.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webhooks/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/webhooks/database.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitignore.txt" beforeDir="false" afterPath="$PROJECT_DIR$/gitignore.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +198,8 @@
     <MESSAGE value="Added more filtering in trafficMessages.go, and added output stuct" />
     <MESSAGE value="Updated project structure with webhook directory containing all webhook and database functionality" />
     <MESSAGE value="Copied some database structure code from Assignment 2, the code will be modified to our use case" />
-    <option name="LAST_COMMIT_MESSAGE" value="Copied some database structure code from Assignment 2, the code will be modified to our use case" />
+    <MESSAGE value="Added git ignore file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added git ignore file" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

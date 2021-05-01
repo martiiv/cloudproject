@@ -10,7 +10,7 @@ OpenStack **SHOULD WE USE DOCKER?**, which provides the client with the possibil
 travel plan using car. Here the client can get information about *route*, *nearby filling- and EV stations*, *traffic 
 incidents and flow*. **UPDATE IF MORE INFORMATION IS USED**
 ___
-###The REST services in use are:
+### The REST services in use are:
 
 ***Related route API:***
 - https://openrouteservice.org/
@@ -40,7 +40,7 @@ http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_3}/
 http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_4}/
 ```
 
-##Route
+## Route
 The ***Routes***-endpoint focuses on returning a travel route based on the longitude and latitude of the start- and end 
 location. The user is able to enter their destination to the Position API, which then sends their longitude and latitude 
 to the Route-API. From there the client is able to get a detailed description about which exits to take in the roundabouts,
@@ -81,21 +81,21 @@ Example request 1: `/{root_endpoint_path}/v1/route/60.786489-10.685456/61.122137
 ### Response
 ***Implement response***
 
-##Traffic news- and filling stations
+## Traffic news- and filling stations
 ### Request
 ***Implement request***
 
 ### Response
 ***Implement response***
 
-##Notifications
+## Notifications
 ### Request
 ***Implement request***
 
 ### Response
 ***Implement response***
 
-##Diagnostics interface
+## Diagnostics interface
 ### Request
 The diagnostics interface indicates the availability of all individual services this service depends on.
 The reporting occurs based on status codes returned by the dependent services. The diag interface further provides
@@ -123,6 +123,6 @@ Body (Example):
 }
 ```
 
-#Extra:
+# Extra:
 - If snowing - notify 15 minutes before planned take-off. If not, sleep and notify at take-off.
 - 

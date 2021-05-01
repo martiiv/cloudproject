@@ -1,0 +1,124 @@
+package webhooks
+
+import (
+	"cloud.google.com/go/firestore"
+	"cloudproject/extra"
+	"context"
+	"errors"
+	firebase "firebase.google.com/go"
+	"fmt"
+	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
+)
+
+/**
+ * Class database.go
+ * Will contain all database related functionality
+ * Contains the following functions:
+ *									Init() 		For initializing the database connection
+ *									Add() 		For adding an entry to the database
+ *									Delete() 	For deleting an entry from the database
+ *									Update() 	For updating an entry in the database
+ * @author Martin Iversen
+ * @date 01.05.2021
+ * @version 0.1
+ */
+
+//Initializing DB
+var ctx context.Context
+var client *firestore.Client
+
+const Collection = "RouteInformation" //Defining the name of the collection in FireStore
+
+/*
+ * Function for initializing the database, will be used when starting the app
+ */
+func Init() error {
+	// Firebase initialisation
+	ctx = context.Background()
+
+	// Authenticate with key file from firebase
+	opt := option.WithCredentialsFile("webhooks/road-trip-api-a6264-firebase-adminsdk-ms03b-0cbfbe8e79.json")
+	app, err := firebase.NewApp(ctx, nil, opt)
+	if err != nil {
+		return fmt.Errorf("error initializing DataBase: %v", err)
+	}
+
+	client, err = app.Firestore(ctx)
+	if err != nil {
+		return fmt.Errorf("error occurred initializing client: %v", err)
+	}
+
+	return nil
+}
+
+/*
+ * Function for adding RouteInformation to the database
+ * Returns the ID an object is given when the database creates
+ */
+func Add(RouteInformation extra.RouteInformation) (string, error) {
+	newEntry, _, err := client.Collection(Collection).Add(ctx, RouteInformation) //Adds RouteInformation
+	if err != nil {
+		return "", errors.New("Error occurred when adding RouteInformation to database: " + err.Error())
+	}
+	return newEntry.ID, nil //Returns the id of the entry in the database collection
+}
+
+/*
+ * Function for deleting a webhook from the database
+ */
+func Delete(id string) error {
+	_, err := client.Collection(Collection).Doc(id).Delete(ctx) //Deletes from the database
+
+	if err != nil {
+		return errors.New("Error occurred when trying to delete entry. Entry ID: " + id)
+	}
+	return nil
+}
+
+/**
+ * Function Get
+ * Used for selecting a specific DB entry
+ */
+func Get(id string) (error, map[string]interface{}) {
+	dbSnapShot, err := client.Collection(Collection).Doc(id).Get(ctx)
+	if err != nil {
+		return fmt.Errorf("Error occurred There is no document in the db with the id: %v!", id), nil
+	}
+
+	entry := dbSnapShot.Data()
+	return nil, entry
+}
+
+/*
+ * Function for getting all entries in a database
+ * Source: https://stackoverflow.com/a/61429531
+ * Returns an object containing document snapshots of the entries in the database
+ */
+func GetAll() ([]*firestore.DocumentSnapshot, error) {
+	var docs []*firestore.DocumentSnapshot               //Defining object to be returned
+	iter := client.Collection(Collection).Documents(ctx) //Gets all entries in the database
+	for {                                                //Iterates through the database
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		docs = append(docs, doc)
+	}
+	return docs, nil //Returns a list of entries
+}
+
+/*
+ * Function for updating information on an entry in the database
+ */
+func Update(id string, data interface{}) error {
+	_, err := client.Collection(Collection).Doc(id).Set(ctx, data)
+	if err != nil {
+		return errors.New("Error while updating Route Information entry in the database: " + err.Error())
+	}
+	return nil
+}

@@ -19,6 +19,7 @@ import (
 // Struct WebHook will be used for storing information
 type WebHook struct {
 	ID             string //ID from RouteInformation DB entry
+	URL            string //Webhook URL to be invoked
 	TrafficMessage string //Current traffic messages on route from api
 	WeatherMessage string //Current weather conditions from weather api
 

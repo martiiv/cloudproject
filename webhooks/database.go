@@ -2,6 +2,7 @@ package webhooks
 
 import (
 	"cloud.google.com/go/firestore"
+	"cloudproject/extra"
 	"context"
 	"errors"
 	firebase "firebase.google.com/go"
@@ -27,7 +28,7 @@ import (
 var ctx context.Context
 var client *firestore.Client
 
-const Collection = "RouteInformation" //Defining the name of the collection we will be dealing with
+const Collection = "RouteInformation" //Defining the name of the collection in FireStore
 
 /*
  * Function for initializing the database, will be used when starting the app
@@ -40,7 +41,7 @@ func Init() error {
 	opt := option.WithCredentialsFile("webhooks/road-trip-api-a6264-firebase-adminsdk-ms03b-0cbfbe8e79.json")
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
-		return fmt.Errorf("error initializing app: %v", err)
+		return fmt.Errorf("error initializing DataBase: %v", err)
 	}
 
 	client, err = app.Firestore(ctx)
@@ -55,12 +56,12 @@ func Init() error {
  * Function for adding RouteInformation to the database
  * Returns the ID an object is given when the database creates
  */
-func Add(RouteInformation interface{}) (string, error) {
-	newEntry, _, err := client.Collection(Collection).Add(ctx, RouteInformation) //Adds to the database
+func Add(RouteInformation extra.RouteInformation) (string, error) {
+	newEntry, _, err := client.Collection(Collection).Add(ctx, RouteInformation) //Adds RouteInformation
 	if err != nil {
 		return "", errors.New("Error occurred when adding RouteInformation to database: " + err.Error())
 	}
-	return newEntry.ID, nil //Returns the id of an entry in the database collection
+	return newEntry.ID, nil //Returns the id of the entry in the database collection
 }
 
 /*
@@ -68,10 +69,25 @@ func Add(RouteInformation interface{}) (string, error) {
  */
 func Delete(id string) error {
 	_, err := client.Collection(Collection).Doc(id).Delete(ctx) //Deletes from the database
+
 	if err != nil {
-		return errors.New("Error occurred when trying to delete entry. RouteInformation ID: " + id)
+		return errors.New("Error occurred when trying to delete entry. Entry ID: " + id)
 	}
 	return nil
+}
+
+/**
+ * Function Get
+ * Used for selecting a specific DB entry
+ */
+func Get(id string) (error, map[string]interface{}) {
+	dbSnapShot, err := client.Collection(Collection).Doc(id).Get(ctx)
+	if err != nil {
+		return fmt.Errorf("Error occurred There is no document in the db with the id: %v!", id), nil
+	}
+
+	entry := dbSnapShot.Data()
+	return nil, entry
 }
 
 /*

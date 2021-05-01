@@ -333,3 +333,10 @@ type outputWeather struct {
 	Sunrise    int
 	Sunset     int
 }
+
+//Struct RouteInformation, used in webhooks.go and database.go
+type RouteInformation struct {
+	Destination      string
+	TimeOfArrival    string
+	StartDestination string
+}

@@ -25,7 +25,7 @@ import (
 var ctx context.Context
 var client *firestore.Client
 
-const Collection = "webhook" //Defining the name of the collection we will be dealing with
+const Collection = "RouteInformation" //Defining the name of the collection we will be dealing with
 
 /*
  * Function for initializing the database, will be used when starting the pp
@@ -35,7 +35,7 @@ func Init() error {
 	ctx = context.Background()
 
 	// Authenticate with key file from firebase
-	opt := option.WithCredentialsFile("./assignment-2-13402-firebase-adminsdk-j2q0b-c9eb380f52.json") //TODO Modify this
+	opt := option.WithCredentialsFile("webhooks/road-trip-api-a6264-firebase-adminsdk-ms03b-0cbfbe8e79.json")
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
 		return fmt.Errorf("error initializing app: %v", err)
@@ -50,13 +50,13 @@ func Init() error {
 }
 
 /*
- * Function for adding a webhook to the database
+ * Function for adding RouteInformation to the database
  * Returns the ID an object is given when the database creates
  */
-func AddWebhook(webhook interface{}) (string, error) {
-	newEntry, _, err := client.Collection(Collection).Add(ctx, webhook) //Adds to the database
+func AddWebhook(RouteInformation interface{}) (string, error) {
+	newEntry, _, err := client.Collection(Collection).Add(ctx, RouteInformation) //Adds to the database
 	if err != nil {
-		return "", errors.New("Error occurred when adding webhook to database: " + err.Error())
+		return "", errors.New("Error occurred when adding RouteInformation to database: " + err.Error())
 	}
 	return newEntry.ID, nil //Returns the id of an entry in the database collection
 }
@@ -67,7 +67,7 @@ func AddWebhook(webhook interface{}) (string, error) {
 func DeleteWebhook(id string) error {
 	_, err := client.Collection(Collection).Doc(id).Delete(ctx) //Deletes from the database
 	if err != nil {
-		return errors.New("Error occurred when trying to delete webhook. Webhook ID: " + id)
+		return errors.New("Error occurred when trying to delete entry. RouteInformation ID: " + id)
 	}
 	return nil
 }
@@ -100,7 +100,7 @@ func GetAll() ([]*firestore.DocumentSnapshot, error) {
 func update(id string, data interface{}) error {
 	_, err := client.Collection(Collection).Doc(id).Set(ctx, data)
 	if err != nil {
-		return errors.New("Error while adding webhook to database: " + err.Error())
+		return errors.New("Error while updating Route Information entry in the database: " + err.Error())
 	}
 	return nil
 }

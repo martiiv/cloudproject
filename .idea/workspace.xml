@@ -25,10 +25,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23a649a6-991f-4ba0-8bb0-3546319d09e6" name="Default Changelist" comment="Added more filtering in trafficMessages.go, and added output stuct">
-      <change afterPath="$PROJECT_DIR$/webhooks/database.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webhooks/webhooks.go" afterDir="false" />
+    <list default="true" id="23a649a6-991f-4ba0-8bb0-3546319d09e6" name="Default Changelist" comment="Copied some database structure code from Assignment 2, the code will be modified to our use case">
+      <change afterPath="$PROJECT_DIR$/webhooks/road-trip-api-a6264-firebase-adminsdk-ms03b-0cbfbe8e79.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webhooks/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/webhooks/database.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,17 +66,18 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Code/assignment-2/database.go" />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Martin Iversen\OneDrive - NTNU\Skole\Cloud Technologies\MainProject\webhooks" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/cmd" />
       <recent name="$PROJECT_DIR$/database" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunManager">
@@ -196,7 +197,9 @@
     <MESSAGE value="Added struct to trafficMessages" />
     <MESSAGE value="Added Endpoint to messages" />
     <MESSAGE value="Added more filtering in trafficMessages.go, and added output stuct" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more filtering in trafficMessages.go, and added output stuct" />
+    <MESSAGE value="Updated project structure with webhook directory containing all webhook and database functionality" />
+    <MESSAGE value="Copied some database structure code from Assignment 2, the code will be modified to our use case" />
+    <option name="LAST_COMMIT_MESSAGE" value="Copied some database structure code from Assignment 2, the code will be modified to our use case" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

@@ -35,7 +35,7 @@ func Init() error {
 	ctx = context.Background()
 
 	// Authenticate with key file from firebase
-	opt := option.WithCredentialsFile("./assignment-2-13402-firebase-adminsdk-j2q0b-c9eb380f52.json")
+	opt := option.WithCredentialsFile("./assignment-2-13402-firebase-adminsdk-j2q0b-c9eb380f52.json") //TODO Modify this
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
 		return fmt.Errorf("error initializing app: %v", err)

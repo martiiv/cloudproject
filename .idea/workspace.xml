@@ -25,11 +25,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23a649a6-991f-4ba0-8bb0-3546319d09e6" name="Default Changelist" comment="Added Endpoint to messages">
+    <list default="true" id="23a649a6-991f-4ba0-8bb0-3546319d09e6" name="Default Changelist" comment="Added more filtering in trafficMessages.go, and added output stuct">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endpoints/trafficMessages.go" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/trafficMessages.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extra/struct.go" beforeDir="false" afterPath="$PROJECT_DIR$/extra/struct.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,6 +151,7 @@
       <workItem from="1619261414591" duration="212000" />
       <workItem from="1619511832918" duration="1190000" />
       <workItem from="1619703029727" duration="6362000" />
+      <workItem from="1619860056641" duration="745000" />
     </task>
     <task id="LOCAL−00001" summary="Update README.md">
       <created>1618577077799</created>
@@ -191,7 +189,13 @@
       <option name="presentableId" value="LOCAL−00006" />
       <updated>1619700386854</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL−00007" summary="Added more filtering in trafficMessages.go, and added output stuct">
+      <created>1619860335658</created>
+      <option name="number" value="LOCAL−00007" />
+      <option name="presentableId" value="LOCAL−00007" />
+      <updated>1619860335658</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,7 +206,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -216,7 +232,8 @@
     <MESSAGE value="Started on trafficMessages.go" />
     <MESSAGE value="Added struct to trafficMessages" />
     <MESSAGE value="Added Endpoint to messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Endpoint to messages" />
+    <MESSAGE value="Added more filtering in trafficMessages.go, and added output stuct" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added more filtering in trafficMessages.go, and added output stuct" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -301,26 +318,36 @@
     <state width="1750" height="342" key="GridCell.Tab.1.right/-1920.65.1920.1055/0.25.1792.1012@0.25.1792.1012" timestamp="1619780012771" />
     <state width="1750" height="342" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1619783012762" />
     <state width="1750" height="228" key="GridCell.Tab.1.right/0.25.1792.1012@0.25.1792.1012" timestamp="1619703212179" />
+    <state x="179" y="98" key="MergeDialog" timestamp="1619860912923">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="179" y="98" key="MergeDialog/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619860912923" />
+    <state x="534" y="325" key="MultipleFileMergeDialog" timestamp="1619860912976">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="534" y="325" key="MultipleFileMergeDialog/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619860912976" />
     <state x="174" y="196" key="SettingsEditor" timestamp="1619525714254">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="174" y="196" key="SettingsEditor/0.0.1792.1120@0.0.1792.1120" timestamp="1619525714254" />
-    <state x="496" y="297" key="Vcs.Push.Dialog.v2" timestamp="1619700478746">
+    <state x="496" y="297" key="Vcs.Push.Dialog.v2" timestamp="1619860358561">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state x="496" y="297" key="Vcs.Push.Dialog.v2/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619860358561" />
     <state x="496" y="297" key="Vcs.Push.Dialog.v2/0.0.1792.1120@0.0.1792.1120" timestamp="1619700478746" />
     <state width="896" height="620" key="XDebugger.FullValuePopup" timestamp="1619702784091">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state width="896" height="620" key="XDebugger.FullValuePopup/0.0.1792.1120@0.0.1792.1120" timestamp="1619702784091" />
     <state width="896" height="560" key="XDebugger.FullValuePopup/0.25.1792.1012@0.25.1792.1012" timestamp="1619702003259" />
-    <state x="518" y="352" key="git4idea.merge.GitMergeDialog" timestamp="1619624493787">
+    <state x="518" y="352" key="git4idea.merge.GitMergeDialog" timestamp="1619860752173">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="518" y="352" key="git4idea.merge.GitMergeDialog/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619624493787" />
-    <state x="518" y="352" key="git4idea.merge.GitPullDialog" timestamp="1619700401639">
+    <state x="518" y="352" key="git4idea.merge.GitMergeDialog/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619860752173" />
+    <state x="518" y="352" key="git4idea.merge.GitPullDialog" timestamp="1619860828233">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state x="518" y="352" key="git4idea.merge.GitPullDialog/-1920.40.1920.1080/0.0.1792.1120@0.0.1792.1120" timestamp="1619860828233" />
     <state x="518" y="352" key="git4idea.merge.GitPullDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1619700401639" />
   </component>
   <component name="XDebuggerManager">
@@ -333,7 +360,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/endpoints/trafficMessages.go</url>
-          <line>52</line>
+          <line>48</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>

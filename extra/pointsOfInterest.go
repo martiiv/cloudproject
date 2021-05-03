@@ -37,7 +37,23 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	//Vil noe bli printet ut
-	fmt.Fprintf(w, "PointOfInterest: %+v", poi)
+	var total []outputPoi
+	for i := 0; i < len(poi.Results); i++ {
+
+		poiName := poi.Results[i].Poi.Name
+		poiPhoneNumber := poi.Results[i].Poi.Phone
+		poiAddress := poi.Results[i].Address.Freeformaddress
+
+		jsonStruct := outputPoi{Name: poiName, PhoneNumber: poiPhoneNumber, Address: poiAddress} //Creating a JSON object
+		total = append(total, jsonStruct)                                                        //Appending the json object to an array
+	}
+
+	output, err := json.Marshal(total) //Marshalling the array to JSON
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "%v", string(output)) //Outputs the relevant info about poi
 
 }

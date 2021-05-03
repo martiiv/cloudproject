@@ -27,7 +27,7 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 	// If any errors occur, log it and set the status code to 500,
 	// otherwise set the status code to the received status code
 	if err != nil {
-		log.Printf("Something went wrong with the mMedia API, %v", err)
+		log.Printf("Something went wrong with the positionstack API, %v", err)
 		positionstackStatusCode = http.StatusInternalServerError
 	} else {
 		positionstackStatusCode = respPositionStack.StatusCode

@@ -401,3 +401,10 @@ type Route struct {
 	RoadNumber   string
 	JunctionType string
 }
+
+//Struct RouteInformation, used in webhooks.go and database.go
+type RouteInformation struct {
+	Destination      string
+	TimeOfArrival    string
+	StartDestination string
+}

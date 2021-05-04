@@ -32,6 +32,7 @@ func handlers() {
 	http.HandleFunc("/charge/", endpoint.EVStations)
 	http.HandleFunc("/petrol/", endpoint.PetrolStation)
 	http.HandleFunc("/messages/", endpoint.Messages)
+	http.HandleFunc("/route/", endpoint.Route)
 
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

@@ -55,25 +55,25 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 	roads, err := getRoads(StartAddress, EndAddress)
 
 	for i := 0; i < len(messages.Incidents); i++ {
-		for k := 0; k < len(bbox.Features[0].Properties.Segments[0].Steps); k++ {
-			if messages.Incidents[i].Properties.To == roads[k] || messages.Incidents[i].Properties.From == roads[k] {
-				if !messages.Incidents[i].Properties.EndTime.Before(time) {
-					startTime := messages.Incidents[i].Properties.StartTime
-					endTime := messages.Incidents[i].Properties.EndTime
-					FromAddress := messages.Incidents[i].Properties.From
-					toAddress := messages.Incidents[i].Properties.To
-					Event := messages.Incidents[i].Properties.Events[0].Description
+		for k := 0; k < len(roads); k++ {
+			//if messages.Incidents[i].Properties.To == roads[k] || messages.Incidents[i].Properties.From == roads[k] {
+			if messages.Incidents[i].Properties.EndTime.Before(time) {
+				startTime := messages.Incidents[i].Properties.StartTime
+				endTime := messages.Incidents[i].Properties.EndTime
+				FromAddress := messages.Incidents[i].Properties.From
+				toAddress := messages.Incidents[i].Properties.To
+				Event := messages.Incidents[i].Properties.Events[0].Description
 
-					if strings.ContainsAny(FromAddress, "Ã¸") {
-						FromAddress = strings.ReplaceAll(FromAddress, "Ã¸", "ø")
-					} else if strings.ContainsAny(toAddress, "Ã¸") {
-						toAddress = strings.ReplaceAll(toAddress, "Ã¸", "ø")
-					}
-
-					incidents := extra.OutIncident{From: FromAddress, To: toAddress, Start: startTime, End: endTime, Event: Event}
-					all = append(all, incidents)
+				if strings.ContainsAny(FromAddress, "Ã¸") {
+					FromAddress = strings.ReplaceAll(FromAddress, "Ã¸", "ø")
+				} else if strings.ContainsAny(toAddress, "Ã¸") {
+					toAddress = strings.ReplaceAll(toAddress, "Ã¸", "ø")
 				}
+
+				incidents := extra.OutIncident{From: FromAddress, To: toAddress, Start: startTime, End: endTime, Event: Event}
+				all = append(all, incidents)
 			}
+			//}
 
 		}
 	}
@@ -125,7 +125,7 @@ func getRoads(StartAddress string, endAddress string) ([]string, error) {
 		return nil, err
 	}
 
-	coordinates := startLat + "%2C" + startLong + "%2C" + EndLat + "%2C" + endLong
+	coordinates := startLat + "%2C" + startLong + "%3A" + EndLat + "%2C" + endLong
 
 	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=gOorFpmbH5GPKh6uGqcfJN76oKFKfswA")
 	if err != nil {
@@ -147,5 +147,6 @@ func getRoads(StartAddress string, endAddress string) ([]string, error) {
 		road := roads.Routes[0].Guidance.Instructions[i].Street
 		drivingRoads = append(drivingRoads, road)
 	}
+
 	return drivingRoads, err
 }

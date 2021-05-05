@@ -12,7 +12,7 @@ func GetLocation(address string) (string, string, error) {
 
 	address = strings.Replace(address, " ", "+", -1) //Replaces the spaces in location with %20, that will please the url-condition
 
-	response, err := http.Get("https://www.mapquestapi.com/geocoding/v1/address?key=UvCctIMBPNYcpfiAkTCkVjakeCjoPpPR&inFormat=kvp&outFormat=json&location=" + address)
+	response, err := http.Get("https://www.mapquestapi.com/geocoding/v1/address?key=" + MapQuestKey + "&inFormat=kvp&outFormat=json&location=" + address)
 	if err != nil {
 		return "", "", err
 	}

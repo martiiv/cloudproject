@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func Route(w http.ResponseWriter, request *http.Request) {
@@ -25,7 +26,9 @@ func Route(w http.ResponseWriter, request *http.Request) {
 
 	coordinates := startLat + "%2C" + startLong + "%3A" + EndLat + "%2C" + endLong
 
-	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=gOorFpmbH5GPKh6uGqcfJN76oKFKfswA")
+	fmt.Println(coordinates)
+
+	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=" + extra.TomtomKey)
 	if err != nil {
 	}
 
@@ -44,6 +47,26 @@ func Route(w http.ResponseWriter, request *http.Request) {
 	var Street string
 
 	var total []extra.Route
+
+	drivingDuration := roads.Routes[0].Summary.TravelTimeInSeconds
+
+	timeDuration := time.Duration(drivingDuration)
+
+	time.Parse()
+
+	drivingDurationHour := drivingDuration / 3600
+	drivingLength := roads.Routes[0].Summary.LengthInMeters
+
+	infromation := extra.RoadInformation{Hours: drivingDurationHour, Minutes: drivingDurationMinutes, Length: drivingLength}
+
+	output1, err := json.Marshal(infromation) //Marshalling the array to JSON
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Printf(string(output1), http.StatusBadRequest)
+
 	for i := 0; i < len(roads.Routes[0].Guidance.Instructions); i++ {
 		maneuver = roads.Routes[0].Guidance.Instructions[i].Maneuver
 		junctionType = roads.Routes[0].Guidance.Instructions[i].JunctionType

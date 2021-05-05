@@ -1,10 +1,10 @@
 package webhooks
 
 import (
-	"cloudproject/endpoints"
+	_ "cloudproject/endpoints"
 	"cloudproject/extra"
 	"encoding/json"
-	"fmt"
+	_ "fmt"
 	"net/http"
 	"net/url"
 )
@@ -90,10 +90,11 @@ func CreateWebhook(w http.ResponseWriter, r*http.Request, route extra.RouteInfor
 
 
 	//Define the current trafficMessage for the route
-	weatherUrl := "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + weatherApi
+	weatherUrl := "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
 	hook.WeatherMessage = weatherUrl //TODO Change this to currentweather
 	// TODO Get current weather string fra Tormod weather := extra.CurrentWeather(w, r, weatherUrl)
 
 
 
 }
+

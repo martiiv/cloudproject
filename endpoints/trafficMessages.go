@@ -37,7 +37,7 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 
 	response, err := http.Get("https://api.tomtom.com/traffic/services/5/incidentDetails?bbox=" + url.QueryEscape(box) +
 		"&fields=%7Bincidents%7Btype%2Cgeometry%7Btype%2Ccoordinates%7D%2Cproperties%7Bid%2CiconCategory%2CmagnitudeOfDelay%2Cevents%7Bdescription%2Ccode%7D%2CstartTime%2Cend" +
-		"Time%2Cfrom%2Cto%2Clength%2Cdelay%2CroadNumbers%2Caci%7BprobabilityOfOccurrence%2CnumberOfReports%2ClastReportTime%7D%7D%7D%7D&key=gOorFpmbH5GPKh6uGqcfJN76oKFKfswA")
+		"Time%2Cfrom%2Cto%2Clength%2Cdelay%2CroadNumbers%2Caci%7BprobabilityOfOccurrence%2CnumberOfReports%2ClastReportTime%7D%7D%7D%7D&key=" + extra.TomtomKey)
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
@@ -100,7 +100,7 @@ func getBBox(StartAddress string, endAddress string) ([]byte, error) {
 		return nil, err
 	}
 
-	resp, err := http.Get("https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248917ff3438230403186605e2ad94a71b6&start=" + startLong + "," + startLat + "&end=" + endLong + "," + EndLat)
+	resp, err := http.Get("https://api.openrouteservice.org/v2/directions/driving-car?api_key=" + extra.OpenRouteServiceKey + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + EndLat)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func getRoads(StartAddress string, endAddress string) ([]string, error) {
 
 	coordinates := startLat + "%2C" + startLong + "%3A" + EndLat + "%2C" + endLong
 
-	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=gOorFpmbH5GPKh6uGqcfJN76oKFKfswA")
+	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=" + extra.TomtomKey)
 	if err != nil {
 		return nil, err
 	}

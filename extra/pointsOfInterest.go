@@ -33,7 +33,7 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 	var poi pointsOfInterest
 
 	if err = json.Unmarshal(body, &poi); err != nil {
-		http.Error(w, "ERROR, Internal server error", http.StatusInternalServerError)
+		http.Error(w, "ERROR, failed to marshall", http.StatusInternalServerError)
 		return
 	}
 
@@ -50,7 +50,7 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
-		http.Error(w, "ERROR, Internal server error", http.StatusInternalServerError)
+		http.Error(w, "ERROR, failed to marshall", http.StatusInternalServerError)
 		return
 	}
 

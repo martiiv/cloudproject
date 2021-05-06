@@ -25,28 +25,28 @@ import (
  */
 
 //Initializing DB
-var ctx context.Context
-var client *firestore.Client
+var Ctx context.Context
+var Client *firestore.Client
 
-const Collection = "RouteInformation" //Defining the name of the collection in FireStore
+//const Collection = "RouteInformation" //Defining the name of the collection in FireStore
 
 /*
  * Function for initializing the database, will be used when starting the app
  */
 func Init() error {
 	// Firebase initialisation
-	ctx = context.Background()
+	Ctx = context.Background()
 
 	// Authenticate with key file from firebase
 	opt := option.WithCredentialsFile("webhooks/road-trip-api-a6264-firebase-adminsdk-ms03b-0cbfbe8e79.json")
-	app, err := firebase.NewApp(ctx, nil, opt)
+	app, err := firebase.NewApp(Ctx, nil, opt)
 	if err != nil {
 		return fmt.Errorf("error initializing DataBase: %v", err)
 	}
 
-	client, err = app.Firestore(ctx)
+	Client, err = app.Firestore(Ctx)
 	if err != nil {
-		return fmt.Errorf("error occurred initializing client: %v", err)
+		return fmt.Errorf("error occurred initializing Client: %v", err)
 	}
 
 	return nil
@@ -57,7 +57,7 @@ func Init() error {
  * Returns the ID an object is given when the database creates
  */
 func Add(RouteInformation extra.RouteInformation) (string, error) {
-	newEntry, _, err := client.Collection(Collection).Add(ctx, RouteInformation) //Adds RouteInformation
+	newEntry, _, err := Client.Collection(Collection).Add(Ctx, RouteInformation) //Adds RouteInformation
 	if err != nil {
 		return "", errors.New("Error occurred when adding RouteInformation to database: " + err.Error())
 	}
@@ -68,7 +68,7 @@ func Add(RouteInformation extra.RouteInformation) (string, error) {
  * Function for deleting a webhook from the database
  */
 func Delete(id string) error {
-	_, err := client.Collection(Collection).Doc(id).Delete(ctx) //Deletes from the database
+	_, err := Client.Collection(Collection).Doc(id).Delete(Ctx) //Deletes from the database
 
 	if err != nil {
 		return errors.New("Error occurred when trying to delete entry. Entry ID: " + id)
@@ -81,7 +81,7 @@ func Delete(id string) error {
  * Used for selecting a specific DB entry
  */
 func Get(id string) (error, map[string]interface{}) {
-	dbSnapShot, err := client.Collection(Collection).Doc(id).Get(ctx)
+	dbSnapShot, err := Client.Collection(Collection).Doc(id).Get(Ctx)
 	if err != nil {
 		return fmt.Errorf("Error occurred There is no document in the db with the id: %v!", id), nil
 	}
@@ -97,7 +97,7 @@ func Get(id string) (error, map[string]interface{}) {
  */
 func GetAll() ([]*firestore.DocumentSnapshot, error) {
 	var docs []*firestore.DocumentSnapshot               //Defining object to be returned
-	iter := client.Collection(Collection).Documents(ctx) //Gets all entries in the database
+	iter := Client.Collection(Collection).Documents(Ctx) //Gets all entries in the database
 	for {                                                //Iterates through the database
 		doc, err := iter.Next()
 		if err == iterator.Done {
@@ -116,7 +116,7 @@ func GetAll() ([]*firestore.DocumentSnapshot, error) {
  * Function for updating information on an entry in the database
  */
 func Update(id string, data interface{}) error {
-	_, err := client.Collection(Collection).Doc(id).Set(ctx, data)
+	_, err := Client.Collection(Collection).Doc(id).Set(Ctx, data)
 	if err != nil {
 		return errors.New("Error while updating Route Information entry in the database: " + err.Error())
 	}

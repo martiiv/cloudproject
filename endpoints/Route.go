@@ -8,8 +8,42 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"time"
 )
+
+var maneuvers = map[string]string{
+	"ARRIVE":               "You have arrived.",
+	"ARRIVE_LEFT":          "You have arrived. Your destination is on the left.",
+	"ARRIVE_RIGHT":         "You have arrived. Your destination is on the right.",
+	"DEPART":               "Leave.",
+	"STRAIGHT":             "Keep straight on.",
+	"KEEP_RIGHT":           "Keep right.",
+	"BEAR_RIGHT":           "Bear right.",
+	"TURN_RIGHT":           "Turn right.",
+	"SHARP_RIGHT":          "Turn sharp right.",
+	"KEEP_LEFT":            "Keep left.",
+	"BEAR_LEFT":            "Bear left.",
+	"TURN_LEFT":            "Turn left.",
+	"SHARP_LEFT":           "Turn sharp left.",
+	"MAKE_UTURN":           "Make a U-turn.",
+	"ENTER_MOTORWAY":       "Take the motorway.",
+	"ENTER_FREEWAY":        "Take the freeway.",
+	"ENTER_HIGHWAY":        "Take the highway.",
+	"TAKE_EXIT":            "Take the exit.",
+	"MOTORWAY_EXIT_LEFT":   "Take the left exit.",
+	"MOTORWAY_EXIT_RIGHT":  "Take the right exit.",
+	"TAKE_FERRY":           "Take the ferry.",
+	"ROUNDABOUT_CROSS":     "Cross the roundabout.",
+	"ROUNDABOUT_RIGHT":     "At the roundabout take the exit on the right.",
+	"ROUNDABOUT_LEFT":      "At the roundabout take the exit on the left.",
+	"ROUNDABOUT_BACK":      "Go around the roundabout.",
+	"TRY_MAKE_UTURN":       "Try to make a U-turn.",
+	"FOLLOW":               "Follow.",
+	"SWITCH_PARALLEL_ROAD": "Switch to the parallel road.",
+	"SWITCH_MAIN_ROAD":     "Switch to the main road.",
+	"ENTRANCE_RAMP":        "Take the ramp.",
+	"WAYPOINT_LEFT":        "You have reached the waypoint. It is on the left.",
+	"WAYPOINT_RIGHT":       "You have reached the waypoint. It is on the right.",
+	"WAYPOINT_REACHED":     "You have reached the waypoint."}
 
 func Route(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -50,36 +84,30 @@ func Route(w http.ResponseWriter, request *http.Request) {
 
 	drivingDuration := roads.Routes[0].Summary.TravelTimeInSeconds
 
-	timeDuration := time.Duration(drivingDuration)
+	drivingDurationMinutes := drivingDuration / 69
+	fmt.Println(drivingDurationMinutes)
 
-	time.Parse()
-
-	drivingDurationHour := drivingDuration / 3600
-	drivingLength := roads.Routes[0].Summary.LengthInMeters
-
-	infromation := extra.RoadInformation{Hours: drivingDurationHour, Minutes: drivingDurationMinutes, Length: drivingLength}
-
-	output1, err := json.Marshal(infromation) //Marshalling the array to JSON
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Printf(string(output1), http.StatusBadRequest)
+	drivingLength := roads.Routes[0].Summary.LengthInMeters / 1000
+	estimatedTime := roads.Routes[0].Summary.ArrivalTime
+	estimatedTimeString := estimatedTime.Format("2006-01-02 15:04:05")
 
 	for i := 0; i < len(roads.Routes[0].Guidance.Instructions); i++ {
 		maneuver = roads.Routes[0].Guidance.Instructions[i].Maneuver
+		maneuver = maneuvers[maneuver]
 		junctionType = roads.Routes[0].Guidance.Instructions[i].JunctionType
 		if roads.Routes[0].Guidance.Instructions[i].RoadNumbers != nil {
 			RoadNumber = roads.Routes[0].Guidance.Instructions[i].RoadNumbers[0]
 		}
+
 		Street = roads.Routes[0].Guidance.Instructions[i].Street
 
 		route := extra.Route{Street: Street, RoadNumber: RoadNumber, Maneuver: maneuver, JunctionType: junctionType}
 		total = append(total, route)
 	}
 
-	output, err := json.Marshal(total) //Marshalling the array to JSON
+	information := extra.RoadInformation{EstimatedArrival: estimatedTimeString, LengthKM: drivingLength, Route: total}
+
+	output, err := json.Marshal(information) //Marshalling the array to JSON
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

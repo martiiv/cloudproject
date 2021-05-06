@@ -465,7 +465,15 @@ type RouteInformation struct {
 }
 
 type RoadInformation struct {
-	Hours   int
-	Minutes int
-	Length  int
+	EstimatedArrival string
+	LengthKM         int
+	Route            []Route
+}
+
+type Webhook struct {
+	DepartureLocation   string
+	ArrivalDestination  string
+	ArrivalTime         string
+	EstimatedTravelTime int
+	Json                string
 }

@@ -23,17 +23,17 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 	}
 
 	response, err := http.Get("https://api.tomtom.com/search/2/poiSearch/" + poiPath + ".json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&key=gcP26xVobGHjX2VVWGTskjelxX81WA1G")
+
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		http.Error(w, "ERROR, The searched point of interest does not exist", http.StatusBadRequest)
 		return
-
 	}
 
 	var poi pointsOfInterest
 
 	if err = json.Unmarshal(body, &poi); err != nil {
-		http.Error(w, "ERROR, failed to marshall", http.StatusInternalServerError)
+		http.Error(w, "ERROR, failed to unmarshall", http.StatusInternalServerError)
 		return
 	}
 

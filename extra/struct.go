@@ -477,3 +477,84 @@ type Webhook struct {
 	EstimatedTravelTime int
 	Json                string
 }
+
+type outputPoi struct {
+	Name        string
+	PhoneNumber string
+	Address     string
+}
+
+type pointsOfInterest struct {
+	Summary struct {
+		Query        string `json:"query"`
+		Querytype    string `json:"queryType"`
+		Querytime    int    `json:"queryTime"`
+		Numresults   int    `json:"numResults"`
+		Offset       int    `json:"offset"`
+		Totalresults int    `json:"totalResults"`
+		Fuzzylevel   int    `json:"fuzzyLevel"`
+		Geobias      struct {
+			Lat float64 `json:"lat"`
+			Lon float64 `json:"lon"`
+		} `json:"geoBias"`
+	} `json:"summary"`
+	Results []struct {
+		Type  string  `json:"type"`
+		ID    string  `json:"id"`
+		Score float64 `json:"score"`
+		Dist  float64 `json:"dist"`
+		Info  string  `json:"info"`
+		Poi   struct {
+			Name        string `json:"name"`
+			Phone       string `json:"phone"`
+			Categoryset []struct {
+				ID int `json:"id"`
+			} `json:"categorySet"`
+			Categories      []string `json:"categories"`
+			Classifications []struct {
+				Code  string `json:"code"`
+				Names []struct {
+					Namelocale string `json:"nameLocale"`
+					Name       string `json:"name"`
+				} `json:"names"`
+			} `json:"classifications"`
+		} `json:"poi,omitempty"`
+		Address struct {
+			Streetnumber                string `json:"streetNumber"`
+			Streetname                  string `json:"streetName"`
+			Municipalitysubdivision     string `json:"municipalitySubdivision"`
+			Municipality                string `json:"municipality"`
+			Countrysecondarysubdivision string `json:"countrySecondarySubdivision"`
+			Countrysubdivision          string `json:"countrySubdivision"`
+			Countrysubdivisionname      string `json:"countrySubdivisionName"`
+			Postalcode                  string `json:"postalCode"`
+			Extendedpostalcode          string `json:"extendedPostalCode"`
+			Countrycode                 string `json:"countryCode"`
+			Country                     string `json:"country"`
+			Countrycodeiso3             string `json:"countryCodeISO3"`
+			Freeformaddress             string `json:"freeformAddress"`
+			Localname                   string `json:"localName"`
+		} `json:"address"`
+		Position struct {
+			Lat float64 `json:"lat"`
+			Lon float64 `json:"lon"`
+		} `json:"position"`
+		Viewport struct {
+			Topleftpoint struct {
+				Lat float64 `json:"lat"`
+				Lon float64 `json:"lon"`
+			} `json:"topLeftPoint"`
+			Btmrightpoint struct {
+				Lat float64 `json:"lat"`
+				Lon float64 `json:"lon"`
+			} `json:"btmRightPoint"`
+		} `json:"viewport"`
+		Entrypoints []struct {
+			Type     string `json:"type"`
+			Position struct {
+				Lat float64 `json:"lat"`
+				Lon float64 `json:"lon"`
+			} `json:"position"`
+		} `json:"entryPoints"`
+	} `json:"results"`
+}

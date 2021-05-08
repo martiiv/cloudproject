@@ -22,7 +22,7 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	response, err := http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7309&key=gOorFpmbH5GPKh6uGqcfJN76oKFKfswA")
+	response, err := http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7309&key=" + extra.TomtomKey)
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

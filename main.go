@@ -24,8 +24,6 @@ func main() {
 	// Starts uptime of program
 	endpoints.Uptime = time.Now()
 
-	go webhooks.Invoke("FKGtu39uRHH0bt1cmviT")
-
 	log.Println("Listening on port: " + getPort())
 	handlers()
 

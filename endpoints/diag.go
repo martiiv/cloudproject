@@ -15,7 +15,7 @@ var Uptime time.Time
 // https://developer.tomtom.com/
 // https://openweathermap.org/api
 // https://positionstack.com/
-// https://developer.mapquest.com/documentation/
+// https://developer.mapquest.com
 
 // Diag shows diagnostics interface
 func Diag(w http.ResponseWriter, r *http.Request) {

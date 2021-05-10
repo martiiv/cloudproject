@@ -348,14 +348,18 @@ func epochToHumanReadable(epoch int64) time.Time {
 	return time.Unix(epoch, 0)
 }
 
+/**
+ * function getMessageWeight
+ * Analyzes the weathermessage and calculates how much time needs to be added
+ * Based on weather conditions
+ */
 func getMessageWeight(message string) float64 {
 	base := 15.0
 	skyWeight := 1.0
 	tempWeight := 1.0
-	timeOfDayWeight := 1.0
 
 	switch true {
-	case strings.Contains(message, "Snow"):
+	case strings.Contains(message, "snow"):
 		skyWeight = 1.6
 		if strings.Contains(message, "light") {
 			skyWeight = 1.4
@@ -364,9 +368,10 @@ func getMessageWeight(message string) float64 {
 		} else if strings.Contains(message, "heavily") {
 			skyWeight = 2.0
 		}
-		return base * skyWeight
+		base = base * skyWeight
+		break
 
-	case strings.Contains(message, "Rain"):
+	case strings.Contains(message, "rain"):
 		skyWeight = 1.2
 		if strings.Contains(message, "light") {
 			skyWeight = 1
@@ -377,19 +382,13 @@ func getMessageWeight(message string) float64 {
 		} else if strings.Contains(message, "violent") {
 			skyWeight = 1.8
 		}
-		return base * skyWeight
-
-	case strings.Contains(message, "light"):
-
-	case strings.Contains(message, "moderate"):
-
-	case strings.Contains(message, "heav"):
-
-	case strings.Contains(message, "violent"):
+		base = base * skyWeight
+		break
 
 	case strings.Contains(message, "freezing point"):
-
+		tempWeight = 1.2
+		break
 	}
 
-	return base * skyWeight * tempWeight * timeOfDayWeight
+	return base * tempWeight
 }

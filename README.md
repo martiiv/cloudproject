@@ -18,8 +18,7 @@ ___
 ***Traffic news- and filling station API:***
 - https://developer.tomtom.com
 
-***Position related API:***
-- https://positionstack.com
+***Position related API:**
 - https://developer.mapquest.com
 
 ***Weather api***
@@ -156,9 +155,10 @@ Body (Example):
 
 ```
 {
-   "positionstack": "500"
    "tomtom": "200",
    "openrouteservice": "200",
+   "openweathermap": "500",
+   "mapquest": "200",
    "registered": 4,
    "version": "v1",
    "uptime": 412 seconds

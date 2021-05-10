@@ -74,7 +74,20 @@ func Check(w http.ResponseWriter, webhook extra.Webhook) {
 		}
 
 		weatherMessage := hook.Weather
-		newMessage := extra.CurrentWeatherHandler(w, "").Main.Message //TODO implement
+
+		latitude, longitude, err := extra.GetLocation(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+		url := ""
+		if latitude != "" && longitude != "" {
+			// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
+			url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+		} else {
+			fmt.Fprint(w, "Check formatting of lat and lon")
+		}
+
+		newMessage := extra.CurrentWeatherHandler(w, url).Main.Message
 		if !(newMessage == weatherMessage) {
 			hook.Weather = newMessage
 			Update(doc.Ref.ID, hook)

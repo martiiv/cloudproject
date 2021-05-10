@@ -90,10 +90,8 @@ func Invoke(id string) {
 	TimeUntilInvocation := time.Until(newTime).Seconds()
 	fmt.Println(int(TimeUntilInvocation))
 
+	fmt.Println(timeS)
 	//timeTo := time.Duration(int(TimeUntilInvocation) * 1000000000)
 
 	time.Sleep(5 * time.Second)
-
-	go CallUrl("https://webhook.site/09c50c63-5139-42ec-a683-ae37e7d94cce", "Reis nå")
-
 }

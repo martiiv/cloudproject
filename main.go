@@ -24,6 +24,8 @@ func main() {
 	// Starts uptime of program
 	endpoints.Uptime = time.Now()
 
+	go webhooks.DeleteExpiredWebhooks()
+
 	log.Println("Listening on port: " + getPort())
 	handlers()
 
@@ -38,7 +40,7 @@ func handlers() {
 	http.HandleFunc("/petrol/", endpoints.PetrolStation)
 	http.HandleFunc("/messages/", endpoints.Messages)
 	http.HandleFunc("/route/", endpoints.Route)
-	http.HandleFunc("/hook/", webhooks.AddWebhook)
+	http.HandleFunc("/hook/", webhooks.CreateWebhook)
 
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

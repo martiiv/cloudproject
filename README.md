@@ -19,10 +19,10 @@ ___
 - https://developer.tomtom.com
 
 ***Position related API:***
-- https://positionstack.com
+- https://developer.mapquest.com
 
 ***Weather api***
-https://openweathermap.org/api
+- https://openweathermap.org/api
 
 ## Endpoints
 In the application we are using the following endpoints
@@ -196,9 +196,10 @@ Body (Example):
 
 ```
 {
-   "positionstack": "500"
    "tomtom": "200",
    "openrouteservice": "200",
+   "openweathermap": "500",
+   "mapquest": "200",
    "registered": 4,
    "version": "v1",
    "uptime": 412 seconds

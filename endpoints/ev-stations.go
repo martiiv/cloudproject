@@ -14,12 +14,16 @@ import (
 //Function that will display all the electric-vehicle charging stations from a location, within 1km
 func EVStations(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
-
+	address := strings.Split(request.URL.Path, `/`)[2]                      //Getting the address/name of the place we want to look for chargers
 	latitude, longitude, err := extra.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
+	}
+
+	if len(request.URL.RawQuery) != 0 {
+		fmt.Println(strings.Split(request.URL.RawQuery, `=`)[1])
+
 	}
 
 	response, err := http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7309&key=" + extra.TomtomKey)
@@ -32,7 +36,7 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 
 	var charge structs.Charger
 	if err = json.Unmarshal(body, &charge); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		extra.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 
@@ -54,7 +58,7 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		extra.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 

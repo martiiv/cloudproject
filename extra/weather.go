@@ -35,25 +35,23 @@ func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude s
 	} else {
 		fmt.Fprint(rw, "Check formatting of lat and lon")
 	}
-	currentWeatherHandler(rw, url)
+	CurrentWeatherHandler(rw, url)
 }
 
 /**
  * Handler handling request with the url
  */
-func currentWeatherHandler(rw http.ResponseWriter, url string) {
+func CurrentWeatherHandler(rw http.ResponseWriter, url string) outputWeather {
 	// Uses request URL
 	resp, err := http.Get(url)
 	if err != nil {
 		http.Error(rw, "Error: "+err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Reads the data from the resp.Body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		http.Error(rw, "Error: "+err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Defines struct instance
@@ -62,7 +60,6 @@ func currentWeatherHandler(rw http.ResponseWriter, url string) {
 	// Unmarshalling the body into the weatherData struct/fields
 	if err := json.Unmarshal(body, &weather); err != nil {
 		http.Error(rw, "Error: "+err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Defines output struct instance
@@ -125,11 +122,12 @@ func currentWeatherHandler(rw http.ResponseWriter, url string) {
 	output, err := json.Marshal(jsonStruct) //Marshalling the array to JSON
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Print the struct/information to the user in json format
 	fmt.Fprintf(rw, "%v", string(output)) //Outputs the weather
+
+	return jsonStruct
 }
 
 /**
@@ -348,4 +346,50 @@ func response(rw http.ResponseWriter, data []outputWeather) []string {
  */
 func epochToHumanReadable(epoch int64) time.Time {
 	return time.Unix(epoch, 0)
+}
+
+func getMessageWeight(message string) float64 {
+	base := 15.0
+	skyWeight := 1.0
+	tempWeight := 1.0
+	timeOfDayWeight := 1.0
+
+	switch true {
+	case strings.Contains(message, "Snow"):
+		skyWeight = 1.6
+		if strings.Contains(message, "light") {
+			skyWeight = 1.4
+		} else if strings.Contains(message, "moderate") {
+			skyWeight = 1.6
+		} else if strings.Contains(message, "heavily") {
+			skyWeight = 2.0
+		}
+		return base * skyWeight
+
+	case strings.Contains(message, "Rain"):
+		skyWeight = 1.2
+		if strings.Contains(message, "light") {
+			skyWeight = 1
+		} else if strings.Contains(message, "moderate") {
+			skyWeight = 1.2
+		} else if strings.Contains(message, "heavy") {
+			skyWeight = 1.5
+		} else if strings.Contains(message, "violent") {
+			skyWeight = 1.8
+		}
+		return base * skyWeight
+
+	case strings.Contains(message, "light"):
+
+	case strings.Contains(message, "moderate"):
+
+	case strings.Contains(message, "heav"):
+
+	case strings.Contains(message, "violent"):
+
+	case strings.Contains(message, "freezing point"):
+
+	}
+
+	return base * skyWeight * tempWeight * timeOfDayWeight
 }

@@ -24,7 +24,6 @@ ___
 ***Weather api***
 https://openweathermap.org/api
 
-
 ## Endpoints
 In the application we are using the following endpoints
 
@@ -123,8 +122,50 @@ A list of directions
 
 
 ## Traffic news- and filling stations
+The ***Traffic news***-endpoint focuses on returning the traffic news based on the start and end location.
+The user is able to enter their destination to the Position API, which then sends their longitude and latitude
+to the TrafficNews-API.
+From there the client is able to get a detailed description about incidents, slow traffic, stationary traffic and road construction. 
 ### Request
-Main request method: 
+Main request method:
+```
+Method: GET
+Path: /roadTripPlanner/v1/traffic/{location1}/{location2}/
+```
+
+We find the use of an alternative request method necessary due to the possibility of not being on an address accepted by
+the Position API. Therefore, the user will be able to manually enter their destination-coordinates.
+
+`{location1}` refers to the location you are travelling from, which can be an address, place name or attraction(Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
+provided by the ***Implement the API link here***.
+
+`{location2}` refers to the location you are arriving to, which can be an address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
+provided by the ***Implement the API link here***.
+
+Example request 1: `/roadTripPlanner/v1/traffic/Gjøvik/Lillehammer`
+
+
+The ***FillingStations***-endpoint focuses on returning filling stations based on the start and end location.
+The user is able to enter their destination to the Position API, which then sends their longitude and latitude
+to the FillingStations-API.
+From there the client is able to get a detailed description about filling stations near you during your trip from .
+### Request
+Main request method:
+```
+Method: GET
+Path: /roadTripPlanner/v1/fuel/{fuelType}/{location}/
+```
+
+We find the use of an alternative request method necessary due to the possibility of not being on an address accepted by
+the Position API. Therefore, the user will be able to manually enter their destination-coordinates.
+
+`{fuelType}` refers to the fuel type you want, which can be diesel or petrol.
+provided by the ***Implement the API link here***.
+
+`{location}` refers to the location you are now, which can be an address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
+provided by the ***Implement the API link here***.
+
+Example request 1: `/roadTripPlanner/v1/fuel/s`
 
 ### Response
 ***Implement response***

@@ -32,6 +32,7 @@ func main() {
 
 func handlers() {
 	http.HandleFunc("/weather/", extra.CurrentWeather)
+	http.HandleFunc("/poi/", extra.PointOfInterest)
 	http.HandleFunc("/diag", endpoints.Diag)
 	http.HandleFunc("/charge/", endpoints.EVStations)
 	http.HandleFunc("/petrol/", endpoints.PetrolStation)

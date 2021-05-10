@@ -15,6 +15,10 @@ import (
 
 func Messages(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	if len(strings.Split(request.URL.Path, `/`)) != 4 {
+		http.Error(w, "error Bad Request\nExpected input: /messages/{startLocation}/{endDestination}", http.StatusBadRequest)
+		return
+	}
 	StartAddress := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
 	EndAddress := strings.Split(request.URL.Path, `/`)[3]   //Getting the address/name of the place we want to look for chargers
 
@@ -38,25 +42,34 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 	response, err := http.Get("https://api.tomtom.com/traffic/services/5/incidentDetails?bbox=" + url.QueryEscape(box) +
 		"&fields=%7Bincidents%7Btype%2Cgeometry%7Btype%2Ccoordinates%7D%2Cproperties%7Bid%2CiconCategory%2CmagnitudeOfDelay%2Cevents%7Bdescription%2Ccode%7D%2CstartTime%2Cend" +
 		"Time%2Cfrom%2Cto%2Clength%2Cdelay%2CroadNumbers%2Caci%7BprobabilityOfOccurrence%2CnumberOfReports%2ClastReportTime%7D%7D%7D%7D&key=" + extra.TomtomKey)
+	err = extra.TomTomErrorHandling(w, response.StatusCode)
+	if err != nil {
+		http.Error(w, err.Error(), response.StatusCode)
+		return
+	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	var messages extra.Incidents
 	if err = json.Unmarshal(body, &messages); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		extra.JsonUnmarshalErrorHandling(w, err)
+		return
 	}
 
 	var all []extra.OutIncident
 	time := time.Now().Add(-60 * time.Minute)
 
 	roads, err := getRoads(StartAddress, EndAddress)
+	if err != nil {
+		//Todo handle error
+	}
 
 	for i := 0; i < len(messages.Incidents); i++ {
 		for k := 0; k < len(roads); k++ {
-			//if messages.Incidents[i].Properties.To == roads[k] || messages.Incidents[i].Properties.From == roads[k] {
 			if messages.Incidents[i].Properties.EndTime.Before(time) {
 				startTime := messages.Incidents[i].Properties.StartTime
 				endTime := messages.Incidents[i].Properties.EndTime
@@ -73,14 +86,13 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 				incidents := extra.OutIncident{From: FromAddress, To: toAddress, Start: startTime, End: endTime, Event: Event}
 				all = append(all, incidents)
 			}
-			//}
 
 		}
 	}
 
 	output, err := json.Marshal(all) //Marshalling the array to JSON
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		extra.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 
@@ -101,6 +113,7 @@ func getBBox(StartAddress string, endAddress string) ([]byte, error) {
 	}
 
 	resp, err := http.Get("https://api.openrouteservice.org/v2/directions/driving-car?api_key=" + extra.OpenRouteServiceKey + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + EndLat)
+	fmt.Println("https://api.openrouteservice.org/v2/directions/driving-car?api_key=" + extra.OpenRouteServiceKey + "&start=" + startLong + "," + startLat + "&end=" + endLong + "," + EndLat)
 	if err != nil {
 		return nil, err
 	}
@@ -113,6 +126,9 @@ func getBBox(StartAddress string, endAddress string) ([]byte, error) {
 	return body, err
 }
 
+/**
+not in use
+*/
 func getRoads(StartAddress string, endAddress string) ([]string, error) {
 
 	startLat, startLong, err := extra.GetLocation(StartAddress)

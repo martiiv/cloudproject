@@ -56,8 +56,8 @@ func Init() error {
  * Function for adding RouteInformation to the database
  * Returns the ID an object is given when the database creates
  */
-func Add(RouteInformation extra.RouteInformation) (string, error) {
-	newEntry, _, err := Client.Collection(Collection).Add(Ctx, RouteInformation) //Adds RouteInformation
+func Add(webhook extra.Webhook) (string, error) {
+	newEntry, _, err := Client.Collection(Collection).Add(Ctx, webhook) //Adds RouteInformation
 	if err != nil {
 		return "", errors.New("Error occurred when adding RouteInformation to database: " + err.Error())
 	}

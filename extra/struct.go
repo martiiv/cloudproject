@@ -457,13 +457,6 @@ type Route struct {
 	JunctionType string
 }
 
-//Struct RouteInformation, used in webhooks.go and database.go
-type RouteInformation struct {
-	Destination      string
-	TimeOfArrival    string
-	StartDestination string
-}
-
 type RoadInformation struct {
 	EstimatedArrival string
 	LengthKM         int
@@ -473,6 +466,7 @@ type RoadInformation struct {
 type Webhook struct {
 	DepartureLocation   string
 	ArrivalDestination  string
+	Weather             string
 	ArrivalTime         string
 	Repeat              string
 	EstimatedTravelTime int

@@ -18,7 +18,7 @@ ___
 ***Traffic news- and filling station API:***
 - https://developer.tomtom.com
 
-***Position related API:**
+***Position related API:***
 - https://developer.mapquest.com
 
 ***Weather api***

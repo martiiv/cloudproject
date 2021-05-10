@@ -23,21 +23,42 @@ ___
 ___
 
 ## Endpoints
-In the application we are using ***Implement number of main endpoints here***
+In the application we are using the following endpoints
 
 ```
-/{root_endpoint_path}/v1/{endpoint_1}/
-/{root_endpoint_path}/v1/{endpoint_2}/
-/{root_endpoint_path}/v1/{endpoint_3}/
-/{root_endpoint_path}/v1/{endpoint_4}/
+GET
+
+/roadTripPlanner/v1/Route/{start}/{end}/
+/roadTripPlanner/v1/fuel/{fuelType}/{location}/
+/roadTripPlanner/v1/pitStops/{location}/
+/roadTripPlanner/v1/traffic/{location1}/{location2}/
+/roadTripPlanner/v1/weather/{location}/
+/roadTripPlanner/v1/diag/
+
+POST 
+/roadTripPlanner/v1/plan/ 
+
+DELETE
+/roadTripPlanner/v1/planner/{id}
 ```
 
 Running on the server, the endpoints will be as follows:
 ```
-http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_1}/
-http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_2}/
-http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_3}/
-http://{IP_Address}/{root_endpoint_path}/v1/{endpoint_4}/
+GET
+
+http://OPENSTACKIP/roadTripPlanner/v1/planRoute/{start}/{end}/
+http://OPENSTACKIP/roadTripPlanner/v1/fuel/{fuelType}/{location}/
+http://OPENSTACKIP/roadTripPlanner/v1/pitStops/{location}/
+http://OPENSTACKIP/roadTripPlanner/v1/traffic/{location1}/{location2}/ 
+http://OPENSTACKIP/roadTripPlanner/v1/weather/{location}/
+http://OPENSTACKIP/roadTripPlanner/v1/diag/
+
+POST 
+http://OPENSTACKIP/roadTripPlanner/v1/plan/ 
+
+DELETE
+http://OPENSTACKIP/roadTripPlanner/v1/planner/{id}
+
 ```
 
 ## Route

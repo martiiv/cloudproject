@@ -35,25 +35,23 @@ func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude s
 	} else {
 		fmt.Fprint(rw, "Check formatting of lat and lon")
 	}
-	currentWeatherHandler(rw, url)
+	CurrentWeatherHandler(rw, url)
 }
 
 /**
  * Handler handling request with the url
  */
-func currentWeatherHandler(rw http.ResponseWriter, url string) {
+func CurrentWeatherHandler(rw http.ResponseWriter, url string) outputWeather {
 	// Uses request URL
 	resp, err := http.Get(url)
 	if err != nil {
 		http.Error(rw, "Error: "+err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Reads the data from the resp.Body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		http.Error(rw, "Error: "+err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Defines struct instance
@@ -62,7 +60,6 @@ func currentWeatherHandler(rw http.ResponseWriter, url string) {
 	// Unmarshalling the body into the weatherData struct/fields
 	if err := json.Unmarshal(body, &weather); err != nil {
 		http.Error(rw, "Error: "+err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Defines output struct instance
@@ -125,11 +122,12 @@ func currentWeatherHandler(rw http.ResponseWriter, url string) {
 	output, err := json.Marshal(jsonStruct) //Marshalling the array to JSON
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
-		return
 	}
 
 	// Print the struct/information to the user in json format
 	fmt.Fprintf(rw, "%v", string(output)) //Outputs the weather
+
+	return jsonStruct
 }
 
 /**

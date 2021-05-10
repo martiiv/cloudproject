@@ -59,40 +59,61 @@ func Response(webhook extra.Webhook) {
  * Function Check
  * Will check for updates in weather conditions and traffic incidents
  */
-func Check() {
+func Check(w http.ResponseWriter, webhook extra.Webhook) {
+	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
+	var hook extra.Webhook
+
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+
+		if err := doc.DataTo(&hook); err != nil {
+			return
+		}
+
+		weatherMessage := hook.Weather
+		newMessage := extra.CurrentWeatherHandler(w, "").Main.Message //TODO implement
+		if !(newMessage == weatherMessage) {
+			hook.Weather = newMessage
+			Update(doc.Ref.ID, hook)
+			fmt.Fprintf(w, "WeatherMessage update new registered weather for:"+hook.DepartureLocation+" is:"+hook.Weather)
+		}
+
+	}
+
+	time.Sleep(time.Minute * 30)
+	Check(w, webhook)
+}
+
+func CreateWebhook(w http.ResponseWriter, r *http.Request) {
+	webhook := AddWebhook(w, r)
+	go Check(w, webhook)
 
 }
 
-func CreateWebhook(w http.ResponseWriter, r *http.Request, webhook extra.Webhook) {
-
-}
-
-func AddWebhook(w http.ResponseWriter, r *http.Request) {
+func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
-		return
 	}
 
 	input, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
 	} else if len(input) == 0 {
 		http.Error(w, "Your message appears to be empty", http.StatusBadRequest)
-		return
 	}
 
 	var notification extra.Webhook
 	if err = json.Unmarshal(input, &notification); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
-		return
 	}
 
 	latitude, longitude, err := extra.GetLocation(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
 	}
 
 	url := ""
@@ -108,7 +129,6 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) {
 	message, ok := webhookFormat(notification)
 	if !ok {
 		http.Error(w, message, http.StatusNoContent)
-		return
 	}
 
 	id, _, err := Client.Collection(Collection).Add(Ctx,
@@ -121,12 +141,11 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) {
 		})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
 	} else {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
 		CalculateDeparture(id.ID)
 	}
-
+	return notification
 }
 
 func webhookFormat(web extra.Webhook) (string, bool) {
@@ -174,12 +193,8 @@ func DeleteExpiredWebhooks() {
 				//Todo Error handling
 			}
 			fmt.Println("Webhook deleted")
-
 		}
-
 	}
-
 	time.Sleep(time.Hour * 24)
 	DeleteExpiredWebhooks()
-
 }

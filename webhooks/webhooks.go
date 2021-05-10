@@ -8,7 +8,6 @@ import (
 	"google.golang.org/api/iterator"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"time"
 	_ "time"
 )
@@ -24,17 +23,6 @@ import (
  * @version 0.2
  */
 
-// Struct WebHook will be used for storing information
-type WebHook struct {
-	ID             string //ID from RouteInformation DB entry
-	URL            string //Webhook URL to be invoked
-	TrafficMessage string //Current traffic messages on route from api
-	WeatherMessage string //Current weather conditions from weather api
-
-	route extra.RouteInformation
-}
-
-var webHookInit []WebHook
 var Collection = "message"
 
 /**
@@ -49,13 +37,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
 	case http.MethodPost:
-		newWebhook := WebHook{}
-		err := json.NewDecoder(r.Body).Decode(&newWebhook)
-		if err != nil {
-			http.Error(w, "Unable to decode POST Request"+err.Error(), http.StatusBadRequest)
-		}
-		webHookInit = append(webHookInit, newWebhook)
-		//newWebhook = CreateWebhook(w,r webHookInit)
 
 	case http.MethodGet:
 
@@ -70,7 +51,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
  * Function Response
  * Will format the Json Response for the user
  */
-func Response(webhook WebHook) {
+func Response(webhook extra.Webhook) {
 
 }
 
@@ -78,68 +59,106 @@ func Response(webhook WebHook) {
  * Function Check
  * Will check for updates in weather conditions and traffic incidents
  */
-func Check() {
+func Check(w http.ResponseWriter, webhook extra.Webhook) {
+	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
+	var hook extra.Webhook
 
-}
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
 
-func CreateWebhook(w http.ResponseWriter, r *http.Request, route extra.RouteInformation, hook WebHook) {
+		if err := doc.DataTo(&hook); err != nil {
+			return
+		}
 
-	startPoint := route.StartDestination
-	latitude, longitude, err := extra.GetLocation(url.QueryEscape(startPoint)) //Receives the latitude and longitude of the place passed in the url
-	if err != nil {
-		http.Error(w, "Error! Couldnt get latitude and longitude from api"+err.Error(), http.StatusBadRequest)
+		weatherMessage := hook.Weather
+
+		latitude, longitude, err := extra.GetLocation(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+		url := ""
+		if latitude != "" && longitude != "" {
+			// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
+			url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+		} else {
+			fmt.Fprint(w, "Check formatting of lat and lon")
+		}
+
+		newMessage := extra.CurrentWeatherHandler(w, url).Main.Message
+		if !(newMessage == weatherMessage) {
+			hook.Weather = newMessage
+			Update(doc.Ref.ID, hook)
+			fmt.Fprintf(w, "WeatherMessage update new registered weather for:"+hook.DepartureLocation+" is:"+hook.Weather)
+		}
+
 	}
 
-	//Define the current trafficMessage for the route
-	weatherUrl := "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
-	hook.WeatherMessage = weatherUrl //TODO Change this to currentweather
-	// TODO Get current weather string fra Tormod weather := extra.CurrentWeather(w, r, weatherUrl)
+	time.Sleep(time.Minute * 30)
+	Check(w, webhook)
+}
+
+func CreateWebhook(w http.ResponseWriter, r *http.Request) {
+	webhook := AddWebhook(w, r)
+	go Check(w, webhook)
 
 }
 
-func AddWebhook(w http.ResponseWriter, r *http.Request) {
+func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
-		return
 	}
 
 	input, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
 	} else if len(input) == 0 {
 		http.Error(w, "Your message appears to be empty", http.StatusBadRequest)
-		return
 	}
 
 	var notification extra.Webhook
 	if err = json.Unmarshal(input, &notification); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
-		return
 	}
+
+	latitude, longitude, err := extra.GetLocation(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	url := ""
+
+	if latitude != "" && longitude != "" {
+		// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
+		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+	} else {
+		fmt.Fprint(w, "Check formatting of lat and lon")
+	}
+	notification.Weather = extra.CurrentWeatherHandler(w, url).Main.Message
 
 	message, ok := webhookFormat(notification)
 	if !ok {
 		http.Error(w, message, http.StatusNoContent)
-		return
 	}
 
 	id, _, err := Client.Collection(Collection).Add(Ctx,
 		map[string]interface{}{
 			"ArrivalDestination": notification.ArrivalDestination,
 			"ArrivalTime":        notification.ArrivalTime,
+			"Weather":            notification.Weather,
 			"DepartureLocation":  notification.DepartureLocation,
 			"Repeat":             notification.Repeat,
 		})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
 	} else {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
 		CalculateDeparture(id.ID)
 	}
-
+	return notification
 }
 
 func webhookFormat(web extra.Webhook) (string, bool) {
@@ -187,12 +206,8 @@ func DeleteExpiredWebhooks() {
 				//Todo Error handling
 			}
 			fmt.Println("Webhook deleted")
-
 		}
-
 	}
-
 	time.Sleep(time.Hour * 24)
 	DeleteExpiredWebhooks()
-
 }

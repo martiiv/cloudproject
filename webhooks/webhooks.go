@@ -3,10 +3,13 @@ package webhooks
 import (
 	"cloudproject/extra"
 	"encoding/json"
+	"fmt"
 	_ "fmt"
+	"google.golang.org/api/iterator"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 	_ "time"
 )
 
@@ -32,7 +35,6 @@ type WebHook struct {
 }
 
 var webHookInit []WebHook
-var weatherApi = "92721f2c7ecab4f083189daef6b7f146"
 var Collection = "message"
 
 /**
@@ -128,12 +130,14 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) {
 			"ArrivalDestination": notification.ArrivalDestination,
 			"ArrivalTime":        notification.ArrivalTime,
 			"DepartureLocation":  notification.DepartureLocation,
+			"Repeat":             notification.Repeat,
 		})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	} else {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
+		CalculateDeparture(id.ID)
 	}
 
 }
@@ -154,5 +158,41 @@ func webhookFormat(web extra.Webhook) (string, bool) {
 	}*/
 
 	return "", true
+}
+
+func DeleteExpiredWebhooks() {
+	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
+
+	var firebase extra.Webhook
+
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+
+		if err := doc.DataTo(&firebase); err != nil {
+			return
+		}
+
+		arrival, err := time.Parse(time.RFC822, firebase.ArrivalTime)
+
+		if err != nil {
+			//Todo Error handling
+		}
+
+		if arrival.After(time.Now().AddDate(0, 0, -1)) && firebase.Repeat == "" {
+			err := Delete(doc.Ref.ID)
+			if err != nil {
+				//Todo Error handling
+			}
+			fmt.Println("Webhook deleted")
+
+		}
+
+	}
+
+	time.Sleep(time.Hour * 24)
+	DeleteExpiredWebhooks()
 
 }

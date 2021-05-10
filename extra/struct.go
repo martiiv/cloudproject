@@ -474,6 +474,7 @@ type Webhook struct {
 	DepartureLocation   string
 	ArrivalDestination  string
 	ArrivalTime         string
+	Repeat              string
 	EstimatedTravelTime int
 	Json                string
 }

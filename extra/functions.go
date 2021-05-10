@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -68,4 +69,22 @@ func TomTomErrorHandling(w http.ResponseWriter, status int) error {
 func openRouteError(w http.ResponseWriter, status int) {
 	//Todo make this error function
 	//https://openrouteservice.org/dev/#/api-docs/v2/directions/{profile}/get
+}
+
+func GetOptionalFilter(url *url.URL) map[string]string {
+	var optionals = map[string]string{}
+	optional := strings.Split(url.RawQuery, "?")
+	if len(optional) != 0 && optional[0] != "" {
+
+		for i := 0; i <= len(optional)-1; i++ {
+			nameOfFilter := strings.Split(optional[i], "=")
+			valueName := nameOfFilter[1]
+			mapName := nameOfFilter[0]
+
+			optionals[mapName] = valueName
+
+		}
+		return optionals
+	}
+	return nil
 }

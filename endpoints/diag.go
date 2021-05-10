@@ -14,7 +14,6 @@ var Uptime time.Time
 // https://openrouteservice.org/
 // https://developer.tomtom.com/
 // https://openweathermap.org/api
-// https://positionstack.com/
 // https://developer.mapquest.com
 
 // Diag shows diagnostics interface
@@ -86,6 +85,6 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 		defer respMapQuest.Body.Close()
 	}
 
-	fmt.Fprintf(w, `{"positionstack": "%v", "tomtom": "%v", "openrouteservice": "%v", "openweathermap": "%v", "mapquest": "%v", "version": "v1", "uptime": %v}`,
-		positionstackStatusCode, tomtomStatusCode, openRouteServiceStatusCode, openWeatherMapStatusCode, mapQuestStatusCode, int(time.Since(Uptime)/time.Second))
+	fmt.Fprintf(w, `{"tomtom": "%v", "openrouteservice": "%v", "openweathermap": "%v", "mapquest": "%v", "version": "v1", "uptime": %v}`,
+		tomtomStatusCode, openRouteServiceStatusCode, openWeatherMapStatusCode, mapQuestStatusCode, int(time.Since(Uptime)/time.Second))
 }

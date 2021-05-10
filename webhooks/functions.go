@@ -95,3 +95,35 @@ func Invoke(id string) {
 
 	time.Sleep(5 * time.Second)
 }
+
+func SendNotification(w http.ResponseWriter, r *http.Request) {
+
+	input, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+
+		return
+	} else if len(input) == 0 {
+		return
+	}
+
+	var messages extra.NotificationInput
+	if err = json.Unmarshal(input, &messages); err != nil {
+		return
+	}
+
+	url := messages.URL
+
+	jsonMessage := extra.NotificationResponse{
+		Text: "Heiiiiisannnnnnn",
+	}
+
+	jsonStart := `{"text": "`
+	jsonMiddle := jsonMessage.Text
+	jsonEnd := `"}`
+	jsonData := []byte(jsonStart + jsonMiddle + jsonEnd)
+	req, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+	if req.StatusCode != http.StatusOK {
+		fmt.Println("Fuck you")
+	}
+
+}

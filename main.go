@@ -40,6 +40,7 @@ func handlers() {
 	http.HandleFunc("/messages/", endpoints.Messages)
 	http.HandleFunc("/route/", endpoints.Route)
 	http.HandleFunc("/hook/", webhooks.AddWebhook)
+	http.HandleFunc("/send/", webhooks.SendNotification)
 
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

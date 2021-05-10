@@ -238,6 +238,11 @@ The hard aspects of the project has been the webhook implementation. The hard pa
 implement this to our project. We have also struggled with implementing Docker, and need to do some research on this topic. We also 
 studied the examples on Docker provided in the course, to get a better understanding of how to use it.
 
+We tried to implement client API to our project, the cons of this is that the user has to refresh the site to receive
+notifications. This is not very user-friendly, and annoying for the user. Therefore, we changed it, so the user gets a Slack notification 
+with messages. Then the user will get the messages in time on their phone, computer and clock.
+
+
 ###What new has the group learned?:
 We have become better in collaborating on programming tasks with other students. The GitLab issues has been a great tool for the communication in our group.
 By creating issues in Git and labeling and assigning them to group members, we have been able to see what people are working on. We have also been 
@@ -245,6 +250,8 @@ able to see what needs to be done and what is finished. We have written meeting 
 This has given us the possibility to read a short summary of what we did the last time and what needs to be done. These summaries are provided in 
 the project WIKI. We have learned that good group communication is very important for us to be able to finish the project, and we also became
 better in using GitLabs different tools like issues. 
+
+We have also learned a lot more programming especially the webhooks implementation has been where we have learned the most during this project. 
 
 ###Total work hours dedicated to the project cumulatively by the group:
 The total hours the group has worked on the project has been hours. 

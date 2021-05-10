@@ -20,9 +20,10 @@ ___
 
 ***Position related API:***
 - https://positionstack.com
+- https://developer.mapquest.com
 
 ***Weather api***
-https://openweathermap.org/api
+- https://openweathermap.org/api
 
 
 ## Endpoints

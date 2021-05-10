@@ -476,7 +476,6 @@ type Webhook struct {
 	ArrivalTime         string
 	Repeat              string
 	EstimatedTravelTime int
-	Json                string
 }
 
 type outputPoi struct {

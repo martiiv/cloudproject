@@ -13,7 +13,6 @@ import (
 )
 
 // Key used to access openweathermap-API
-var apiKey = "92721f2c7ecab4f083189daef6b7f146"
 
 // CurrentWeather /* Temporary: Gets location and passes it to the openweathermap-API
 func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude string, longitude string*/) {
@@ -32,7 +31,7 @@ func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude s
 
 	if latitude != "" && longitude != "" {
 		// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
-		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey
+		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + OpenweathermapKey
 	} else {
 		fmt.Fprint(rw, "Check formatting of lat and lon")
 	}

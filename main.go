@@ -1,8 +1,9 @@
 package main
 
 import (
-	endpoint "cloudproject/endpoints"
-	extra "cloudproject/extra"
+	"cloudproject/endpoints"
+	"cloudproject/extra"
+	"cloudproject/webhooks"
 	"log"
 	"net/http"
 	"os"
@@ -19,19 +20,24 @@ func getPort() string {
 
 func main() {
 
+	webhooks.Init()
 	// Starts uptime of program
-	endpoint.Uptime = time.Now()
+	endpoints.Uptime = time.Now()
 
 	log.Println("Listening on port: " + getPort())
 	handlers()
+
+	defer webhooks.Client.Close()
 }
 
 func handlers() {
 	http.HandleFunc("/weather/", extra.CurrentWeather)
-	http.HandleFunc("/diag", endpoint.Diag)
-	http.HandleFunc("/charge/", endpoint.EVStations)
-	http.HandleFunc("/petrol/", endpoint.PetrolStation)
-	http.HandleFunc("/messages/", endpoint.Messages)
+	http.HandleFunc("/diag", endpoints.Diag)
+	http.HandleFunc("/charge/", endpoints.EVStations)
+	http.HandleFunc("/petrol/", endpoints.PetrolStation)
+	http.HandleFunc("/messages/", endpoints.Messages)
+	http.HandleFunc("/route/", endpoints.Route)
+	http.HandleFunc("/hook/", webhooks.AddWebhook)
 
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

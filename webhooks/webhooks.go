@@ -2,7 +2,12 @@ package webhooks
 
 import (
 	"cloudproject/extra"
+	"encoding/json"
+	_ "fmt"
+	"io/ioutil"
 	"net/http"
+	"net/url"
+	_ "time"
 )
 
 /**
@@ -23,8 +28,12 @@ type WebHook struct {
 	TrafficMessage string //Current traffic messages on route from api
 	WeatherMessage string //Current weather conditions from weather api
 
-	extra.RouteInformation //DB entry
+	route extra.RouteInformation
 }
+
+var webHookInit []WebHook
+var weatherApi = "92721f2c7ecab4f083189daef6b7f146"
+var Collection = "message"
 
 /**
  * Function Handler
@@ -38,6 +47,13 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
 	case http.MethodPost:
+		newWebhook := WebHook{}
+		err := json.NewDecoder(r.Body).Decode(&newWebhook)
+		if err != nil {
+			http.Error(w, "Unable to decode POST Request"+err.Error(), http.StatusBadRequest)
+		}
+		webHookInit = append(webHookInit, newWebhook)
+		//newWebhook = CreateWebhook(w,r webHookInit)
 
 	case http.MethodGet:
 
@@ -61,5 +77,82 @@ func Response(webhook WebHook) {
  * Will check for updates in weather conditions and traffic incidents
  */
 func Check() {
+
+}
+
+func CreateWebhook(w http.ResponseWriter, r *http.Request, route extra.RouteInformation, hook WebHook) {
+
+	startPoint := route.StartDestination
+	latitude, longitude, err := extra.GetLocation(url.QueryEscape(startPoint)) //Receives the latitude and longitude of the place passed in the url
+	if err != nil {
+		http.Error(w, "Error! Couldnt get latitude and longitude from api"+err.Error(), http.StatusBadRequest)
+	}
+
+	//Define the current trafficMessage for the route
+	weatherUrl := "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+	hook.WeatherMessage = weatherUrl //TODO Change this to currentweather
+	// TODO Get current weather string fra Tormod weather := extra.CurrentWeather(w, r, weatherUrl)
+
+}
+
+func AddWebhook(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != http.MethodPost {
+		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	input, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	} else if len(input) == 0 {
+		http.Error(w, "Your message appears to be empty", http.StatusBadRequest)
+		return
+	}
+
+	var notification extra.Webhook
+	if err = json.Unmarshal(input, &notification); err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	message, ok := webhookFormat(notification)
+	if !ok {
+		http.Error(w, message, http.StatusNoContent)
+		return
+	}
+
+	id, _, err := Client.Collection(Collection).Add(Ctx,
+		map[string]interface{}{
+			"ArrivalDestination": notification.ArrivalDestination,
+			"ArrivalTime":        notification.ArrivalTime,
+			"DepartureLocation":  notification.DepartureLocation,
+		})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	} else {
+		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
+	}
+
+}
+
+func webhookFormat(web extra.Webhook) (string, bool) {
+
+	if web.DepartureLocation == "" {
+		return "Departure location cannot be empty", false
+	} else if web.ArrivalDestination == "" {
+		return "Arrival destination cannot be empty", false
+	} else if web.ArrivalTime == "" {
+		return "Arrival time cannot be empty", false
+	}
+
+	/*time, err := time.Parse(time.RFC822, web.ArrivalTime )
+	if err != nil {
+		return "Time format is not valid. Supported format is DD:MM:YY HH:mm", false
+	}*/
+
+	return "", true
 
 }

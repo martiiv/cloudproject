@@ -148,7 +148,7 @@ Example request 1: `/roadTripPlanner/v1/traffic/Gjøvik/Lillehammer`
 The ***FillingStations***-endpoint focuses on returning filling stations based on the start and end location.
 The user is able to enter their destination to the Position API, which then sends their longitude and latitude
 to the FillingStations-API.
-From there the client is able to get a detailed description about filling stations near you during your trip from .
+From there the client is able to get a detailed description about filling stations near you during your trip.
 ### Request
 Main request method:
 ```
@@ -208,3 +208,43 @@ Body (Example):
 # Extra:
 - If snowing - notify 15 minutes before planned take-off. If not, sleep and notify at take-off.
 - 
+
+#Project report:
+###Original project plan:
+Brief description of the original project plan, and what has and has not been achieved/changed in the final product.
+
+Our first plan was to make an entertainment service to access information about movies, Spotify music, and comics. 
+In addition, the user should be able to register webhooks to get notified about new movies, Spotify music or comics, of their interest. 
+There were some problems with the use of the Spotify API together with GO, so we had to change the topic. We then decided to make a 
+"car" travel planner, where we give a user information about the route they are going to travel, for instance where the nearest charging 
+stations are, the shortest path from one destination to another, possibility to get notification about weather conditions or car accidents on 
+their route when these are registered for instance, and also more information (some of these are given that we get access to the Norwegian 
+Public Roads Administration (Statens vegvesen) API). We had to change the topic of the project again from Statens vegvesen API to Open route service API, 
+developer API and position stack API. Because we were not able to get the Statens vegvesen API. We therefore landed on creating a route planner 
+that will help you find the best route to your destinations. At the same time, it will help you find EV stations, filling stations, avoid traffic/road work,
+describe the weather, restaurants, hotels and roads attractions on your route to your destination. 
+
+The technology that we were planning to use were Open Stack, Firebase and Cloud functions. We ended up using that technology, and we were also able 
+to implement Docker. We have been able to implement the wanted functions to our route planner such as finding the route to the users' destination, find EV stations,
+filling stations, avoid traffic, describe the weather and points of interest a long your route such as restaurants, hotels and road attractions. 
+
+###Reflection of what went well and what went wrong with the project:
+There was a lot of back and forth at the beginning of the project topic for our project, because there was a few problems with different APIs we 
+need to be able to create the wanted functionalities for our early plans on project topics. Once we had decided to go for the route planner we had problems 
+with the geo API, but luckily it went very well to change to another API.
+
+###Reflection on the hard aspects of the project:
+The hard aspects of the project has been the webhook implementation. The hard part has been to understand what we wanted the users to get notifications on and how to 
+implement this to our project. We have also struggled with implementing Docker, and need to do some research on this topic. We also 
+studied the examples on Docker provided in the course, to get a better understanding of how to use it.
+
+###What new has the group learned?:
+We have become better in collaborating on programming tasks with other students. The GitLab issues has been a great tool for the communication in our group.
+By creating issues in Git and labeling and assigning them to group members, we have been able to see what people are working on. We have also been 
+able to see what needs to be done and what is finished. We have written meeting summaries for every meeting we have had during the project in Cloud.
+This has given us the possibility to read a short summary of what we did the last time and what needs to be done. These summaries are provided in 
+the project WIKI. We have learned that good group communication is very important for us to be able to finish the project, and we also became
+better in using GitLabs different tools like issues. 
+
+###Total work hours dedicated to the project cumulatively by the group:
+The total hours the group has worked on the project has been hours. 

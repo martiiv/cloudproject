@@ -34,12 +34,13 @@ func main() {
 
 func handlers() {
 	http.HandleFunc("/weather/", extra.CurrentWeather)
+	http.HandleFunc("/poi/", extra.PointOfInterest)
 	http.HandleFunc("/diag", endpoints.Diag)
 	http.HandleFunc("/charge/", endpoints.EVStations)
 	http.HandleFunc("/petrol/", endpoints.PetrolStation)
 	http.HandleFunc("/messages/", endpoints.Messages)
 	http.HandleFunc("/route/", endpoints.Route)
-	http.HandleFunc("/hook/", webhooks.AddWebhook)
+	http.HandleFunc("/hook/", webhooks.CreateWebhook)
 
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

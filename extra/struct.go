@@ -101,8 +101,12 @@ type OutputCharge struct {
 	Charger    string
 	Address    string
 	Phone      string
-	Connectors string
-	PowerKW    float64
+	Connectors []Connectors
+}
+
+type Connectors struct {
+	ConnectorType string  `json:"connectorType"`
+	RatedPowerKW  float64 `json:"ratedPowerKW"`
 }
 
 type OutputPetrol struct {
@@ -476,6 +480,14 @@ type Webhook struct {
 	ArrivalTime         string
 	Repeat              string
 	EstimatedTravelTime int
+}
+
+type NotificationInput struct {
+	URL string
+}
+
+type NotificationResponse struct {
+	Text string
 }
 
 type outputPoi struct {

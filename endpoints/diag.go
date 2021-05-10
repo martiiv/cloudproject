@@ -19,23 +19,10 @@ var Uptime time.Time
 // Diag shows diagnostics interface
 func Diag(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var positionstackStatusCode int
 	var tomtomStatusCode int
 	var openRouteServiceStatusCode int
 	var openWeatherMapStatusCode int
 	var mapQuestStatusCode int
-
-	// Does a request to the posistionstack API.
-	respPositionStack, err := http.Get("https://api.positionstack.com")
-	// If any errors occur, log it and set the status code to 500,
-	// otherwise set the status code to the received status code
-	if err != nil {
-		log.Printf("Something went wrong with the positionstack API, %v", err)
-		positionstackStatusCode = http.StatusInternalServerError
-	} else {
-		positionstackStatusCode = respPositionStack.StatusCode
-		defer respPositionStack.Body.Close()
-	}
 
 	// Does a request to the TomTom API.
 	respTomTom, err := http.Get("https://api.tomtom.com/search/2/search/pizza.json?key=gOorFpmbH5GPKh6uGqcfJN76oKFKfswA&lat=37.8085&lon=-122.4239")

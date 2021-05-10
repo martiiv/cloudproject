@@ -20,14 +20,16 @@ ___
 
 ***Position related API:***
 - https://positionstack.com
-___
+
+***Weather api***
+https://openweathermap.org/api
+
 
 ## Endpoints
 In the application we are using the following endpoints
 
 ```
 GET
-
 /roadTripPlanner/v1/Route/{start}/{end}/
 /roadTripPlanner/v1/fuel/{fuelType}/{location}/
 /roadTripPlanner/v1/pitStops/{location}/
@@ -58,53 +60,71 @@ http://OPENSTACKIP/roadTripPlanner/v1/plan/
 
 DELETE
 http://OPENSTACKIP/roadTripPlanner/v1/planner/{id}
-
 ```
 
 ## Route
-The ***Routes***-endpoint focuses on returning a travel route based on the longitude and latitude of the start- and end 
-location. The user is able to enter their destination to the Position API, which then sends their longitude and latitude 
-to the Route-API. From there the client is able to get a detailed description about which exits to take in the roundabouts,
-where to turn left and right etc...
+The ***Routes***-endpoint focuses on returning a travel route based on the start and end location. 
+The user is able to enter their destination to the Position API, which then sends their longitude and latitude 
+to the Route-API. 
+From there the client is able to get a detailed description about which exits to take in the roundabouts,
+where to turn left and right
 
 ### Request
 Main request method:
 ```
 Method: GET
-Path: /{root_endpoint_path}/v1/{endpoint_1}/{start_address}/{end_address}/
+Path: /roadTripPlanner/v1/planRoute/{start}/{end}/
 ```
 
-Alternative request method:
-```
-Method: GET
-Path: /{root_endpoint_path}/v1/{endpoint_1}/{latitude_start}-{longitude_start}/{latitude_end}-{longitude_end}/
-```
 We find the use of an alternative request method necessary due to the possibility of not being on an address accepted by
 the Position API. Therefore, the user will be able to manually enter their destination-coordinates. 
 
-`{start_address}` refers to the address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
+`{start}` refers to the address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
 provided by the ***Implement the API link here***.
 
-`{end_address}` refers to the address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
+`{end}` refers to the address, place name or attraction (Eks: Slottsplassen 1, Washington DC or Eiffel Tower)
 provided by the ***Implement the API link here***.
 
-`{latitude_start}` refers to the latitude of the **start**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
-
-`{logitude_start}` refers to the longitude of the **start**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
-
-`{latitude_end}` refers to the latitude of the **end**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
-
-`{logitude_end}` refers to the longitude of the **end**-destination written in the ISO 6709-format provided by the ***Implement the API link here***.
-
-Example request 1: `/{root_endpoint_path}/v1/route/Gjøvik/Lillehammer` \
-Example request 1: `/{root_endpoint_path}/v1/route/60.786489-10.685456/61.122137-10.464437` 
+Example request 1: `/roadTripPlanner/v1/route/Gjøvik/Lillehammer` 
 
 ### Response
-***Implement response***
+A list of directions
+```
+{
+    "EstimatedArrival": "2021-05-10 09:35:43",
+    "LengthKM": 46,
+    "Route":
+        {
+            "Street": "Niels Ødegaards Gate",
+            "Maneuver": "Leave.",
+            "RoadNumber": "",
+            "JunctionType": ""
+        },
+        {
+            "Street": "Niels Ødegaards Gate",
+            "Maneuver": "Turn right.",
+            "RoadNumber": "",
+            "JunctionType": "REGULAR"
+        },
+        {
+            "Street": "Strandgata",
+            "Maneuver": "Turn right.",
+            "RoadNumber": "",
+            "JunctionType": "REGULAR"
+        },
+        {
+            "Street": "Vestre Totenveg",
+            "Maneuver": "At the roundabout take the exit on the left.",
+            "RoadNumber": "33",
+            "JunctionType": "ROUNDABOUT"
+        }
+}        
+```
+
 
 ## Traffic news- and filling stations
 ### Request
-***Implement request***
+Main request method: 
 
 ### Response
 ***Implement response***

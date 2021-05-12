@@ -2,6 +2,7 @@ package endpoints
 
 import (
 	"cloudproject/extra"
+	"cloudproject/structs"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -31,22 +32,22 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	var poi extra.PointsOfInterest
+	var poi structs.PointsOfInterest
 
 	if err = json.Unmarshal(body, &poi); err != nil {
 		http.Error(w, "ERROR, failed to unmarshall", http.StatusInternalServerError)
 		return
 	}
 
-	var total []extra.OutputPoi
+	var total []structs.OutputPoi
 	for i := 0; i < len(poi.Results); i++ {
 
 		poiName := poi.Results[i].Poi.Name
 		poiPhoneNumber := poi.Results[i].Poi.Phone
 		poiAddress := poi.Results[i].Address.Freeformaddress
 
-		jsonStruct := extra.OutputPoi{Name: poiName, PhoneNumber: poiPhoneNumber, Address: poiAddress} //Creating a JSON object
-		total = append(total, jsonStruct)                                                              //Appending the json object to an array
+		jsonStruct := structs.OutputPoi{Name: poiName, PhoneNumber: poiPhoneNumber, Address: poiAddress} //Creating a JSON object
+		total = append(total, jsonStruct)                                                                //Appending the json object to an array
 	}
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON

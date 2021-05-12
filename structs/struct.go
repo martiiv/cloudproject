@@ -1,10 +1,10 @@
-package extra
+package structs
 
 import (
 	"time"
 )
 
-type geoLocation struct {
+type GeoLocation struct {
 	Results []struct {
 		Locations []struct {
 			LatLng struct {

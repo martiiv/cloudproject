@@ -2,6 +2,7 @@ package endpoints
 
 import (
 	"cloudproject/extra"
+	"cloudproject/structs"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -42,7 +43,7 @@ func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude s
 /**
  * Handler handling request with the url
  */
-func CurrentWeatherHandler(rw http.ResponseWriter, url string) extra.OutputWeather {
+func CurrentWeatherHandler(rw http.ResponseWriter, url string) structs.OutputWeather {
 	// Uses request URL
 	resp, err := http.Get(url)
 	if err != nil {
@@ -56,7 +57,7 @@ func CurrentWeatherHandler(rw http.ResponseWriter, url string) extra.OutputWeath
 	}
 
 	// Defines struct instance
-	var weather extra.WeatherData
+	var weather structs.WeatherData
 
 	// Unmarshalling the body into the weatherData struct/fields
 	if err := json.Unmarshal(body, &weather); err != nil {
@@ -64,7 +65,7 @@ func CurrentWeatherHandler(rw http.ResponseWriter, url string) extra.OutputWeath
 	}
 
 	// Defines output struct instance
-	var data []extra.OutputWeather
+	var data []structs.OutputWeather
 
 	// Defines various temporary variables with the data from the struct
 	main := weather.Weather[0].Main
@@ -82,20 +83,20 @@ func CurrentWeatherHandler(rw http.ResponseWriter, url string) extra.OutputWeath
 	sunset := weather.Sys.Sunset
 
 	// Attaches the various temporary variables to the output struct
-	jsonStruct := extra.OutputWeather{
-		Main:       extra.MainStruct{Main: main},
+	jsonStruct := structs.OutputWeather{
+		Main:       structs.MainStruct{Main: main},
 		Rain1h:     rain1H,
 		Snow1h:     snow1H,
-		Temp:       extra.TempStruct{Temp: tempActual},
-		FeelsLike:  extra.FeelsLikeStruct{FeelsLike: tempFeelsLike},
-		TempMin:    extra.TempMinStruct{TempMin: tempMin},
-		TempMax:    extra.TempMaxStruct{TempMax: tempMax},
-		Humidity:   extra.HumidityStruct{Humidity: humidity},
-		Visibility: extra.VisibilityStruct{Visibility: visibility},
-		WindSpeed:  extra.WindSpeedStruct{WindSpeed: windSpeed},
-		WindDeg:    extra.WindDegStruct{WindDeg: windDeg},
-		Sunrise:    extra.SunriseStruct{Sunrise: sunrise},
-		Sunset:     extra.SunsetStruct{Sunset: sunset}}
+		Temp:       structs.TempStruct{Temp: tempActual},
+		FeelsLike:  structs.FeelsLikeStruct{FeelsLike: tempFeelsLike},
+		TempMin:    structs.TempMinStruct{TempMin: tempMin},
+		TempMax:    structs.TempMaxStruct{TempMax: tempMax},
+		Humidity:   structs.HumidityStruct{Humidity: humidity},
+		Visibility: structs.VisibilityStruct{Visibility: visibility},
+		WindSpeed:  structs.WindSpeedStruct{WindSpeed: windSpeed},
+		WindDeg:    structs.WindDegStruct{WindDeg: windDeg},
+		Sunrise:    structs.SunriseStruct{Sunrise: sunrise},
+		Sunset:     structs.SunsetStruct{Sunset: sunset}}
 
 	// Appends the struct to the array
 	data = append(data, jsonStruct)
@@ -104,20 +105,20 @@ func CurrentWeatherHandler(rw http.ResponseWriter, url string) extra.OutputWeath
 	responseArr := response(rw, data)
 
 	// Redefines jsonStruct to also contain the different, relevant messages
-	jsonStruct = extra.OutputWeather{
-		Main:       extra.MainStruct{Main: main, Message: responseArr[0]},
+	jsonStruct = structs.OutputWeather{
+		Main:       structs.MainStruct{Main: main, Message: responseArr[0]},
 		Rain1h:     rain1H,
 		Snow1h:     snow1H,
-		Temp:       extra.TempStruct{Temp: tempActual, Message: responseArr[1]},
-		FeelsLike:  extra.FeelsLikeStruct{FeelsLike: tempFeelsLike, Message: responseArr[2]},
-		TempMin:    extra.TempMinStruct{TempMin: tempMin, Message: responseArr[3]},
-		TempMax:    extra.TempMaxStruct{TempMax: tempMax, Message: responseArr[4]},
-		Humidity:   extra.HumidityStruct{Humidity: humidity, Message: responseArr[5]},
-		Visibility: extra.VisibilityStruct{Visibility: visibility, Message: responseArr[6]},
-		WindSpeed:  extra.WindSpeedStruct{WindSpeed: windSpeed, Message: responseArr[7]},
-		WindDeg:    extra.WindDegStruct{WindDeg: windDeg, Message: responseArr[8]},
-		Sunrise:    extra.SunriseStruct{Sunrise: sunrise, Message: responseArr[9]},
-		Sunset:     extra.SunsetStruct{Sunset: sunset, Message: responseArr[10]}}
+		Temp:       structs.TempStruct{Temp: tempActual, Message: responseArr[1]},
+		FeelsLike:  structs.FeelsLikeStruct{FeelsLike: tempFeelsLike, Message: responseArr[2]},
+		TempMin:    structs.TempMinStruct{TempMin: tempMin, Message: responseArr[3]},
+		TempMax:    structs.TempMaxStruct{TempMax: tempMax, Message: responseArr[4]},
+		Humidity:   structs.HumidityStruct{Humidity: humidity, Message: responseArr[5]},
+		Visibility: structs.VisibilityStruct{Visibility: visibility, Message: responseArr[6]},
+		WindSpeed:  structs.WindSpeedStruct{WindSpeed: windSpeed, Message: responseArr[7]},
+		WindDeg:    structs.WindDegStruct{WindDeg: windDeg, Message: responseArr[8]},
+		Sunrise:    structs.SunriseStruct{Sunrise: sunrise, Message: responseArr[9]},
+		Sunset:     structs.SunsetStruct{Sunset: sunset, Message: responseArr[10]}}
 
 	// Marshal the struct
 	output, err := json.Marshal(jsonStruct) //Marshalling the array to JSON
@@ -135,7 +136,7 @@ func CurrentWeatherHandler(rw http.ResponseWriter, url string) extra.OutputWeath
  * Handles the different response messages depending on the weather conditions
  * returns an array containing all the various return messages
  */
-func response(rw http.ResponseWriter, data []extra.OutputWeather) []string {
+func response(rw http.ResponseWriter, data []structs.OutputWeather) []string {
 
 	// Defines the different messages as string
 	var mainMessage string

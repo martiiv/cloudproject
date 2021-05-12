@@ -2,6 +2,7 @@ package endpoints
 
 import (
 	"cloudproject/extra"
+	"cloudproject/structs"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -29,13 +30,13 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 	}
 
-	var petrol extra.Petrol
+	var petrol structs.Petrol
 	if err = json.Unmarshal(body, &petrol); err != nil {
 		extra.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 
-	var total []extra.OutputPetrol
+	var total []structs.OutputPetrol
 	for i := 0; i < len(petrol.Results); i++ {
 
 		stationName := petrol.Results[i].Poi.Name
@@ -45,8 +46,8 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 		}
 		address := petrol.Results[i].Address.FreeformAddress
 
-		jsonStruct := extra.OutputPetrol{StationName: stationName, StationBrand: stationBrand, Address: address} //Creating a JSON object
-		total = append(total, jsonStruct)                                                                        //Appending the json object to an array
+		jsonStruct := structs.OutputPetrol{StationName: stationName, StationBrand: stationBrand, Address: address} //Creating a JSON object
+		total = append(total, jsonStruct)                                                                          //Appending the json object to an array
 	}
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON

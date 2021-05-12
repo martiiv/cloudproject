@@ -3,6 +3,7 @@ package webhooks
 import (
 	"cloudproject/endpoints"
 	"cloudproject/extra"
+	"cloudproject/structs"
 	"encoding/json"
 	"fmt"
 	_ "fmt"
@@ -20,9 +21,9 @@ var Collection = "message"
  * Function Check
  * Will check for updates in weather conditions and traffic incidents
  */
-func Check(w http.ResponseWriter, webhook extra.Webhook) {
+func Check(w http.ResponseWriter, webhook structs.Webhook) {
 	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
-	var hook extra.Webhook
+	var hook structs.Webhook
 
 	for {
 		doc, err := iter.Next()
@@ -67,7 +68,7 @@ func CreateWebhook(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
+func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
@@ -80,7 +81,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 		http.Error(w, "Your message appears to be empty", http.StatusBadRequest)
 	}
 
-	var notification extra.Webhook
+	var notification structs.Webhook
 	if err = json.Unmarshal(input, &notification); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
@@ -127,7 +128,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 	return notification
 }
 
-func webhookFormat(web extra.Webhook) (string, bool) {
+func webhookFormat(web structs.Webhook) (string, bool) {
 
 	if web.DepartureLocation == "" {
 		return "Departure location cannot be empty", false
@@ -148,7 +149,7 @@ func webhookFormat(web extra.Webhook) (string, bool) {
 func DeleteExpiredWebhooks() {
 	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
 
-	var firebase extra.Webhook
+	var firebase structs.Webhook
 
 	for {
 		doc, err := iter.Next()

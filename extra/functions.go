@@ -1,6 +1,7 @@
 package extra
 
 import (
+	"cloudproject/structs"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -31,7 +32,7 @@ func GetLocation(address string) (string, string, error) {
 		return "", "", errors.New("error, no content\n" + err.Error()) //Return an error
 	}
 
-	var location geoLocation
+	var location structs.GeoLocation
 	if err = json.Unmarshal(body, &location); err != nil {
 		return "", "", errors.New("internal error\n" + err.Error())
 	}

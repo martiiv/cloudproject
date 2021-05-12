@@ -22,8 +22,6 @@ func main() {
 
 	webhooks.Init()
 
-	webhooks.LocationPresent("Trondheim")
-
 	// Starts uptime of program
 	endpoints.Uptime = time.Now()
 

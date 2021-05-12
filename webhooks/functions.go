@@ -3,6 +3,7 @@ package webhooks
 import (
 	"bytes"
 	"cloud.google.com/go/firestore"
+	"cloudproject/endpoints"
 	"cloudproject/extra"
 	"encoding/json"
 	"errors"
@@ -52,7 +53,7 @@ func CalculateDeparture(id string) {
 	}
 
 	estimatedTravelTime := roads.Routes[0].Summary.TravelTimeInSeconds
-	estimatedTravelTimeMinutes := (estimatedTravelTime + extra.GetMessageWeight(message.Weather)) / 60
+	estimatedTravelTimeMinutes := (estimatedTravelTime + endpoints.GetMessageWeight(message.Weather)) / 60
 
 	_, err = Client.Collection(Collection).Doc(id).Set(Ctx, map[string]interface{}{
 		"estimatedTravelTime": estimatedTravelTimeMinutes,

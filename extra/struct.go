@@ -274,7 +274,7 @@ type OutIncident struct {
 	Event string
 }
 
-type weatherData struct {
+type WeatherData struct {
 	Coord struct {
 		Lon float64 `json:"lon"`
 		Lat float64 `json:"lat"`
@@ -324,73 +324,73 @@ type weatherData struct {
 	Cod      int    `json:"cod"`
 }
 
-type outputWeather struct {
-	Main       mainStruct
+type OutputWeather struct {
+	Main       MainStruct
 	Rain1h     float64
 	Snow1h     float64
-	Temp       tempStruct
-	FeelsLike  feelsLikeStruct
-	TempMin    tempMinStruct
-	TempMax    tempMaxStruct
-	Humidity   humidityStruct
-	Visibility visibilityStruct
-	WindSpeed  windSpeedStruct
-	WindDeg    windDegStruct
-	Sunrise    sunriseStruct
-	Sunset     sunsetStruct
+	Temp       TempStruct
+	FeelsLike  FeelsLikeStruct
+	TempMin    TempMinStruct
+	TempMax    TempMaxStruct
+	Humidity   HumidityStruct
+	Visibility VisibilityStruct
+	WindSpeed  WindSpeedStruct
+	WindDeg    WindDegStruct
+	Sunrise    SunriseStruct
+	Sunset     SunsetStruct
 }
 
-type mainStruct struct {
+type MainStruct struct {
 	Main    string
 	Message string
 }
 
-type tempStruct struct {
+type TempStruct struct {
 	Temp    float64
 	Message string
 }
 
-type feelsLikeStruct struct {
+type FeelsLikeStruct struct {
 	FeelsLike float64
 	Message   string
 }
 
-type tempMinStruct struct {
+type TempMinStruct struct {
 	TempMin float64
 	Message string
 }
 
-type tempMaxStruct struct {
+type TempMaxStruct struct {
 	TempMax float64
 	Message string
 }
 
-type humidityStruct struct {
+type HumidityStruct struct {
 	Humidity int
 	Message  string
 }
 
-type visibilityStruct struct {
+type VisibilityStruct struct {
 	Visibility int
 	Message    string
 }
 
-type windSpeedStruct struct {
+type WindSpeedStruct struct {
 	WindSpeed float64
 	Message   string
 }
 
-type windDegStruct struct {
+type WindDegStruct struct {
 	WindDeg int
 	Message string
 }
 
-type sunriseStruct struct {
+type SunriseStruct struct {
 	Sunrise int
 	Message string
 }
 
-type sunsetStruct struct {
+type SunsetStruct struct {
 	Sunset  int
 	Message string
 }
@@ -488,13 +488,13 @@ type NotificationResponse struct {
 	Text string
 }
 
-type outputPoi struct {
+type OutputPoi struct {
 	Name        string
 	PhoneNumber string
 	Address     string
 }
 
-type pointsOfInterest struct {
+type PointsOfInterest struct {
 	Summary struct {
 		Query        string `json:"query"`
 		Querytype    string `json:"queryType"`

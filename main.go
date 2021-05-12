@@ -2,7 +2,6 @@ package main
 
 import (
 	"cloudproject/endpoints"
-	"cloudproject/extra"
 	"cloudproject/webhooks"
 	"log"
 	"net/http"
@@ -19,7 +18,7 @@ func getPort() string {
 }
 
 func main() {
-	println(extra.GetMessageWeight("violent rain"))
+	println(endpoints.GetMessageWeight("violent rain"))
 
 	webhooks.Init()
 	// Starts uptime of program
@@ -32,8 +31,8 @@ func main() {
 }
 
 func handlers() {
-	http.HandleFunc("/weather/", extra.CurrentWeather)
-	http.HandleFunc("/poi/", extra.PointOfInterest)
+	http.HandleFunc("/weather/", endpoints.CurrentWeather)
+	http.HandleFunc("/poi/", endpoints.PointOfInterest)
 	http.HandleFunc("/diag", endpoints.Diag)
 	http.HandleFunc("/charge/", endpoints.EVStations)
 	http.HandleFunc("/petrol/", endpoints.PetrolStation)

@@ -1,6 +1,7 @@
 package webhooks
 
 import (
+	"cloudproject/endpoints"
 	"cloudproject/extra"
 	"encoding/json"
 	"fmt"
@@ -47,7 +48,7 @@ func Check(w http.ResponseWriter, webhook extra.Webhook) {
 			fmt.Fprint(w, "Check formatting of lat and lon")
 		}
 
-		newMessage := extra.CurrentWeatherHandler(w, url).Main.Message
+		newMessage := endpoints.CurrentWeatherHandler(w, url).Main.Message
 		if !(newMessage == weatherMessage) {
 			hook.Weather = newMessage
 			Update(doc.Ref.ID, hook)
@@ -97,7 +98,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 	} else {
 		fmt.Fprint(w, "Check formatting of lat and lon")
 	}
-	notification.Weather = extra.CurrentWeatherHandler(w, url).Main.Message
+	notification.Weather = endpoints.CurrentWeatherHandler(w, url).Main.Message
 
 	message, ok := webhookFormat(notification)
 	if !ok {

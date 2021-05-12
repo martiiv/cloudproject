@@ -1,6 +1,8 @@
 package extra
 
-import "time"
+import (
+	"time"
+)
 
 type geoLocation struct {
 	Results []struct {
@@ -468,12 +470,14 @@ type RoadInformation struct {
 }
 
 type Webhook struct {
+	Url                 string
 	DepartureLocation   string
 	ArrivalDestination  string
 	Weather             string
 	ArrivalTime         string
 	Repeat              string
 	EstimatedTravelTime int
+	Id                  string
 }
 
 type NotificationInput struct {

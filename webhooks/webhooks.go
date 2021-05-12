@@ -7,53 +7,13 @@ import (
 	_ "fmt"
 	"google.golang.org/api/iterator"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 	_ "time"
 )
 
-/**
- * Class webhooks.go
- * Will contain all webhooks functionality for the application (may get separated into more files)
- * Will contain the following funcitons:
- *										Handler
- *
- * @author Martin Iversen
- * @date 01.05.2021
- * @version 0.2
- */
-
 var Collection = "message"
-
-/**
- * Function Handler
- * Will handle all the requests sent to the webhook endpoint
- * MethodPost:
- * MethodGet:
- * MethodPut:
- * MethodDelete:
- */
-func Handler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-
-	case http.MethodPost:
-
-	case http.MethodGet:
-
-	case http.MethodPut:
-
-	case http.MethodDelete:
-
-	}
-}
-
-/**
- * Function Response
- * Will format the Json Response for the user
- */
-func Response(webhook extra.Webhook) {
-
-}
 
 /**
  * Function Check
@@ -146,6 +106,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 
 	id, _, err := Client.Collection(Collection).Add(Ctx,
 		map[string]interface{}{
+			"url":                notification.Url,
 			"ArrivalDestination": notification.ArrivalDestination,
 			"ArrivalTime":        notification.ArrivalTime,
 			"Weather":            notification.Weather,
@@ -157,7 +118,11 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 	} else {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
 		CalculateDeparture(id.ID)
+		//Todo enable webhook notification, from a newly created webhook
 	}
+
+	go SendNotification(id.ID)
+
 	return notification
 }
 
@@ -195,12 +160,11 @@ func DeleteExpiredWebhooks() {
 		}
 
 		arrival, err := time.Parse(time.RFC822, firebase.ArrivalTime)
-
 		if err != nil {
-			//Todo Error handling
+			log.Fatalf(err.Error())
 		}
 
-		if arrival.After(time.Now().AddDate(0, 0, -1)) && firebase.Repeat == "" {
+		if arrival.Before(time.Now().AddDate(0, 0, -1)) && firebase.Repeat == "" {
 			err := Delete(doc.Ref.ID)
 			if err != nil {
 				//Todo Error handling

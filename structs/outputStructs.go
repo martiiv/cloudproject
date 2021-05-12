@@ -136,3 +136,8 @@ type OutputPoi struct {
 	PhoneNumber string
 	Address     string
 }
+
+type LocationLonLat struct {
+	Longitude float64
+	Latitude  float64
+}

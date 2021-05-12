@@ -21,6 +21,9 @@ func main() {
 	println(endpoints.GetMessageWeight("violent rain"))
 
 	webhooks.Init()
+
+	webhooks.LocationPresent("Trondheim")
+
 	// Starts uptime of program
 	endpoints.Uptime = time.Now()
 

@@ -38,7 +38,7 @@ func Init() error {
 	Ctx = context.Background()
 
 	// Authenticate with key file from firebase
-	opt := option.WithCredentialsFile("webhooks/trafficmessage.json")
+	opt := option.WithCredentialsFile("webhooks/cloudprojecttwo-firebase-adminsdk-uke12-fc63f46582.json")
 	app, err := firebase.NewApp(Ctx, nil, opt)
 	if err != nil {
 		return fmt.Errorf("error initializing DataBase: %v", err)

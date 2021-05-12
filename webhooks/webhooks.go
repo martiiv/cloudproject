@@ -16,6 +16,7 @@ import (
 )
 
 var Collection = "message"
+var LocationCollection = "location"
 
 /**
  * Function Check

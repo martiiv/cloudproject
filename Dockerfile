@@ -3,8 +3,8 @@ RUN apt-get update
 
 LABEL maintainer "martiiv@stud.ntnu.com"
 
-ADD ./studentdb /cloudproject/endpoints
-ADD ./mongodb /cloudproject/structs
+ADD ./endpoints /cloudproject/endpoints
+ADD ./structs /cloudproject/structs
 ADD ./utils /cloudproject/utils
 ADD ./webhooks /cloudproject/webhooks
 ADD ./main /cloudproject/main.go

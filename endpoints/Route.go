@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -20,13 +21,13 @@ func Route(w http.ResponseWriter, request *http.Request) {
 	StartAddress := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
 	EndAddress := strings.Split(request.URL.Path, `/`)[3]   //Getting the address/name of the place we want to look for chargers
 
-	startLat, startLong, err := database.LocationPresent(StartAddress)
+	startLat, startLong, err := database.LocationPresent(url.QueryEscape(StartAddress))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	EndLat, endLong, err := database.LocationPresent(EndAddress)
+	EndLat, endLong, err := database.LocationPresent(url.QueryEscape(EndAddress))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

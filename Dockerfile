@@ -2,7 +2,8 @@ FROM golang:1.16 as builder
 RUN apt-get update 
 
 LABEL maintainer "martiiv@stud.ntnu.com"
-
+ADD ./main.go /
+ADD ./clourdproject /cloudproject
 ADD ./endpoints /cloudproject/endpoints
 ADD ./structs /cloudproject/structs
 ADD ./utils /cloudproject/utils

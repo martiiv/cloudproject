@@ -1,6 +1,7 @@
 package webhooks
 
 import (
+	"cloudproject/database"
 	"cloudproject/endpoints"
 	"cloudproject/structs"
 	"cloudproject/utils"
@@ -15,15 +16,12 @@ import (
 	_ "time"
 )
 
-var Collection = "message"
-var LocationCollection = "location"
-
 /**
  * Function Check
  * Will check for updates in weather conditions and traffic incidents
  */
 func Check(w http.ResponseWriter, webhook structs.Webhook) {
-	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
+	iter := database.Client.Collection(database.Collection).Documents(database.Ctx) // Loop through all entries in collection "messages"
 	var hook structs.Webhook
 
 	for {
@@ -38,7 +36,7 @@ func Check(w http.ResponseWriter, webhook structs.Webhook) {
 
 		weatherMessage := hook.Weather
 
-		latitude, longitude, err := utils.GetLocation(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+		latitude, longitude, err := database.LocationPresent(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
@@ -53,7 +51,7 @@ func Check(w http.ResponseWriter, webhook structs.Webhook) {
 		newMessage := endpoints.CurrentWeatherHandler(w, url).Main.Message
 		if !(newMessage == weatherMessage) {
 			hook.Weather = newMessage
-			Update(doc.Ref.ID, hook)
+			database.Update(doc.Ref.ID, hook)
 			fmt.Fprintf(w, "WeatherMessage update new registered weather for:"+hook.DepartureLocation+" is:"+hook.Weather)
 		}
 
@@ -87,7 +85,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
 
-	latitude, longitude, err := utils.GetLocation(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := database.LocationPresent(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
@@ -107,7 +105,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
 		http.Error(w, message, http.StatusNoContent)
 	}
 
-	id, _, err := Client.Collection(Collection).Add(Ctx,
+	id, _, err := database.Client.Collection(database.Collection).Add(database.Ctx,
 		map[string]interface{}{
 			"url":                notification.Url,
 			"ArrivalDestination": notification.ArrivalDestination,
@@ -148,7 +146,7 @@ func webhookFormat(web structs.Webhook) (string, bool) {
 }
 
 func DeleteExpiredWebhooks() {
-	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
+	iter := database.Client.Collection(database.Collection).Documents(database.Ctx) // Loop through all entries in collection "messages"
 
 	var firebase structs.Webhook
 
@@ -168,7 +166,7 @@ func DeleteExpiredWebhooks() {
 		}
 
 		if arrival.Before(time.Now().AddDate(0, 0, -1)) && firebase.Repeat == "" {
-			err := Delete(doc.Ref.ID)
+			err := database.Delete(doc.Ref.ID)
 			if err != nil {
 				//Todo Error handling
 			}

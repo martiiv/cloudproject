@@ -1,14 +1,20 @@
-package webhooks
+package database
 
 import (
 	"cloud.google.com/go/firestore"
 	"cloudproject/structs"
+	"cloudproject/utils"
 	"context"
+	"encoding/json"
 	"errors"
-	firebase "firebase.google.com/go"
 	"fmt"
 	"google.golang.org/api/iterator"
-	"google.golang.org/api/option"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 /**
@@ -28,11 +34,14 @@ import (
 var Ctx context.Context
 var Client *firestore.Client
 
+var LocationCollection = "location"
+var Collection = "message"
+
 //const Collection = "RouteInformation" //Defining the name of the collection in FireStore
 
 /*
  * Function for initializing the database, will be used when starting the app
- */
+ */ /*
 func Init() error {
 	// Firebase initialisation
 	Ctx = context.Background()
@@ -49,11 +58,11 @@ func Init() error {
 		return fmt.Errorf("error occurred initializing Client: %v", err)
 	}
 
-	go InvokeAll()
-	go DeleteExpiredWebhooks()
+	go webhooks.InvokeAll()
+	go webhooks.DeleteExpiredWebhooks()
 
 	return nil
-}
+}*/
 
 /*
  * Function for adding RouteInformation to the database
@@ -124,4 +133,76 @@ func Update(id string, data interface{}) error {
 		return errors.New("Error while updating Route Information entry in the database: " + err.Error())
 	}
 	return nil
+}
+
+/**
+Function to GeoCode the different locations the user inputs
+*/
+func GetLocation(address string) (string, string, error) {
+
+	address = strings.Replace(address, " ", "+", -1) //Replaces the spaces in location with %20, that will please the url-condition
+
+	response, err := http.Get("https://www.mapquestapi.com/geocoding/v1/address?key=" + utils.MapQuestKey + "&inFormat=kvp&outFormat=json&location=" + address)
+	if response.StatusCode == http.StatusBadRequest {
+		return "", "", errors.New("Syntax Error, Bad request\nPlease ensure you have entered an existing location")
+	} else if response.StatusCode == http.StatusInternalServerError || response.StatusCode == http.StatusForbidden {
+		return "", "", errors.New("Internal Error\nPlease try again later")
+	} else if err != nil {
+		return "", "", errors.New("Internal Error\n" + err.Error())
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", "", errors.New("error, no content\n" + err.Error()) //Return an error
+	}
+
+	var location structs.GeoLocation
+	if err = json.Unmarshal(body, &location); err != nil {
+		return "", "", errors.New("internal error\n" + err.Error())
+	}
+
+	latitude := location.Results[0].Locations[0].LatLng.Lat
+	longitude := location.Results[0].Locations[0].LatLng.Lng
+
+	longitudeS := strconv.FormatFloat(longitude, 'f', 6, 64) //Formatting the coordinates to string
+	latitudeS := strconv.FormatFloat(latitude, 'f', 6, 64)
+
+	return latitudeS, longitudeS, nil //Returning the latitude and longitude to the location
+}
+
+func LocationPresent(address string) (string, string, error) {
+	loc, err := Client.Collection(LocationCollection).Doc(address).Get(Ctx)
+	if err != nil {
+		err.Error()
+	}
+
+	var location structs.LocationLonLat
+	if err := loc.DataTo(&location); err != nil {
+		log.Println(err.Error())
+	}
+
+	if location.Latitude != -1 && location.Longitude != -1 {
+		fmt.Println(location.Latitude, location.Longitude)
+	}
+
+	a, s, err := GetLocation(address)
+	if err != nil {
+		return "", "", err
+	}
+
+	addressUnescaped, err := url.QueryUnescape(address)
+
+	newEntry, _ := Client.Collection(LocationCollection).Doc(addressUnescaped).Set(Ctx, map[string]interface{}{
+		"Latitude":  a,
+		"Longitude": s,
+	})
+	if err != nil {
+		// Handle any errors in an appropriate way, such as returning them.
+		log.Printf("An error has occurred: %s", err)
+	}
+
+	fmt.Println(newEntry)
+
+	fmt.Println(a, s)
+	return a, s, err
 }

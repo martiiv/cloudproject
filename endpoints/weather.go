@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"cloudproject/database"
 	"cloudproject/structs"
 	"cloudproject/utils"
 	"encoding/json"
@@ -23,7 +24,7 @@ func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude s
 	// Splits the URL to get the name of the city to be checked
 	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
 
-	latitude, longitude, err := utils.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := database.LocationPresent(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return

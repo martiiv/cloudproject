@@ -23,6 +23,6 @@ LABEL maintainer "martiiv@stud.ntnu.com"
 
 WORKDIR /
 
-COPY --from=builder /cloudproject/
+COPY --from=builder /cloudproject /cloudproject
 
 CMD ["/cloudproject"]

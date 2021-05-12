@@ -171,6 +171,8 @@ func GetLocation(address string) (string, string, error) {
 }
 
 func LocationPresent(address string) (string, string, error) {
+	addressUnescaped, err := url.QueryUnescape(address)
+
 	loc, err := Client.Collection(LocationCollection).Doc(address).Get(Ctx)
 	if err != nil {
 		err.Error()
@@ -189,8 +191,6 @@ func LocationPresent(address string) (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-
-	addressUnescaped, err := url.QueryUnescape(address)
 
 	newEntry, _ := Client.Collection(LocationCollection).Doc(addressUnescaped).Set(Ctx, map[string]interface{}{
 		"Latitude":  a,

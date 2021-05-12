@@ -7,7 +7,6 @@ ADD ./endpoints /cloudproject/endpoints
 ADD ./structs /cloudproject/structs
 ADD ./utils /cloudproject/utils
 ADD ./webhooks /cloudproject/webhooks
-ADD ./main /cloudproject/main.go
 ADD ./go.mod /cloudproject/go.mod
 ADD ./go.sum /cloudproject/go.sum
 

@@ -2,8 +2,8 @@ package webhooks
 
 import (
 	"cloudproject/endpoints"
-	"cloudproject/extra"
 	"cloudproject/structs"
+	"cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	_ "fmt"
@@ -37,14 +37,14 @@ func Check(w http.ResponseWriter, webhook structs.Webhook) {
 
 		weatherMessage := hook.Weather
 
-		latitude, longitude, err := extra.GetLocation(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+		latitude, longitude, err := utils.GetLocation(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
 		url := ""
 		if latitude != "" && longitude != "" {
 			// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
-			url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+			url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + utils.OpenweathermapKey
 		} else {
 			fmt.Fprint(w, "Check formatting of lat and lon")
 		}
@@ -86,7 +86,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
 
-	latitude, longitude, err := extra.GetLocation(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := utils.GetLocation(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
@@ -95,7 +95,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
 
 	if latitude != "" && longitude != "" {
 		// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
-		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + utils.OpenweathermapKey
 	} else {
 		fmt.Fprint(w, "Check formatting of lat and lon")
 	}

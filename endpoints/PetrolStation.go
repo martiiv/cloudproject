@@ -1,8 +1,8 @@
 package endpoints
 
 import (
-	"cloudproject/extra"
 	"cloudproject/structs"
+	"cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -16,13 +16,13 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
 
-	latitude, longitude, err := extra.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := utils.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	response, err := http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7311&key=" + extra.TomtomKey)
+	response, err := http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7311&key=" + utils.TomtomKey)
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -32,7 +32,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 	var petrol structs.Petrol
 	if err = json.Unmarshal(body, &petrol); err != nil {
-		extra.JsonUnmarshalErrorHandling(w, err)
+		utils.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 
@@ -52,7 +52,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
-		extra.JsonUnmarshalErrorHandling(w, err)
+		utils.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 

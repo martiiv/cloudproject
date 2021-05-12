@@ -1,8 +1,8 @@
 package endpoints
 
 import (
-	"cloudproject/extra"
 	"cloudproject/structs"
+	"cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -18,7 +18,7 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for points of interest
 	poiPath := strings.Split(request.URL.Path, `/`)[3]
 
-	latitude, longitude, err := extra.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := utils.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, "ERROR, The searched place does not exist", http.StatusBadRequest)
 		return

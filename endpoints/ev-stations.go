@@ -1,8 +1,8 @@
 package endpoints
 
 import (
-	extra "cloudproject/extra"
 	structs2 "cloudproject/structs"
+	extra "cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"

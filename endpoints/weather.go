@@ -1,8 +1,8 @@
 package endpoints
 
 import (
-	"cloudproject/extra"
 	"cloudproject/structs"
+	"cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -23,7 +23,7 @@ func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude s
 	// Splits the URL to get the name of the city to be checked
 	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
 
-	latitude, longitude, err := extra.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := utils.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusBadRequest)
 		return
@@ -33,7 +33,7 @@ func CurrentWeather(rw http.ResponseWriter, request *http.Request /*, latitude s
 
 	if latitude != "" && longitude != "" {
 		// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
-		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + utils.OpenweathermapKey
 	} else {
 		fmt.Fprint(rw, "Check formatting of lat and lon")
 	}

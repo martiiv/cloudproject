@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"cloud.google.com/go/firestore"
 	"cloudproject/endpoints"
-	"cloudproject/extra"
 	"cloudproject/structs"
+	"cloudproject/utils"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -28,19 +28,19 @@ func CalculateDeparture(id string) {
 
 	fmt.Println(location)
 
-	startLat, startLong, err := extra.GetLocation(location)
+	startLat, startLong, err := utils.GetLocation(location)
 	if err != nil {
 		//Todo error handling
 	}
 
-	endLat, endLong, err := extra.GetLocation(message.ArrivalDestination)
+	endLat, endLong, err := utils.GetLocation(message.ArrivalDestination)
 	if err != nil {
 		//Todo error handling
 	}
 
 	coordinates := startLat + "%2C" + startLong + "%3A" + endLat + "%2C" + endLong
 
-	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=" + extra.TomtomKey)
+	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=" + utils.TomtomKey)
 	if err != nil {
 	}
 

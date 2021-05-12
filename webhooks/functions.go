@@ -5,6 +5,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"cloudproject/extra"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -51,7 +52,7 @@ func CalculateDeparture(id string) {
 	}
 
 	estimatedTravelTime := roads.Routes[0].Summary.TravelTimeInSeconds
-	estimatedTravelTimeMinutes := estimatedTravelTime / 60
+	estimatedTravelTimeMinutes := (estimatedTravelTime + extra.GetMessageWeight(message.Weather)) / 60
 
 	_, err = Client.Collection(Collection).Doc(id).Set(Ctx, map[string]interface{}{
 		"estimatedTravelTime": estimatedTravelTimeMinutes,
@@ -61,20 +62,15 @@ func CalculateDeparture(id string) {
 
 func CallUrl(url string, content string) {
 
-	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader([]byte(content)))
+	req, err := http.Post(url, "application/json", bytes.NewBuffer([]byte(content)))
 	if err != nil {
 		fmt.Errorf("%v", "Error during request creation.")
 		return
 	}
-	client := http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		log.Println("Error in HTTP request: " + err.Error())
+	if req.StatusCode != http.StatusOK {
+		fmt.Println("Fuck you")
 	}
-	_, err = ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Println("Something is wrong with invocation response: " + err.Error())
-	}
+
 }
 
 func Invoke(id string) {
@@ -94,4 +90,63 @@ func Invoke(id string) {
 	//timeTo := time.Duration(int(TimeUntilInvocation) * 1000000000)
 
 	time.Sleep(5 * time.Second)
+}
+
+func SendNotification(notificationId string) {
+
+	doc, err := Client.Collection(Collection).Doc(notificationId).Get(Ctx) // Loop through all entries in collection "messages"
+	if err != nil {
+		_ = errors.New("The notification ID is not in our system")
+		return
+	}
+	var firebase extra.Webhook
+	var message string
+	var url string
+	var TimeUntilInvocation float64
+
+	if err := doc.DataTo(&firebase); err != nil {
+		return
+	}
+	url = firebase.Url
+	message = firebase.Weather
+
+	timeS, _ := time.Parse(time.RFC822, firebase.ArrivalTime)
+	newTime := timeS.Add(time.Duration(-firebase.EstimatedTravelTime) * time.Minute)
+	TimeUntilInvocation = time.Until(newTime).Minutes()
+	if TimeUntilInvocation < 0 {
+		return
+	}
+	fmt.Println(TimeUntilInvocation)
+
+	jsonMessage := extra.NotificationResponse{
+		Text: message,
+	}
+
+	jsonStart := `{"text": "`
+	jsonMiddle := jsonMessage.Text
+	jsonEnd := `"}`
+	jsonData := []byte(jsonStart + jsonMiddle + jsonEnd)
+
+	time.Sleep(time.Duration(TimeUntilInvocation) * time.Minute)
+
+	//Todo Check if the firebase is deleted before invocation
+	var maps map[string]interface{}
+	err, maps = Get(notificationId)
+	if err != nil {
+		return
+	}
+
+	fmt.Println(maps)
+	go CallUrl(url, string(jsonData))
+
+}
+
+func InvokeAll() {
+	webhook, err := GetAll()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	for i := 0; i < len(webhook); i++ {
+		go SendNotification(webhook[i].Ref.ID)
+	}
 }

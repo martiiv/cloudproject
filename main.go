@@ -19,12 +19,11 @@ func getPort() string {
 }
 
 func main() {
+	println(extra.GetMessageWeight("violent rain"))
 
 	webhooks.Init()
 	// Starts uptime of program
 	endpoints.Uptime = time.Now()
-
-	go webhooks.DeleteExpiredWebhooks()
 
 	log.Println("Listening on port: " + getPort())
 	handlers()

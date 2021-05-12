@@ -1,6 +1,8 @@
 package extra
 
-import "time"
+import (
+	"time"
+)
 
 type geoLocation struct {
 	Results []struct {
@@ -101,8 +103,12 @@ type OutputCharge struct {
 	Charger    string
 	Address    string
 	Phone      string
-	Connectors string
-	PowerKW    float64
+	Connectors []Connectors
+}
+
+type Connectors struct {
+	ConnectorType string  `json:"connectorType"`
+	RatedPowerKW  float64 `json:"ratedPowerKW"`
 }
 
 type OutputPetrol struct {
@@ -464,12 +470,22 @@ type RoadInformation struct {
 }
 
 type Webhook struct {
+	Url                 string
 	DepartureLocation   string
 	ArrivalDestination  string
 	Weather             string
 	ArrivalTime         string
 	Repeat              string
 	EstimatedTravelTime int
+	Id                  string
+}
+
+type NotificationInput struct {
+	URL string
+}
+
+type NotificationResponse struct {
+	Text string
 }
 
 type outputPoi struct {

@@ -49,6 +49,9 @@ func Init() error {
 		return fmt.Errorf("error occurred initializing Client: %v", err)
 	}
 
+	go InvokeAll()
+	go DeleteExpiredWebhooks()
+
 	return nil
 }
 

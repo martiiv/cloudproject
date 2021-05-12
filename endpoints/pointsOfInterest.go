@@ -1,6 +1,8 @@
-package extra
+package endpoints
 
 import (
+	"cloudproject/structs"
+	"cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -16,7 +18,7 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for points of interest
 	poiPath := strings.Split(request.URL.Path, `/`)[3]
 
-	latitude, longitude, err := GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := utils.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, "ERROR, The searched place does not exist", http.StatusBadRequest)
 		return
@@ -30,22 +32,22 @@ func PointOfInterest(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	var poi pointsOfInterest
+	var poi structs.PointsOfInterest
 
 	if err = json.Unmarshal(body, &poi); err != nil {
 		http.Error(w, "ERROR, failed to unmarshall", http.StatusInternalServerError)
 		return
 	}
 
-	var total []outputPoi
+	var total []structs.OutputPoi
 	for i := 0; i < len(poi.Results); i++ {
 
 		poiName := poi.Results[i].Poi.Name
 		poiPhoneNumber := poi.Results[i].Poi.Phone
 		poiAddress := poi.Results[i].Address.Freeformaddress
 
-		jsonStruct := outputPoi{Name: poiName, PhoneNumber: poiPhoneNumber, Address: poiAddress} //Creating a JSON object
-		total = append(total, jsonStruct)                                                        //Appending the json object to an array
+		jsonStruct := structs.OutputPoi{Name: poiName, PhoneNumber: poiPhoneNumber, Address: poiAddress} //Creating a JSON object
+		total = append(total, jsonStruct)                                                                //Appending the json object to an array
 	}
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON

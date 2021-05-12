@@ -19,6 +19,7 @@ func getPort() string {
 }
 
 func main() {
+	println(extra.GetMessageWeight("violent rain"))
 
 	webhooks.Init()
 	// Starts uptime of program

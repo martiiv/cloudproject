@@ -3,16 +3,16 @@ RUN apt-get update
 
 LABEL maintainer "martiiv@stud.ntnu.com"
 ADD ./main.go /
-ADD ./endpoints /cloudproject/endpoints
-ADD ./structs /cloudproject/structs
-ADD ./utils /cloudproject/utils
-ADD ./webhooks /cloudproject/webhooks
-ADD ./go.mod /cloudproject/go.mod
-ADD ./go.sum /cloudproject/go.sum
+ADD ./endpoints /endpoints
+ADD ./structs /structs
+ADD ./utils /utils
+ADD ./webhooks /webhooks
+ADD ./go.mod /go.mod
+ADD ./go.sum /go.sum
 
-WORKDIR /cloudproject
+WORKDIR /
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o cloudproject
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o main
 
 FROM scratch 
 
@@ -20,6 +20,6 @@ LABEL maintainer "martiiv@stud.ntnu.com"
 
 WORKDIR /
 
-COPY --from=builder /cloudproject /cloudproject
+COPY --from=builder / /
 
-CMD ["/cloudproject"]
+ENTRYPOINT ["/main"]

@@ -51,7 +51,7 @@ func CalculateDeparture(id string) {
 	}
 
 	estimatedTravelTime := roads.Routes[0].Summary.TravelTimeInSeconds
-	estimatedTravelTimeMinutes := estimatedTravelTime / 60
+	estimatedTravelTimeMinutes := (estimatedTravelTime + extra.GetMessageWeight(message.Weather)) / 60
 
 	_, err = Client.Collection(Collection).Doc(id).Set(Ctx, map[string]interface{}{
 		"estimatedTravelTime": estimatedTravelTimeMinutes,

@@ -15,7 +15,7 @@ WORKDIR /cloudproject
 
 RUN go get https://git.gvk.idi.ntnu.no/MartinIversen/cloudproject.git
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o studentdb
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o cloudproject
 
 FROM scratch 
 

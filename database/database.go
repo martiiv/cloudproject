@@ -37,33 +37,6 @@ var Client *firestore.Client
 var LocationCollection = "location"
 var Collection = "message"
 
-//const Collection = "RouteInformation" //Defining the name of the collection in FireStore
-
-/*
- * Function for initializing the database, will be used when starting the app
- */ /*
-func Init() error {
-	// Firebase initialisation
-	Ctx = context.Background()
-
-	// Authenticate with key file from firebase
-	opt := option.WithCredentialsFile("webhooks/cloudprojecttwo-firebase-adminsdk-uke12-fc63f46582.json")
-	app, err := firebase.NewApp(Ctx, nil, opt)
-	if err != nil {
-		return fmt.Errorf("error initializing DataBase: %v", err)
-	}
-
-	Client, err = app.Firestore(Ctx)
-	if err != nil {
-		return fmt.Errorf("error occurred initializing Client: %v", err)
-	}
-
-	go webhooks.InvokeAll()
-	go webhooks.DeleteExpiredWebhooks()
-
-	return nil
-}*/
-
 /*
  * Function for adding RouteInformation to the database
  * Returns the ID an object is given when the database creates

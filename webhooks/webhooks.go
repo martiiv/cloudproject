@@ -153,7 +153,7 @@ func DeleteExpiredWebhooks() {
 			log.Fatalf(err.Error())
 		}
 
-		if arrival.Before(time.Now().AddDate(0, 0, -1)) && firebase.Repeat == "" {
+		if arrival.Before(time.Now().AddDate(0, 0, -1)) {
 			err := database.Delete(doc.Ref.ID)
 			if err != nil {
 				//Todo Error handling

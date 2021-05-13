@@ -1,28 +1,13 @@
-FROM golang:1.16 as builder
-RUN apt-get update
+# Compile stage
+FROM golang:1.15 AS build-env
 
-LABEL maintainer "martiiv@stud.ntnu.com"
+ADD . /go/src/app
 
-ADD ./database /service/database
-ADD ./endpoints /service/endpoints
-ADD ./structs /service/structs
-ADD ./test /service/test
-ADD ./utils /service/utils
-ADD ./webhooks /service/webhooks
-ADD ./go.mod /service
-ADD ./go.sum /service
-ADD ./main.go /service
+WORKDIR /go/src/app
 
-EXPOSE 8080
+RUN go mod tidy
+RUN go mod download
+RUN go mod vendor
+RUN go mod verify
+CMD ["go","run","main.go"]
 
-WORKDIR /service
-
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o cloudproject
-
-FROM scratch
-
-LABEL maintainer "martiiv@stud.ntnu.com"
-
-WORKDIR /
-
-CMD ["./cloudproject"]

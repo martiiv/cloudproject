@@ -24,7 +24,6 @@ func getPort() string {
 
 func main() {
 	//database.Init()
-
 	// Creates instance of firebase
 	database.Ctx = context.Background()
 	sa := option.WithCredentialsFile("webhooks/trafficmessage.json")

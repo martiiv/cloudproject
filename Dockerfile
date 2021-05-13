@@ -3,14 +3,14 @@ RUN apt-get update
 
 LABEL maintainer "martiiv@stud.ntnu.com"
 ADD ./main.go /service
-ADD ./database /service/database
-ADD ./test /service/test
-ADD ./endpoints /service/endpoints
-ADD ./structs /service/structs
-ADD ./utils /service/utils
-ADD ./webhooks /service/webhooks
-ADD ./go.mod /service/go.mod
-ADD ./go.sum /service/go.sum
+ADD ./database /service/
+ADD ./test /service/
+ADD ./endpoints /service/
+ADD ./structs /service/
+ADD ./utils /service/
+ADD ./webhooks /service/
+ADD ./go.mod /service/
+ADD ./go.sum /service/
 
 EXPOSE 8080
 

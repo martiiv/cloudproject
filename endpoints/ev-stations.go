@@ -1,8 +1,9 @@
 package endpoints
 
 import (
-	extra "cloudproject/extra"
-	structs "cloudproject/extra"
+	"cloudproject/database"
+	structs2 "cloudproject/structs"
+	extra "cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -15,8 +16,8 @@ import (
 func EVStations(w http.ResponseWriter, request *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
-	address := strings.Split(request.URL.Path, `/`)[2]                      //Getting the address/name of the place we want to look for chargers
-	latitude, longitude, err := extra.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
+	address := strings.Split(request.URL.Path, `/`)[2]                             //Getting the address/name of the place we want to look for chargers
+	latitude, longitude, err := database.LocationPresent(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -56,13 +57,13 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 
 	}
 
-	var charge structs.Charger
+	var charge structs2.Charger
 	if err = json.Unmarshal(body, &charge); err != nil {
 		extra.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 
-	var total []extra.OutputCharge
+	var total []structs2.OutputCharge
 	for i := 0; i < len(charge.Results); i++ {
 		addresse := charge.Results[i].Address.FreeformAddress
 		chargeName := charge.Results[i].Poi.Name
@@ -70,20 +71,20 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 		var connector string
 		var power float64
 
-		var connectorStruct []extra.Connectors
+		var connectorStruct []structs2.Connectors
 
 		if len(charge.Results[i].ChargingPark.Connectors) != 0 {
 
 			for j := 0; j < len(charge.Results[i].ChargingPark.Connectors); j++ {
 				connector = charge.Results[i].ChargingPark.Connectors[j].ConnectorType
 				power = charge.Results[i].ChargingPark.Connectors[j].RatedPowerKW
-				connectors := extra.Connectors{ConnectorType: connector, RatedPowerKW: power}
+				connectors := structs2.Connectors{ConnectorType: connector, RatedPowerKW: power}
 				connectorStruct = append(connectorStruct, connectors)
 			}
 		}
 
-		jsonStruct := extra.OutputCharge{Charger: chargeName, Address: addresse, Phone: phone, Connectors: connectorStruct} //Creating a JSON object
-		total = append(total, jsonStruct)                                                                                   //Appending the json object to an array
+		jsonStruct := structs2.OutputCharge{Charger: chargeName, Address: addresse, Phone: phone, Connectors: connectorStruct} //Creating a JSON object
+		total = append(total, jsonStruct)                                                                                      //Appending the json object to an array
 	}
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON

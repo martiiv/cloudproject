@@ -10,6 +10,8 @@ ADD ./webhooks /webhooks
 ADD ./go.mod /go.mod
 ADD ./go.sum /go.sum
 
+EXPOSE 8080
+
 WORKDIR /
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o main

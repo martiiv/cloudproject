@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"cloudproject/database"
 	"cloudproject/structs"
 	"cloudproject/utils"
 	"encoding/json"
@@ -103,12 +104,12 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 
 func getBBox(StartAddress string, endAddress string) ([]byte, error) {
 
-	startLat, startLong, err := utils.GetLocation(StartAddress)
+	startLat, startLong, err := database.LocationPresent(StartAddress)
 	if err != nil {
 		return nil, err
 	}
 
-	EndLat, endLong, err := utils.GetLocation(endAddress)
+	EndLat, endLong, err := database.LocationPresent(endAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -132,12 +133,12 @@ not in use
 */
 func getRoads(StartAddress string, endAddress string) ([]string, error) {
 
-	startLat, startLong, err := utils.GetLocation(StartAddress)
+	startLat, startLong, err := database.LocationPresent(StartAddress)
 	if err != nil {
 		return nil, err
 	}
 
-	EndLat, endLong, err := utils.GetLocation(endAddress)
+	EndLat, endLong, err := database.LocationPresent(endAddress)
 	if err != nil {
 		return nil, err
 	}

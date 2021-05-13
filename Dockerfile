@@ -3,6 +3,8 @@ RUN apt-get update
 
 LABEL maintainer "martiiv@stud.ntnu.com"
 ADD ./main.go /
+ADD ./database /database
+ADD ./test /test
 ADD ./endpoints /endpoints
 ADD ./structs /structs
 ADD ./utils /utils

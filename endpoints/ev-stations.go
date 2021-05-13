@@ -45,9 +45,9 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 		if len(filter["power"]) != 0 {
 			power = "&minPowerKW=" + filter["power"]
 		}
-		response, err = http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + radius + "&connectorSet=" + connector + power + "&categorySet=7309&key=" + extra.TomtomKey)
+		response, err = http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + radius + "&connectorSet=" + connector + power + "&categorySet=7309&key=" + utils.TomtomKey)
 	} else if len(filter) == 0 {
-		response, err = http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7309&key=" + extra.TomtomKey)
+		response, err = http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7309&key=" + utils.TomtomKey)
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
@@ -59,7 +59,7 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 
 	var charge structs2.Charger
 	if err = json.Unmarshal(body, &charge); err != nil {
-		extra.JsonUnmarshalErrorHandling(w, err)
+		utils.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 
@@ -89,7 +89,7 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
-		extra.JsonUnmarshalErrorHandling(w, err)
+		utils.JsonUnmarshalErrorHandling(w, err)
 		return
 	}
 

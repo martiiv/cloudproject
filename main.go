@@ -50,6 +50,24 @@ func main() {
 	defer database.Client.Close()
 }
 
+/*func main(){
+
+	// Creates instance of firebase
+	database.Ctx = context.Background()
+	sa := option.WithCredentialsFile("webhooks/trafficmessage.json")
+	app, err := firebase.NewApp(database.Ctx, nil, sa)
+	if err != nil {
+		_ = fmt.Errorf("error initializing app: %v", err)
+	}
+
+	database.Client, err = app.Firestore(database.Ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	database.Get("NKl0kZ4pxbaDVTN2G6gx")
+}*/
+
 func handlers() {
 	http.HandleFunc("/weather/", endpoints.CurrentWeather)
 	http.HandleFunc("/poi/", endpoints.PointOfInterest)

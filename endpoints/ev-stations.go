@@ -87,6 +87,11 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 		total = append(total, jsonStruct)                                                                                      //Appending the json object to an array
 	}
 
+	if total == nil {
+		http.Error(w, "No electric charges in this area", http.StatusNoContent)
+		return
+	}
+
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
 		utils.JsonUnmarshalErrorHandling(w, err)

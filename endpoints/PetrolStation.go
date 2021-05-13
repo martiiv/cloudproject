@@ -14,6 +14,7 @@ import (
 
 //Function that will display all the electric-vehicle charging stations from a location, within 1km
 func PetrolStation(w http.ResponseWriter, request *http.Request) {
+
 	w.Header().Set("Content-Type", "application/json")
 	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
 

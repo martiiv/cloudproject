@@ -171,38 +171,45 @@ func GetLocation(address string) (string, string, error) {
 }
 
 func LocationPresent(address string) (string, string, error) {
-	addressUnescaped, err := url.QueryUnescape(address)
-
-	loc, err := Client.Collection(LocationCollection).Doc(address).Get(Ctx)
-	if err != nil {
-		err.Error()
+	addressUnescaped, errQuery := url.QueryUnescape(address)
+	if errQuery != nil {
+		log.Println(errQuery.Error())
+		return "", "", errQuery
 	}
 
-	var location structs.LocationLonLat
-	if err := loc.DataTo(&location); err != nil {
-		log.Println(err.Error())
+	loc, errRetrieve := Client.Collection(LocationCollection).Doc(addressUnescaped).Get(Ctx)
+	if errRetrieve != nil {
+		log.Println("Address: " + addressUnescaped + " is not present in the location database. It will be added.")
 	}
 
-	/*	if location.Latitude != -1 && location.Longitude != -1 {
-		fmt.Println(location.Latitude, location.Longitude)
-	}*/
+	locLat, locLon, err := "", "", errors.New("")
 
-	a, s, err := GetLocation(address)
-	if err != nil {
-		return "", "", err
+	if errRetrieve == nil {
+		var location structs.LocationLonLat
+		if err = loc.DataTo(&location); err != nil {
+			log.Println(err.Error())
+		}
+		locLat = location.Latitude
+		locLon = location.Longitude
+	} else {
+		locLat, locLon, err = GetLocation(address)
+		if err != nil {
+			return "", "", err
+		}
+
+		_, errSetLoc := Client.Collection(LocationCollection).Doc(addressUnescaped).Set(Ctx, map[string]interface{}{
+			"Latitude":  locLat,
+			"Longitude": locLon,
+		})
+		if errSetLoc != nil {
+			err = errSetLoc
+			log.Println(errSetLoc.Error())
+			return "", "", errSetLoc
+		} else {
+			log.Println("Address " + addressUnescaped + " was successfully added to the database.")
+		}
 	}
 
-	newEntry, _ := Client.Collection(LocationCollection).Doc(addressUnescaped).Set(Ctx, map[string]interface{}{
-		"Latitude":  a,
-		"Longitude": s,
-	})
-	if err != nil {
-		// Handle any errors in an appropriate way, such as returning them.
-		log.Printf("An error has occurred: %s", err)
-	}
-
-	fmt.Println(newEntry)
-
-	fmt.Println(a, s)
-	return a, s, err
+	fmt.Println(locLat, locLon)
+	return locLat, locLon, err
 }

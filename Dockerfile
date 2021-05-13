@@ -15,7 +15,7 @@ ADD ./go.sum /service
 
 EXPOSE 8080
 
-WORKDIR /service
+WORKDIR /
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o cloudproject
 

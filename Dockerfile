@@ -1,5 +1,5 @@
 FROM golang:1.16 as builder
-RUN apt-get update 
+RUN apt-get update
 
 LABEL maintainer "martiiv@stud.ntnu.com"
 
@@ -19,10 +19,10 @@ WORKDIR /service
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o cloudproject
 
-FROM scratch 
+FROM scratch
 
 LABEL maintainer "martiiv@stud.ntnu.com"
 
 WORKDIR /
 
-CMD ["/service"]
+CMD ["./cloudproject"]

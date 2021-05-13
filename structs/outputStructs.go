@@ -118,9 +118,7 @@ type Webhook struct {
 	ArrivalDestination  string
 	Weather             string
 	ArrivalTime         string
-	Repeat              string
 	EstimatedTravelTime int
-	Id                  string
 }
 
 type NotificationInput struct {

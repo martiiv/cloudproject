@@ -138,6 +138,6 @@ type OutputPoi struct {
 }
 
 type LocationLonLat struct {
-	Longitude float64
-	Latitude  float64
+	Longitude string
+	Latitude  string
 }

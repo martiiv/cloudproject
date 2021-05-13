@@ -12,6 +12,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	url2 "net/url"
+	"sync"
 	"time"
 	_ "time"
 )
@@ -20,7 +22,7 @@ import (
  * Function Check
  * Will check for updates in weather conditions and traffic incidents
  */
-func Check(w http.ResponseWriter, webhook structs.Webhook) {
+func Check(w http.ResponseWriter) {
 	iter := database.Client.Collection(database.Collection).Documents(database.Ctx) // Loop through all entries in collection "messages"
 	var hook structs.Webhook
 
@@ -36,7 +38,7 @@ func Check(w http.ResponseWriter, webhook structs.Webhook) {
 
 		weatherMessage := hook.Weather
 
-		latitude, longitude, err := database.LocationPresent(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+		latitude, longitude, err := database.LocationPresent(url2.QueryEscape(hook.DepartureLocation)) //Receives the latitude and longitude of the place passed in the url
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
@@ -58,16 +60,17 @@ func Check(w http.ResponseWriter, webhook structs.Webhook) {
 	}
 
 	time.Sleep(time.Minute * 30)
-	Check(w, webhook)
+	Check(w)
 }
 
 func CreateWebhook(w http.ResponseWriter, r *http.Request) {
-	webhook := AddWebhook(w, r)
-	go Check(w, webhook)
+	AddWebhook(w, r)
 
 }
 
-func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
+func AddWebhook(w http.ResponseWriter, r *http.Request) (structs.Webhook, string) {
+
+	wg := new(sync.WaitGroup)
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
@@ -85,21 +88,6 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
 
-	latitude, longitude, err := database.LocationPresent(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-	}
-
-	url := ""
-
-	if latitude != "" && longitude != "" {
-		// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
-		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + utils.OpenweathermapKey
-	} else {
-		fmt.Fprint(w, "Check formatting of lat and lon")
-	}
-	notification.Weather = endpoints.CurrentWeatherHandler(w, url).Main.Message
-
 	message, ok := webhookFormat(notification)
 	if !ok {
 		http.Error(w, message, http.StatusNoContent)
@@ -112,19 +100,22 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) structs.Webhook {
 			"ArrivalTime":        notification.ArrivalTime,
 			"Weather":            notification.Weather,
 			"DepartureLocation":  notification.DepartureLocation,
-			"Repeat":             notification.Repeat,
 		})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return structs.Webhook{}, ""
 	} else {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
+		go Check(w)
+		wg.Wait()
+		fmt.Println("sssssss")
+		go SendNotification(id.ID)
+
 		CalculateDeparture(id.ID)
-		//Todo enable webhook notification, from a newly created webhook
+
 	}
 
-	go SendNotification(id.ID)
-
-	return notification
+	return notification, id.ID
 }
 
 func webhookFormat(web structs.Webhook) (string, bool) {

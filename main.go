@@ -29,7 +29,7 @@ func main() {
 
 	// Creates instance of firebase
 	database.Ctx = context.Background()
-	sa := option.WithCredentialsFile("webhooks/cloudprojecttwo-firebase-adminsdk-uke12-fc63f46582.json")
+	sa := option.WithCredentialsFile("webhooks/cloudproject-838bd-firebase-adminsdk-x3gtx-3f2ae0e216.json")
 	app, err := firebase.NewApp(database.Ctx, nil, sa)
 	if err != nil {
 		_ = fmt.Errorf("error initializing app: %v", err)

@@ -1,9 +1,13 @@
 package main
 
 import (
+	"cloudproject/database"
 	"cloudproject/endpoints"
-	"cloudproject/extra"
 	"cloudproject/webhooks"
+	"context"
+	firebase "firebase.google.com/go"
+	"fmt"
+	"google.golang.org/api/option"
 	"log"
 	"net/http"
 	"os"
@@ -19,22 +23,36 @@ func getPort() string {
 }
 
 func main() {
+	//database.Init()
 
-	webhooks.Init()
+	// Creates instance of firebase
+	database.Ctx = context.Background()
+	sa := option.WithCredentialsFile("webhooks/trafficmessage.json")
+	app, err := firebase.NewApp(database.Ctx, nil, sa)
+	if err != nil {
+		_ = fmt.Errorf("error initializing app: %v", err)
+	}
+
+	database.Client, err = app.Firestore(database.Ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	// Starts uptime of program
 	endpoints.Uptime = time.Now()
-
+	//Webhook handling
+	go webhooks.InvokeAll()
 	go webhooks.DeleteExpiredWebhooks()
 
 	log.Println("Listening on port: " + getPort())
 	handlers()
 
-	defer webhooks.Client.Close()
+	defer database.Client.Close()
 }
 
 func handlers() {
-	http.HandleFunc("/weather/", extra.CurrentWeather)
-	http.HandleFunc("/poi/", extra.PointOfInterest)
+	http.HandleFunc("/weather/", endpoints.CurrentWeather)
+	http.HandleFunc("/poi/", endpoints.PointOfInterest)
 	http.HandleFunc("/diag", endpoints.Diag)
 	http.HandleFunc("/charge/", endpoints.EVStations)
 	http.HandleFunc("/petrol/", endpoints.PetrolStation)

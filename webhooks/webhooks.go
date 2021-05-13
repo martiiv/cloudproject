@@ -1,67 +1,30 @@
 package webhooks
 
 import (
-	"cloudproject/extra"
+	"cloudproject/database"
+	"cloudproject/endpoints"
+	"cloudproject/structs"
+	"cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	_ "fmt"
 	"google.golang.org/api/iterator"
 	"io/ioutil"
+	"log"
 	"net/http"
+	url2 "net/url"
+	"sync"
 	"time"
 	_ "time"
 )
 
 /**
- * Class webhooks.go
- * Will contain all webhooks functionality for the application (may get separated into more files)
- * Will contain the following funcitons:
- *										Handler
- *
- * @author Martin Iversen
- * @date 01.05.2021
- * @version 0.2
- */
-
-var Collection = "message"
-
-/**
- * Function Handler
- * Will handle all the requests sent to the webhook endpoint
- * MethodPost:
- * MethodGet:
- * MethodPut:
- * MethodDelete:
- */
-func Handler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-
-	case http.MethodPost:
-
-	case http.MethodGet:
-
-	case http.MethodPut:
-
-	case http.MethodDelete:
-
-	}
-}
-
-/**
- * Function Response
- * Will format the Json Response for the user
- */
-func Response(webhook extra.Webhook) {
-
-}
-
-/**
  * Function Check
  * Will check for updates in weather conditions and traffic incidents
  */
-func Check(w http.ResponseWriter, webhook extra.Webhook) {
-	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
-	var hook extra.Webhook
+func Check(w http.ResponseWriter) {
+	iter := database.Client.Collection(database.Collection).Documents(database.Ctx) // Loop through all entries in collection "messages"
+	var hook structs.Webhook
 
 	for {
 		doc, err := iter.Next()
@@ -75,38 +38,39 @@ func Check(w http.ResponseWriter, webhook extra.Webhook) {
 
 		weatherMessage := hook.Weather
 
-		latitude, longitude, err := extra.GetLocation(hook.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
+		latitude, longitude, err := database.LocationPresent(url2.QueryEscape(hook.DepartureLocation)) //Receives the latitude and longitude of the place passed in the url
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
 		url := ""
 		if latitude != "" && longitude != "" {
 			// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
-			url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
+			url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + utils.OpenweathermapKey
 		} else {
 			fmt.Fprint(w, "Check formatting of lat and lon")
 		}
 
-		newMessage := extra.CurrentWeatherHandler(w, url).Main.Message
+		newMessage := endpoints.CurrentWeatherHandler(w, url).Main.Message
 		if !(newMessage == weatherMessage) {
 			hook.Weather = newMessage
-			Update(doc.Ref.ID, hook)
+			database.Update(doc.Ref.ID, hook)
 			fmt.Fprintf(w, "WeatherMessage update new registered weather for:"+hook.DepartureLocation+" is:"+hook.Weather)
 		}
 
 	}
 
 	time.Sleep(time.Minute * 30)
-	Check(w, webhook)
+	Check(w)
 }
 
 func CreateWebhook(w http.ResponseWriter, r *http.Request) {
-	webhook := AddWebhook(w, r)
-	go Check(w, webhook)
+	AddWebhook(w, r)
 
 }
 
-func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
+func AddWebhook(w http.ResponseWriter, r *http.Request) (structs.Webhook, string) {
+
+	wg := new(sync.WaitGroup)
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
@@ -119,49 +83,39 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 		http.Error(w, "Your message appears to be empty", http.StatusBadRequest)
 	}
 
-	var notification extra.Webhook
+	var notification structs.Webhook
 	if err = json.Unmarshal(input, &notification); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
-
-	latitude, longitude, err := extra.GetLocation(notification.DepartureLocation) //Receives the latitude and longitude of the place passed in the url
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-	}
-
-	url := ""
-
-	if latitude != "" && longitude != "" {
-		// Defines the url to the openweathermap API with relevant latitude and longitude and apiKey
-		url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + extra.OpenweathermapKey
-	} else {
-		fmt.Fprint(w, "Check formatting of lat and lon")
-	}
-	notification.Weather = extra.CurrentWeatherHandler(w, url).Main.Message
 
 	message, ok := webhookFormat(notification)
 	if !ok {
 		http.Error(w, message, http.StatusNoContent)
 	}
 
-	id, _, err := Client.Collection(Collection).Add(Ctx,
+	id, _, err := database.Client.Collection(database.Collection).Add(database.Ctx,
 		map[string]interface{}{
+			"url":                notification.Url,
 			"ArrivalDestination": notification.ArrivalDestination,
 			"ArrivalTime":        notification.ArrivalTime,
 			"Weather":            notification.Weather,
 			"DepartureLocation":  notification.DepartureLocation,
-			"Repeat":             notification.Repeat,
 		})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return structs.Webhook{}, ""
 	} else {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
+		go Check(w)
+		wg.Wait()
 		CalculateDeparture(id.ID)
+		go SendNotification(id.ID)
 	}
-	return notification
+
+	return notification, id.ID
 }
 
-func webhookFormat(web extra.Webhook) (string, bool) {
+func webhookFormat(web structs.Webhook) (string, bool) {
 
 	if web.DepartureLocation == "" {
 		return "Departure location cannot be empty", false
@@ -180,9 +134,9 @@ func webhookFormat(web extra.Webhook) (string, bool) {
 }
 
 func DeleteExpiredWebhooks() {
-	iter := Client.Collection(Collection).Documents(Ctx) // Loop through all entries in collection "messages"
+	iter := database.Client.Collection(database.Collection).Documents(database.Ctx) // Loop through all entries in collection "messages"
 
-	var firebase extra.Webhook
+	var firebase structs.Webhook
 
 	for {
 		doc, err := iter.Next()
@@ -195,13 +149,12 @@ func DeleteExpiredWebhooks() {
 		}
 
 		arrival, err := time.Parse(time.RFC822, firebase.ArrivalTime)
-
 		if err != nil {
-			//Todo Error handling
+			log.Fatalf(err.Error())
 		}
 
-		if arrival.After(time.Now().AddDate(0, 0, -1)) && firebase.Repeat == "" {
-			err := Delete(doc.Ref.ID)
+		if arrival.Before(time.Now().AddDate(0, 0, -1)) {
+			err := database.Delete(doc.Ref.ID)
 			if err != nil {
 				//Todo Error handling
 			}

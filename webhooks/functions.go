@@ -7,6 +7,9 @@ import (
 	"cloudproject/endpoints"
 	"cloudproject/structs"
 	"cloudproject/utils"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -14,8 +17,15 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 )
+
+// Initialize signature
+var SignatureKey = "X-SIGNATURE"
+
+//var Mac hash.Hash
+var Secret []byte
 
 func CalculateDeparture(id string) {
 
@@ -66,15 +76,34 @@ func CalculateDeparture(id string) {
 
 func CallUrl(url string, content string) {
 
-	req, err := http.Post(url, "application/json", bytes.NewBuffer([]byte(content)))
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer([]byte(content)))
 	if err != nil {
 		fmt.Errorf("%v", "Error during request creation.")
 		return
 	}
-	if req.StatusCode != http.StatusOK {
-		fmt.Println("Fuck you")
+
+	// Hash content
+	mac := hmac.New(sha256.New, Secret)
+	_, errHash := mac.Write([]byte(content))
+	if errHash != nil {
+		_ = fmt.Errorf("%v", "Error during content hashing.")
+		return
+	}
+	// Convert to string & add to header
+	req.Header.Add(SignatureKey, hex.EncodeToString(mac.Sum(nil)))
+
+	client := http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error in HTTP request: " + err.Error())
+	}
+	response, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println("Something is wrong with invocation response: " + err.Error())
 	}
 
+	fmt.Println("Webhook invoked. Received status code " + strconv.Itoa(res.StatusCode) +
+		" and body: " + string(response))
 }
 
 func SendNotification(notificationId string) {
@@ -112,7 +141,7 @@ func SendNotification(notificationId string) {
 	jsonData := []byte(jsonStart + jsonMiddle + jsonEnd)
 	time.Sleep(time.Duration(TimeUntilInvocation) * time.Minute)
 
-	err, _ = database.Get(notificationId)
+	_, err = database.Get(notificationId)
 	if err != nil {
 		return
 	}

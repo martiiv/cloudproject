@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"cloudproject/database"
 	"cloudproject/structs"
 	"cloudproject/utils"
 	"encoding/json"
@@ -16,7 +17,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	address := strings.Split(request.URL.Path, `/`)[2] //Getting the address/name of the place we want to look for chargers
 
-	latitude, longitude, err := utils.GetLocation(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
+	latitude, longitude, err := database.LocationPresent(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

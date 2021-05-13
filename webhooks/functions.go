@@ -3,6 +3,7 @@ package webhooks
 import (
 	"bytes"
 	"cloud.google.com/go/firestore"
+	"cloudproject/database"
 	"cloudproject/endpoints"
 	"cloudproject/structs"
 	"cloudproject/utils"
@@ -17,7 +18,7 @@ import (
 
 func CalculateDeparture(id string) {
 
-	information, _ := Client.Collection(Collection).Doc(id).Get(Ctx)
+	information, _ := database.Client.Collection(database.Collection).Doc(id).Get(database.Ctx)
 
 	var message structs.Webhook
 	if err := information.DataTo(&message); err != nil {
@@ -28,12 +29,12 @@ func CalculateDeparture(id string) {
 
 	fmt.Println(location)
 
-	startLat, startLong, err := utils.GetLocation(location)
+	startLat, startLong, err := database.LocationPresent(location)
 	if err != nil {
 		//Todo error handling
 	}
 
-	endLat, endLong, err := utils.GetLocation(message.ArrivalDestination)
+	endLat, endLong, err := database.LocationPresent(message.ArrivalDestination)
 	if err != nil {
 		//Todo error handling
 	}
@@ -56,7 +57,7 @@ func CalculateDeparture(id string) {
 	estimatedTravelTime := roads.Routes[0].Summary.TravelTimeInSeconds
 	estimatedTravelTimeMinutes := (estimatedTravelTime + endpoints.GetMessageWeight(message.Weather)) / 60
 
-	_, err = Client.Collection(Collection).Doc(id).Set(Ctx, map[string]interface{}{
+	_, err = database.Client.Collection(database.Collection).Doc(id).Set(database.Ctx, map[string]interface{}{
 		"estimatedTravelTime": estimatedTravelTimeMinutes,
 	}, firestore.MergeAll)
 
@@ -76,7 +77,7 @@ func CallUrl(url string, content string) {
 }
 
 func Invoke(id string) {
-	information, _ := Client.Collection(Collection).Doc(id).Get(Ctx)
+	information, _ := database.Client.Collection(database.Collection).Doc(id).Get(database.Ctx)
 
 	var message structs.Webhook
 	if err := information.DataTo(&message); err != nil {
@@ -96,7 +97,7 @@ func Invoke(id string) {
 
 func SendNotification(notificationId string) {
 
-	doc, err := Client.Collection(Collection).Doc(notificationId).Get(Ctx) // Loop through all entries in collection "messages"
+	doc, err := database.Client.Collection(database.Collection).Doc(notificationId).Get(database.Ctx) // Loop through all entries in collection "messages"
 	if err != nil {
 		_ = errors.New("The notification ID is not in our system")
 		return
@@ -133,7 +134,7 @@ func SendNotification(notificationId string) {
 
 	//Todo Check if the firebase is deleted before invocation
 	var maps map[string]interface{}
-	err, maps = Get(notificationId)
+	err, maps = database.Get(notificationId)
 	if err != nil {
 		return
 	}
@@ -144,7 +145,7 @@ func SendNotification(notificationId string) {
 }
 
 func InvokeAll() {
-	webhook, err := GetAll()
+	webhook, err := database.GetAll()
 	if err != nil {
 		log.Fatalf(err.Error())
 	}

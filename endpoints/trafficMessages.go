@@ -65,31 +65,24 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 	var all []structs.OutIncident
 	time := time.Now().Add(-60 * time.Minute)
 
-	roads, err := getRoads(StartAddress, EndAddress)
-	if err != nil {
-		//Todo handle error
-	}
-
 	for i := 0; i < len(messages.Incidents); i++ {
-		for k := 0; k < len(roads); k++ {
-			if messages.Incidents[i].Properties.EndTime.Before(time) {
-				startTime := messages.Incidents[i].Properties.StartTime
-				endTime := messages.Incidents[i].Properties.EndTime
-				FromAddress := messages.Incidents[i].Properties.From
-				toAddress := messages.Incidents[i].Properties.To
-				Event := messages.Incidents[i].Properties.Events[0].Description
+		if messages.Incidents[i].Properties.EndTime.Before(time) {
+			startTime := messages.Incidents[i].Properties.StartTime
+			endTime := messages.Incidents[i].Properties.EndTime
+			FromAddress := messages.Incidents[i].Properties.From
+			toAddress := messages.Incidents[i].Properties.To
+			Event := messages.Incidents[i].Properties.Events[0].Description
 
-				if strings.ContainsAny(FromAddress, "Ã¸") {
-					FromAddress = strings.ReplaceAll(FromAddress, "Ã¸", "ø")
-				} else if strings.ContainsAny(toAddress, "Ã¸") {
-					toAddress = strings.ReplaceAll(toAddress, "Ã¸", "ø")
-				}
-
-				incidents := structs.OutIncident{From: FromAddress, To: toAddress, Start: startTime, End: endTime, Event: Event}
-				all = append(all, incidents)
+			if strings.ContainsAny(FromAddress, "Ã¸") {
+				FromAddress = strings.ReplaceAll(FromAddress, "Ã¸", "ø")
+			} else if strings.ContainsAny(toAddress, "Ã¸") {
+				toAddress = strings.ReplaceAll(toAddress, "Ã¸", "ø")
 			}
 
+			incidents := structs.OutIncident{From: FromAddress, To: toAddress, Start: startTime, End: endTime, Event: Event}
+			all = append(all, incidents)
 		}
+
 	}
 
 	output, err := json.Marshal(all) //Marshalling the array to JSON

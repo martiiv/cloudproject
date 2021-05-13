@@ -3,7 +3,7 @@ package endpoints
 import (
 	"cloudproject/database"
 	structs2 "cloudproject/structs"
-	extra "cloudproject/utils"
+	"cloudproject/utils"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -23,7 +23,7 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	filter := extra.GetOptionalFilter(request.URL)
+	filter := utils.GetOptionalFilter(request.URL)
 
 	var response *http.Response
 

@@ -59,7 +59,7 @@ func CalculateDeparture(id string) {
 	estimatedTravelTimeMinutes := (estimatedTravelTime + endpoints.GetMessageWeight(message.Weather)) / 60
 
 	_, err = database.Client.Collection(database.Collection).Doc(id).Set(database.Ctx, map[string]interface{}{
-		"estimatedTravelTime": estimatedTravelTimeMinutes,
+		"EstimatedTravelTime": estimatedTravelTimeMinutes,
 	}, firestore.MergeAll)
 
 }
@@ -78,7 +78,6 @@ func CallUrl(url string, content string) {
 }
 
 func SendNotification(notificationId string) {
-
 	doc, err := database.Client.Collection(database.Collection).Doc(notificationId).Get(database.Ctx) // Loop through all entries in collection "messages"
 	if err != nil {
 		_ = errors.New("The notification ID is not in our system")

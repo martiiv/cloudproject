@@ -104,12 +104,12 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 
 func getBBox(StartAddress string, endAddress string) ([]byte, error) {
 
-	startLat, startLong, err := database.LocationPresent(StartAddress)
+	startLat, startLong, err := database.LocationPresent(url.QueryEscape(StartAddress))
 	if err != nil {
 		return nil, err
 	}
 
-	EndLat, endLong, err := database.LocationPresent(endAddress)
+	EndLat, endLong, err := database.LocationPresent(url.QueryEscape(endAddress))
 	if err != nil {
 		return nil, err
 	}
@@ -133,12 +133,12 @@ not in use
 */
 func getRoads(StartAddress string, endAddress string) ([]string, error) {
 
-	startLat, startLong, err := database.LocationPresent(StartAddress)
+	startLat, startLong, err := database.LocationPresent(url.QueryEscape(StartAddress))
 	if err != nil {
 		return nil, err
 	}
 
-	EndLat, endLong, err := database.LocationPresent(endAddress)
+	EndLat, endLong, err := database.LocationPresent(url.QueryEscape(endAddress))
 	if err != nil {
 		return nil, err
 	}

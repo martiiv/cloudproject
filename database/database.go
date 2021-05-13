@@ -183,9 +183,9 @@ func LocationPresent(address string) (string, string, error) {
 		log.Println(err.Error())
 	}
 
-	if location.Latitude != -1 && location.Longitude != -1 {
+	/*	if location.Latitude != -1 && location.Longitude != -1 {
 		fmt.Println(location.Latitude, location.Longitude)
-	}
+	}*/
 
 	a, s, err := GetLocation(address)
 	if err != nil {

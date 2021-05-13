@@ -23,13 +23,11 @@ func getPort() string {
 }
 
 func main() {
-	println(endpoints.GetMessageWeight("violent rain"))
-
 	//database.Init()
 
 	// Creates instance of firebase
 	database.Ctx = context.Background()
-	sa := option.WithCredentialsFile("webhooks/cloudproject-838bd-firebase-adminsdk-x3gtx-3f2ae0e216.json")
+	sa := option.WithCredentialsFile("webhooks/trafficmessage.json")
 	app, err := firebase.NewApp(database.Ctx, nil, sa)
 	if err != nil {
 		_ = fmt.Errorf("error initializing app: %v", err)
@@ -42,6 +40,9 @@ func main() {
 
 	// Starts uptime of program
 	endpoints.Uptime = time.Now()
+	//Webhook handling
+	go webhooks.InvokeAll()
+	go webhooks.DeleteExpiredWebhooks()
 
 	log.Println("Listening on port: " + getPort())
 	handlers()

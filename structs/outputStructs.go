@@ -118,9 +118,7 @@ type Webhook struct {
 	ArrivalDestination  string
 	Weather             string
 	ArrivalTime         string
-	Repeat              string
 	EstimatedTravelTime int
-	Id                  string
 }
 
 type NotificationInput struct {
@@ -138,6 +136,6 @@ type OutputPoi struct {
 }
 
 type LocationLonLat struct {
-	Longitude float64
-	Latitude  float64
+	Longitude string
+	Latitude  string
 }

@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -29,12 +30,12 @@ func CalculateDeparture(id string) {
 
 	fmt.Println(location)
 
-	startLat, startLong, err := database.LocationPresent(location)
+	startLat, startLong, err := database.LocationPresent(url.QueryEscape(location))
 	if err != nil {
 		//Todo error handling
 	}
 
-	endLat, endLong, err := database.LocationPresent(message.ArrivalDestination)
+	endLat, endLong, err := database.LocationPresent(url.QueryEscape(message.ArrivalDestination))
 	if err != nil {
 		//Todo error handling
 	}
@@ -58,7 +59,7 @@ func CalculateDeparture(id string) {
 	estimatedTravelTimeMinutes := (estimatedTravelTime + endpoints.GetMessageWeight(message.Weather)) / 60
 
 	_, err = database.Client.Collection(database.Collection).Doc(id).Set(database.Ctx, map[string]interface{}{
-		"estimatedTravelTime": estimatedTravelTimeMinutes,
+		"EstimatedTravelTime": estimatedTravelTimeMinutes,
 	}, firestore.MergeAll)
 
 }
@@ -76,27 +77,7 @@ func CallUrl(url string, content string) {
 
 }
 
-func Invoke(id string) {
-	information, _ := database.Client.Collection(database.Collection).Doc(id).Get(database.Ctx)
-
-	var message structs.Webhook
-	if err := information.DataTo(&message); err != nil {
-		log.Println(err.Error())
-	}
-
-	timeS, _ := time.Parse(time.RFC822, message.ArrivalTime)
-	newTime := timeS.Add(time.Duration(-message.EstimatedTravelTime) * time.Minute)
-	TimeUntilInvocation := time.Until(newTime).Seconds()
-	fmt.Println(int(TimeUntilInvocation))
-
-	fmt.Println(timeS)
-	//timeTo := time.Duration(int(TimeUntilInvocation) * 1000000000)
-
-	time.Sleep(5 * time.Second)
-}
-
 func SendNotification(notificationId string) {
-
 	doc, err := database.Client.Collection(database.Collection).Doc(notificationId).Get(database.Ctx) // Loop through all entries in collection "messages"
 	if err != nil {
 		_ = errors.New("The notification ID is not in our system")
@@ -129,17 +110,13 @@ func SendNotification(notificationId string) {
 	jsonMiddle := jsonMessage.Text
 	jsonEnd := `"}`
 	jsonData := []byte(jsonStart + jsonMiddle + jsonEnd)
-
 	time.Sleep(time.Duration(TimeUntilInvocation) * time.Minute)
 
-	//Todo Check if the firebase is deleted before invocation
-	var maps map[string]interface{}
-	err, maps = database.Get(notificationId)
+	err, _ = database.Get(notificationId)
 	if err != nil {
 		return
 	}
 
-	fmt.Println(maps)
 	go CallUrl(url, string(jsonData))
 
 }

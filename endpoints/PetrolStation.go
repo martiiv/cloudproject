@@ -23,7 +23,26 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	response, err := http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7311&key=" + utils.TomtomKey)
+	filter := utils.GetOptionalFilter(request.URL)
+	var response *http.Response
+
+	if len(filter) != 0 {
+		if len(filter["radius"]) == 0 {
+			http.Error(w, "error, Bad Request\nNone of the filters is accepted\nAccepted filters: radius", http.StatusBadRequest)
+			return
+		}
+		radius := ""
+
+		if len(filter["radius"]) != 0 {
+			radius = "&radius=" + filter["radius"]
+		}
+
+		response, err = http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + radius + "&categorySet=7311&fuelSet=&key=" + utils.TomtomKey)
+
+	} else {
+		response, err = http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7311&key=" + utils.TomtomKey)
+	}
+
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

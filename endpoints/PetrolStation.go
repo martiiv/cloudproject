@@ -23,6 +23,25 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	filter := utils.GetOptionalFilter(request.URL)
+	if len(filter) != 0 {
+		if len(filter["radius"]) == 0 {
+			http.Error(w, "error, Bad Request\nNone of the filters is accepted\nAccepted filters: radius, charge, power", http.StatusBadRequest)
+			return
+		}
+	}
+	/*radius := "&radius=1000"
+
+	if len(filter["charge"]) != 0 {
+		connector = "&connectorSet=" + filter["charge"]
+	}
+	if len(filter["radius"]) != 0 {
+		radius = "&radius=" + filter["radius"]
+	}
+	if len(filter["power"]) != 0 {
+		power = "&minPowerKW=" + filter["power"]
+	}*/
+
 	response, err := http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + "&radius=1000&categorySet=7311&key=" + utils.TomtomKey)
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {

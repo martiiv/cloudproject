@@ -108,11 +108,8 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) (structs.Webhook, string
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
 		go Check(w)
 		wg.Wait()
-		fmt.Println("sssssss")
-		go SendNotification(id.ID)
-
 		CalculateDeparture(id.ID)
-
+		go SendNotification(id.ID)
 	}
 
 	return notification, id.ID

@@ -11,8 +11,8 @@ import (
 var Uptime time.Time
 
 // APIs
-// https://openrouteservice.org/
 // https://developer.tomtom.com/
+// https://openrouteservice.org/
 // https://openweathermap.org/api
 // https://developer.mapquest.com
 

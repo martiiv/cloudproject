@@ -3,19 +3,19 @@ RUN apt-get update
 
 LABEL maintainer "martiiv@stud.ntnu.com"
 
-ADD ./main.go /service
 ADD ./database /service/database
-ADD ./test /service/test
 ADD ./endpoints /service/endpoints
 ADD ./structs /service/structs
+ADD ./test /service/test
 ADD ./utils /service/utils
 ADD ./webhooks /service/webhooks
 ADD ./go.mod /service
 ADD ./go.sum /service
+ADD ./main.go /service
 
 EXPOSE 8080
 
-WORKDIR /
+WORKDIR /service
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o cloudproject
 

@@ -131,6 +131,7 @@ func GetLocation(address string) (string, string, error) {
 func LocationPresent(address string) (string, string, error) {
 	// To remove broken syntax for some UTF8 characters
 	addressUnescaped, errQuery := url.QueryUnescape(address)
+	addressUnescaped = strings.ToLower(addressUnescaped)
 	if errQuery != nil {
 		log.Println(errQuery.Error())
 		return "", "", errQuery

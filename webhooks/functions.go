@@ -141,7 +141,7 @@ func SendNotification(notificationId string) {
 	jsonData := []byte(jsonStart + jsonMiddle + jsonEnd)
 	time.Sleep(time.Duration(TimeUntilInvocation) * time.Minute)
 
-	err, _ = database.Get(notificationId)
+	_, err = database.Get(notificationId)
 	if err != nil {
 		return
 	}

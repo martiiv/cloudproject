@@ -230,18 +230,40 @@ to implement Docker. We have been able to implement the wanted functions to our 
 filling stations, avoid traffic, describe the weather and points of interest a long your route such as restaurants, hotels and road attractions. 
 
 ###Reflection of what went well and what went wrong with the project:
-There was a lot of back and forth at the beginning of the project topic for our project, because there was a few problems with different APIs we 
-need to be able to create the wanted functionalities for our early plans on project topics. Once we had decided to go for the route planner we had problems 
-with the geo API, but luckily it went very well to change to another API.
+There was a lot of back and forth in the beginning of our project, when it comes to deciding the project topic of our project. The problem was that there was 
+a few problems with different APIs we need to be able to create the wanted functionalities for our early plans on project topics. Once we had decided to go for 
+the route planner we had problems with the geo API, but luckily it went very well to change to another API. 
+
+
+If we were to do to something different with our project we would have chosen to use the GitLab tool milestone. 
+By using milestones we would have been able to track better our issues. Since the milestone tool groups issues that corresponds to a project, 
+feature or time period. Thus, it would be easier to set different time periods on the different issues to when they needed to be complete and this would
+have given us a better overview of the different parts of the project that needs to be completed. 
+
+Communication within the group is something that went well in the project. Every group member were good at creating issues in GitLab and 
+thus it made it easy for everyone to see what has been implemented and what has not been done yet. Creating the different endpoints we needed
+for the implementation of our application went really well. The learning outcome of the project part of the course has been rewarding for us in getting a better 
+understanding of what we have learned during the course. In the project part we have had to use a lot of the knowledge we got from 
+assignment 1 and assignment 2, and we have been able to improve our skills and knowledge in parts like webhooks and error handling due to working on this more in the project. 
+Another thing that also worked well was using branches in Gitlab and pushing and pulling the different work the group members had done. And at the end 
+merging it all together. 
 
 ###Reflection on the hard aspects of the project:
-The hard aspects of the project has been the webhook implementation. The hard part has been to understand what we wanted the users to get notifications on and how to 
-implement this to our project. We have also struggled with implementing Docker, and need to do some research on this topic. We also 
-studied the examples on Docker provided in the course, to get a better understanding of how to use it.
+The hard aspects of the project has been a few things. First we struggled with the webhook implementation. The hard part has been to understand what we wanted the users to get notifications on and how to 
+implement this to our project. Further we tried to implement client API to our project which also resulted in some difficulties, the problem of using a client was that the user had to refresh the site to receive
+notifications. This is not very user-friendly, and annoying for the user. Therefore, we changed it, so that the user gets a Slack notification with messages. Then the user will get the messages in
+time on their phone, computer or clock. Another hard aspect of the project was the caching. Due to the file structure in our project the persistence of location data was problematic to implement, 
+but we were able to implement it in the end by fixing the file structure. The unit-testing has also been difficult because we wanted to test the webhook invoke, and to do so we needed to ship over 
+the sleep function which was hard finding a solution to. We have also struggled with implementing Docker, and needed to do some research on that topic. We studied the examples on Docker
+provided in the course, to get a better understanding of how to use it. 
 
-We tried to implement client API to our project, the cons of this is that the user has to refresh the site to receive
-notifications. This is not very user-friendly, and annoying for the user. Therefore, we changed it, so the user gets a Slack notification 
-with messages. Then the user will get the messages in time on their phone, computer and clock.
+Another hard part of the project was that everyone has their own way of coding. We all implement functions differently and uses different syntax. Therefore, it can be hard sometimes to understand what
+other group members have done. Thus, we have been strict on the commenting part of code quality, so that it is easy for everyone else to understand different functions and variables group members 
+have made. 
+
+// TODO: Write more on why Docker was hard
+
+
 
 
 ###What new has the group learned?:
@@ -252,7 +274,7 @@ This has given us the possibility to read a short summary of what we did the las
 the project WIKI. We have learned that good group communication is very important for us to be able to finish the project, and we also became
 better in using GitLabs different tools like issues. 
 
-We have also learned a lot more programming especially the webhooks implementation has been where we have learned the most during this project. 
-
+We have also learned a lot more programming especially the webhooks implementation part has been where we have learned the most during this project. 
+//TODO: Write more on what we have learned in the programming part of the project
 ###Total work hours dedicated to the project cumulatively by the group:
 The total hours the group has worked on the project has been hours. 

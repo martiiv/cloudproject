@@ -2,17 +2,21 @@ FROM golang:1.16 as builder
 RUN apt-get update 
 
 LABEL maintainer "martiiv@stud.ntnu.com"
-ADD ./main.go /
-ADD ./endpoints /endpoints
-ADD ./structs /structs
-ADD ./utils /utils
-ADD ./webhooks /webhooks
-ADD ./go.mod /go.mod
-ADD ./go.sum /go.sum
+ADD ./main.go /service
+ADD ./database /service/database
+ADD ./test /service/test
+ADD ./endpoints /service/endpoints
+ADD ./structs /service/structs
+ADD ./utils /service/utils
+ADD ./webhooks /service/webhooks
+ADD ./go.mod /service/go.mod
+ADD ./go.sum /service/go.sum
 
-WORKDIR /
+EXPOSE 8080
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o main
+WORKDIR /service
+
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o cloudproject
 
 FROM scratch 
 
@@ -20,6 +24,4 @@ LABEL maintainer "martiiv@stud.ntnu.com"
 
 WORKDIR /
 
-COPY --from=builder / /
-
-ENTRYPOINT ["/main"]
+CMD ["/service"]

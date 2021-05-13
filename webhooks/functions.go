@@ -129,15 +129,7 @@ func SendNotification(notificationId string) {
 
 	time.Sleep(time.Duration(TimeUntilInvocation) * time.Minute)
 
-	//Todo Check if the firebase is deleted before invocation
-	var maps map[string]interface{}
-	err, maps = Get(notificationId)
-	if err != nil {
-		return
-	}
-
-	fmt.Println(maps)
-	go CallUrl(url, string(jsonData))
+	call(url, string(jsonData), notificationId)
 
 }
 
@@ -149,4 +141,14 @@ func InvokeAll() {
 	for i := 0; i < len(webhook); i++ {
 		go SendNotification(webhook[i].Ref.ID)
 	}
+}
+
+func call(url string, content string, notify string) {
+	err, _ := Get(notify)
+	if err != nil {
+		return
+	}
+
+	go CallUrl(url, content)
+
 }

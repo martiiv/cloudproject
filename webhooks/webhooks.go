@@ -1,6 +1,7 @@
 package webhooks
 
 import (
+	"cloud.google.com/go/firestore"
 	"cloudproject/extra"
 	"encoding/json"
 	"fmt"
@@ -99,27 +100,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) extra.Webhook {
 	}
 	notification.Weather = extra.CurrentWeatherHandler(w, url).Main.Message
 
-	message, ok := webhookFormat(notification)
-	if !ok {
-		http.Error(w, message, http.StatusNoContent)
-	}
-
-	id, _, err := Client.Collection(Collection).Add(Ctx,
-		map[string]interface{}{
-			"url":                notification.Url,
-			"ArrivalDestination": notification.ArrivalDestination,
-			"ArrivalTime":        notification.ArrivalTime,
-			"Weather":            notification.Weather,
-			"DepartureLocation":  notification.DepartureLocation,
-			"Repeat":             notification.Repeat,
-		})
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-	} else {
-		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
-		CalculateDeparture(id.ID)
-		//Todo enable webhook notification, from a newly created webhook
-	}
+	notification, id := addNotification(notification)
 
 	go SendNotification(id.ID)
 
@@ -174,4 +155,31 @@ func DeleteExpiredWebhooks() {
 	}
 	time.Sleep(time.Hour * 24)
 	DeleteExpiredWebhooks()
+}
+
+func addNotification(notification extra.Webhook) (extra.Webhook, *firestore.DocumentRef) {
+
+	message, ok := webhookFormat(notification)
+	if !ok {
+		log.Println(message)
+		return extra.Webhook{}, nil
+	}
+
+	id, _, err := Client.Collection(Collection).Add(Ctx,
+		map[string]interface{}{
+			"url":                notification.Url,
+			"ArrivalDestination": notification.ArrivalDestination,
+			"ArrivalTime":        notification.ArrivalTime,
+			"DepartureLocation":  notification.DepartureLocation,
+			"Weather":            notification.Weather,
+		})
+	if err != nil {
+		log.Println(err.Error())
+		return extra.Webhook{}, nil
+	}
+
+	CalculateDeparture(id.ID)
+
+	return notification, id
+
 }

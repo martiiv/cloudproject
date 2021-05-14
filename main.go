@@ -57,7 +57,7 @@ func handlers() {
 	http.HandleFunc("/petrol/", endpoints.PetrolStation)
 	http.HandleFunc("/messages/", endpoints.Messages)
 	http.HandleFunc("/route/", endpoints.Route)
-	http.HandleFunc("/hook/", webhooks.CreateWebhook)
+	http.HandleFunc("/hook/", webhooks.AddWebhook)
 
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

@@ -6,6 +6,7 @@ import (
 	"cloudproject/structs"
 	"cloudproject/utils"
 	"encoding/json"
+	"errors"
 	"fmt"
 	_ "fmt"
 	"google.golang.org/api/iterator"
@@ -56,24 +57,18 @@ func Check(w http.ResponseWriter) {
 			database.Update(doc.Ref.ID, hook)
 			fmt.Fprintf(w, "WeatherMessage update new registered weather for:"+hook.DepartureLocation+" is:"+hook.Weather)
 		}
-
 	}
-
 	time.Sleep(time.Minute * 30)
 	Check(w)
 }
 
-func CreateWebhook(w http.ResponseWriter, r *http.Request) {
-	AddWebhook(w, r)
-
-}
-
-func AddWebhook(w http.ResponseWriter, r *http.Request) (structs.Webhook, string) {
+func AddWebhook(w http.ResponseWriter, r *http.Request) {
 
 	wg := new(sync.WaitGroup)
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
+		return
 	}
 
 	input, err := ioutil.ReadAll(r.Body)
@@ -88,9 +83,10 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) (structs.Webhook, string
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
 
-	message, ok := webhookFormat(notification)
-	if !ok {
-		http.Error(w, message, http.StatusNoContent)
+	err = webhookFormat(notification)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNoContent)
+		return
 	}
 
 	id, _, err := database.Client.Collection(database.Collection).Add(database.Ctx,
@@ -103,7 +99,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) (structs.Webhook, string
 		})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
-		return structs.Webhook{}, ""
+		return
 	} else {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
 		go Check(w)
@@ -112,25 +108,23 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) (structs.Webhook, string
 		go SendNotification(id.ID)
 	}
 
-	return notification, id.ID
 }
 
-func webhookFormat(web structs.Webhook) (string, bool) {
+func webhookFormat(web structs.Webhook) error {
 
 	if web.DepartureLocation == "" {
-		return "Departure location cannot be empty", false
+		return errors.New("error, departure location cannot be empty")
 	} else if web.ArrivalDestination == "" {
-		return "Arrival destination cannot be empty", false
+		return errors.New("error, arrival destination cannot be empty")
 	} else if web.ArrivalTime == "" {
-		return "Arrival time cannot be empty", false
+		return errors.New("error, arrival time cannot be empty")
+	}
+	err := utils.IsValidInput(web.ArrivalTime)
+	if !err {
+		return errors.New("Invalid time form\nExample format: 17 may 21 12:10")
 	}
 
-	/*time, err := time.Parse(time.RFC822, web.ArrivalTime )
-	if err != nil {
-		return "Time format is not valid. Supported format is DD:MM:YY HH:mm", false
-	}*/
-
-	return "", true
+	return nil
 }
 
 func DeleteExpiredWebhooks() {

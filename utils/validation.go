@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-// isValidInput Checks if the arrival time input is valid for the webhook registration.
+// IsValidInput Checks if the arrival time input is valid for the webhook registration.
 // Needs to follow the RFC822 format.
-func isValidInput(arrivalTime string) bool {
+func IsValidInput(arrivalTime string) bool {
 	if len(arrivalTime) != 0 {
 		// Tries to parse the arrivalTime to the RFC822-format
 		_, err := time.Parse(time.RFC822, arrivalTime)

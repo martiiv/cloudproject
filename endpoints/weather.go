@@ -121,15 +121,6 @@ func CurrentWeatherHandler(rw http.ResponseWriter, url string) structs.OutputWea
 		Sunrise:    structs.SunriseStruct{Sunrise: sunrise, Message: responseArr[9]},
 		Sunset:     structs.SunsetStruct{Sunset: sunset, Message: responseArr[10]}}
 
-	// Marshal the struct
-	output, err := json.Marshal(jsonStruct) //Marshalling the array to JSON
-	if err != nil {
-		http.Error(rw, err.Error(), http.StatusInternalServerError)
-	}
-
-	// Print the struct/information to the user in json format
-	fmt.Fprintf(rw, "%v", string(output)) //Outputs the weather
-
 	return jsonStruct
 }
 

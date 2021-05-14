@@ -104,7 +104,12 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Registered with ID: "+id.ID, http.StatusCreated)
 		go Check(w)
 		wg.Wait()
-		CalculateDeparture(id.ID)
+		err := CalculateDeparture(id.ID)
+		if err != nil {
+			database.Delete(id.ID)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		go SendNotification(id.ID)
 	}
 

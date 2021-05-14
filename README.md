@@ -1,10 +1,10 @@
-# CloudProject
+# Road Trip Companion
 
 Welcome to the project for the PROG2005 Cloud Technologies course. 
 
 This project is made by Group 2: *implement group name here*.
 
-This is the Readme for The Road Trip Planner, an application which lets a user plan a roadtrip! 
+This is the Readme for The Road Trip Companion, an application which lets a user plan a roadtrip! 
 In the project the focus is on the use of a REST web application created with the use of third party APIs,the
 creation and use of webhooks, firestore and docker. It is created with the programming language Golang and then deployed to a server using
 OpenStack.
@@ -17,7 +17,7 @@ OpenStack.
 
 Our initial idea was to make an entertainment hub allowing a user to access information about movies, tv-shows, music, and comics. Sadly we encountered a problem when trying to implment the music api in golang. We decided that a workaround would be time consuming and decided to change topic. 
 
-<h3>The road-trip-planner</h3>
+<h3>The road-trip-companion</h3>
 
 We decided on a road-trip travel planner, where we give a user information about the route they are going to travel, for instance where the nearest charging stations are, the shortest path from one destination to another, it will calculate a time of departure depending on the weather conditions. It will also provide the user with points of interest if desired. We had to change the "gps" api of the project from the Statens vegvesen API to the tomtom api since Statens Vegvesen did not respond to our email and since their login functionality did not work. 
 
@@ -46,4 +46,4 @@ We have become better at collaborating on programming tasks with eachother. The 
 We found that having a good foundation with hard policies and principles is important for project work, especially in our field. Not having a good grasp of our project will result in alot of extra work and confusion. Frequently meeting and discussing the state of the project is crucial for delivering a working application. We have also learned a lot in regards to programming, especially the webhooks and Docker implementation. Expanding on our knowledge of webhooks, how to invoke, cache and structure code to use this technology properly. Learning how to implement Docker, using best practice for Docker compose and Dockerfiles has been challenging but nevertheless rewarding. 
  
 <h3>Total work hours dedicated to the project cumulatively by the group:</h3>
-The total hours the group has worked on the project has been 83 hours, for a more detailed desription of workflow see the [Workflow documentation](https://git.gvk.idi.ntnu.no/MartinIversen/cloudproject/-/wikis/Workflow-Documentation) and the [Issue Board](https://git.gvk.idi.ntnu.no/MartinIversen/cloudproject/-/boards). 
+The total hours the group has worked on the project has been 82 hours, for a more detailed desription of workflow see the [Workflow documentation](https://git.gvk.idi.ntnu.no/MartinIversen/cloudproject/-/wikis/Workflow-Documentation) and the [Issue Board](https://git.gvk.idi.ntnu.no/MartinIversen/cloudproject/-/boards). 

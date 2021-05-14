@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+//getPort sets the port to 8080
 func getPort() string {
 	var port = os.Getenv("PORT")
 	if port == "" {
@@ -22,17 +23,18 @@ func getPort() string {
 	return ":" + port
 }
 
+//main Function to start application, initializes database and webhooks
 func main() {
-	//database.Init()
 	// Creates instance of firebase
 	database.Ctx = context.Background()
-	sa := option.WithCredentialsFile("webhooks/trafficmessage.json")
+	sa := option.WithCredentialsFile("webhooks/trafficmessage.json") //Initializes database
 	app, err := firebase.NewApp(database.Ctx, nil, sa)
 	if err != nil {
+		log.Println("error occured when initializing database" + err.Error())
 		_ = fmt.Errorf("error initializing app: %v", err)
 	}
 
-	database.Client, err = app.Firestore(database.Ctx)
+	database.Client, err = app.Firestore(database.Ctx) //Connects to the database
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -49,15 +51,16 @@ func main() {
 	defer database.Client.Close()
 }
 
+//handlers Function for redirecting endpoints
 func handlers() {
-	http.HandleFunc("/weather/", endpoints.CurrentWeather)
-	http.HandleFunc("/poi/", endpoints.PointOfInterest)
-	http.HandleFunc("/diag", endpoints.Diag)
-	http.HandleFunc("/charge/", endpoints.EVStations)
-	http.HandleFunc("/petrol/", endpoints.PetrolStation)
-	http.HandleFunc("/messages/", endpoints.Messages)
-	http.HandleFunc("/route/", endpoints.Route)
-	http.HandleFunc("/hook/", webhooks.AddWebhook)
+	http.HandleFunc("/rtc/v1/weather/", endpoints.CurrentWeather)
+	http.HandleFunc("/rtc/v1/poi/", endpoints.PointOfInterest)
+	http.HandleFunc("/rtc/v1/diag", endpoints.Diag)
+	http.HandleFunc("/rtc/v1/charge/", endpoints.EVStations)
+	http.HandleFunc("/rtc/v1/petrol/", endpoints.PetrolStation)
+	http.HandleFunc("/rtc/v1/messages/", endpoints.Messages)
+	http.HandleFunc("/rtc/v1/route/", endpoints.Route)
+	http.HandleFunc("/rtc/v1/hook/", webhooks.AddWebhook)
 
 	log.Println(http.ListenAndServe(getPort(), nil))
 }

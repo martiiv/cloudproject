@@ -21,18 +21,23 @@ import (
 	"time"
 )
 
-// Initialize signature
+// SignatureKey Initialize signature
 var SignatureKey = "X-SIGNATURE"
 
-//var Mac hash.Hash
+// Secret byte array
 var Secret []byte
 
+// CalculateDeparture Calculates the time of departure based on weather conditions and traffic messages
+// (The traffic messages is considered by the API it self, but has an impact on the time it takes from one
+// destination to another)
 func CalculateDeparture(id string) {
+	// Retrieves the webhook and its information from the database
+	webhookInformation, _ := database.Client.Collection(database.Collection).Doc(id).Get(database.Ctx)
 
-	information, _ := database.Client.Collection(database.Collection).Doc(id).Get(database.Ctx)
-
+	// Defines instance of Webhook-struct
 	var message structs.Webhook
-	if err := information.DataTo(&message); err != nil {
+	// Tries to input the data from the webhook in the database, into to the struct
+	if err := webhookInformation.DataTo(&message); err != nil {
 		log.Println(err.Error())
 	}
 

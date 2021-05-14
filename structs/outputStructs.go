@@ -28,6 +28,7 @@ type OutIncident struct {
 	Event string
 }
 
+// OutputWeather Used to easily store and access only the wanted weather data and to add messages to the data
 type OutputWeather struct {
 	Main       MainStruct
 	Rain1h     float64
@@ -44,56 +45,73 @@ type OutputWeather struct {
 	Sunset     SunsetStruct
 }
 
+// MainStruct Used to add a message regarding the Main weather condition,
+// which is bound to that condition
 type MainStruct struct {
 	Main    string
 	Message string
 }
 
+// TempStruct Used to add a message regarding the temperature,
+// which is bound to that temperature and changes with the temperature
 type TempStruct struct {
 	Temp    float64
 	Message string
 }
 
+// FeelsLikeStruct Used to add a message regarding the feels-like temperature,
+// which floats and changes with the feels-like temperature
 type FeelsLikeStruct struct {
 	FeelsLike float64
 	Message   string
 }
 
+// TempMinStruct Used to add a message regarding the minimum temperature,
+// and floats and changes with the minimum temperature
 type TempMinStruct struct {
 	TempMin float64
 	Message string
 }
 
+// TempMaxStruct Used to add a message regarding the maximum temperature,
+// and floats and changes with the maximum temperature
 type TempMaxStruct struct {
 	TempMax float64
 	Message string
 }
 
+// HumidityStruct Used to add message to the humidity value, which changes if the humidity changes
 type HumidityStruct struct {
 	Humidity int
 	Message  string
 }
 
+// VisibilityStruct Used to add message to the visibility value and changes if the visibility changes.
 type VisibilityStruct struct {
 	Visibility int
 	Message    string
 }
 
+// WindSpeedStruct Used to add message to the wind speed, the message will change if the wind speed
+// increase or decrease.
 type WindSpeedStruct struct {
 	WindSpeed float64
 	Message   string
 }
 
+// WindDegStruct Used to add a "floating" message to the wind deg.
 type WindDegStruct struct {
 	WindDeg int
 	Message string
 }
 
+// SunriseStruct Used to add message to the sunrise time, adds human readable sunrise value as message.
 type SunriseStruct struct {
 	Sunrise int
 	Message string
 }
 
+// SunsetStruct Used to add message to the sunset time, adds human readable sunset value as message.
 type SunsetStruct struct {
 	Sunset  int
 	Message string

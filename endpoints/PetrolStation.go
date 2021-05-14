@@ -59,7 +59,8 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 	var petrol structs.Petrol
 	if err = json.Unmarshal(body, &petrol); err != nil { //Unmarshalling the body to json form
-		utils.JsonUnmarshalErrorHandling(w, err)
+		jsonError := utils.JsonUnmarshalErrorHandling(err)
+		http.Error(w, jsonError.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -79,7 +80,8 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
-		utils.JsonUnmarshalErrorHandling(w, err)
+		jsonError := utils.JsonUnmarshalErrorHandling(err)
+		http.Error(w, jsonError.Error(), http.StatusInternalServerError)
 		return
 	}
 

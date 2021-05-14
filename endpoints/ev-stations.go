@@ -60,7 +60,8 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 	var charge structs2.Charger
 	if err = json.Unmarshal(body, &charge); //Unmarshalling the body
 	err != nil {
-		utils.JsonUnmarshalErrorHandling(w, err)
+		jsonError := utils.JsonUnmarshalErrorHandling(err)
+		http.Error(w, jsonError.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -94,7 +95,8 @@ func EVStations(w http.ResponseWriter, request *http.Request) {
 
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
-		utils.JsonUnmarshalErrorHandling(w, err)
+		jsonError := utils.JsonUnmarshalErrorHandling(err)
+		http.Error(w, jsonError.Error(), http.StatusInternalServerError)
 		return
 	}
 

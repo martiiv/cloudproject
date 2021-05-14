@@ -4,7 +4,7 @@ Welcome to the project for the PROG2005 Cloud Technologies course.
 
 This project is made by Group 2: *implement group name here*.
 
-This is the Readme for The Road Trip Planner, an application which lets a user plan a roadtrip! 
+This is the Readme for The Road Trip Companion, an application which lets a user plan a roadtrip! 
 In the project the focus is on the use of a REST web application created with the use of third party APIs,the
 creation and use of webhooks, firestore and docker. It is created with the programming language Golang and then deployed to a server using
 OpenStack.
@@ -17,7 +17,7 @@ OpenStack.
 
 Our initial idea was to make an entertainment hub allowing a user to access information about movies, tv-shows, music, and comics. Sadly we encountered a problem when trying to implment the music api in golang. We decided that a workaround would be time consuming and decided to change topic. 
 
-<h3>The road-trip-planner</h3>
+<h3>The road-trip-companion</h3>
 
 We decided on a road-trip travel planner, where we give a user information about the route they are going to travel, for instance where the nearest charging stations are, the shortest path from one destination to another, it will calculate a time of departure depending on the weather conditions. It will also provide the user with points of interest if desired. We had to change the "gps" api of the project from the Statens vegvesen API to the tomtom api since Statens Vegvesen did not respond to our email and since their login functionality did not work. 
 

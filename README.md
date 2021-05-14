@@ -13,6 +13,7 @@ incidents and flow*. **UPDATE IF MORE INFORMATION IS USED**
 
 <h1>Project Report</h1>
 
+<h3>Orginal project plan</h3>
 <h4>Startup</h4>
 
 Our initial idea was to make an entertainment hub allowing a user to access information about movies, tv-shows, music, and comics. We wanted to implment webhooks and firestore letting the user register which movie/music genres and get notified when new entertainment gets released. Sadly we encountered a problem when trying to implment the music api in golang. We decided that a workaround would be time consuming and decided to change topic. 
@@ -28,7 +29,7 @@ filling stations, avoid traffic, describe the weather and points of interest a l
 
 **Our final product has almost all the functionality we sought out to implement skriv her når koden er ferdig ALEKS OG TORMOD PLIS HJÆLP ikkeno filter for bensin og diesel**
 
-<h4>Reflection</h4>
+<h3>Reflection</h3>
 
 There was a lot of back and forth in the early stages of our project. No one had any specific ideas in mind which resulted in us having a hard time collectively deciding on something. This on top of the problems with different APIs, keys and paywalls. Once we had decided to go for the route planner we had problems with the location api we used however we quickly found another location api providing us with accurate coordinates. 
 
@@ -47,13 +48,13 @@ There have been some other hard aspects in the project: Firstly we struggled wit
 
 Another hard aspect of the project was the problem of api calls. Due to the way we designed api calls, the api had to call the location api in order to get coordinates for almost all of our endpoints. However we were able to implement caching in the end by creating an additional collection in firebase containing previously used locations. The unit-testing has also been difficult, we wanted to test the webhook invoke and to do so we needed to skip the sleep function which was hard. We  also struggled with implementing Docker and needed to do some research on Dockerfiles and Docker-compose in order to implement this properly. Another hard aspect of the project was how to deal with personal traces in the code, every group member has their own way of coding. Implementing functions differently, and uses different variable names. Therefore, it can be hard sometimes to understand what other group members have done without sufficent commenting.  
 
-<h4>Learning outcome</h4>
+<h3>Learning outcome</h3>
 
 We have become better at collaborating on programming tasks with eachother. The GitLab issues has been a great tool for the communication in our group. By creating issues in Git and labeling, assigning them to group members. We have learned that good group communication is very important in order to be able to finish a project like this one, we also became better at using GitLabs different tools like issues, branching, WIKI implementation, merge requests and labels. 
 
 We found that having a good foundation with hard policies and principles is important for project work, especially in our field. Not having a good grasp of our project will result in alot of extra work and confusion. Frequently meeting and discussing the state of the project is crucial for delivering a working application. We have also learned a lot in regards to programming, especially the webhooks and Docker implementation. Expanding on our knowledge of webhooks, how to invoke, cache and structure code to use this technology properly. Learning how to implement Docker, using best practice for Docker compose and Dockerfiles has been challenging but nevertheless rewarding. 
  
-Total work hours dedicated to the project cumulatively by the group:
+<h3>Total work hours dedicated to the project cumulatively by the group:</h3>
 The total hours the group has worked on the project has been 78 hours. 
 
 ___

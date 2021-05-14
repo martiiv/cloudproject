@@ -36,9 +36,12 @@ func Route(w http.ResponseWriter, request *http.Request) {
 	coordinates := startLat + "%2C" + startLong + "%3A" + EndLat + "%2C" + endLong
 
 	resp, err := http.Get("https://api.tomtom.com/routing/1/calculateRoute/" + coordinates + "/json?instructionsType=coded&traffic=false&avoid=unpavedRoads&travelMode=car&key=" + utils.TomtomKey)
-	err = utils.TomTomErrorHandling(resp.StatusCode)
+	errTomTom := utils.TomTomErrorHandling(resp.StatusCode)
 	if err != nil {
 		http.Error(w, err.Error(), resp.StatusCode)
+		return
+	} else if errTomTom != nil {
+		http.Error(w, errTomTom.Error(), resp.StatusCode)
 		return
 	}
 

@@ -6,6 +6,7 @@ import (
 	"cloudproject/structs"
 	"cloudproject/utils"
 	"encoding/json"
+	"errors"
 	"fmt"
 	_ "fmt"
 	"google.golang.org/api/iterator"
@@ -67,6 +68,7 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Expected POST method", http.StatusMethodNotAllowed)
+		return
 	}
 
 	input, err := ioutil.ReadAll(r.Body)
@@ -81,9 +83,9 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
 
-	message, ok := webhookFormat(notification)
-	if !ok {
-		http.Error(w, message, http.StatusNoContent)
+	err = webhookFormat(notification)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNoContent)
 		return
 	}
 
@@ -108,21 +110,21 @@ func AddWebhook(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func webhookFormat(web structs.Webhook) (string, bool) {
+func webhookFormat(web structs.Webhook) error {
 
 	if web.DepartureLocation == "" {
-		return "Departure location cannot be empty", false
+		return errors.New("error, departure location cannot be empty")
 	} else if web.ArrivalDestination == "" {
-		return "Arrival destination cannot be empty", false
+		return errors.New("error, arrival destination cannot be empty")
 	} else if web.ArrivalTime == "" {
-		return "Arrival time cannot be empty", false
+		return errors.New("error, arrival time cannot be empty")
 	}
 	err := utils.IsValidInput(web.ArrivalTime)
-	if err != nil {
-		return err.Error(), false
+	if !err {
+		return errors.New("Invalid time form\nExample format: 17 may 21 12:10")
 	}
 
-	return "", true
+	return nil
 }
 
 func DeleteExpiredWebhooks() {

@@ -46,7 +46,7 @@ func TestCreateWebhook(t *testing.T) {
 	}
 
 	rec := httptest.NewRecorder()
-	CreateWebhook(rec, req)
+	AddWebhook(rec, req)
 
 	response := rec.Result()
 	defer response.Body.Close()
@@ -64,7 +64,7 @@ func TestCreateWebhook(t *testing.T) {
 	outputarr := strings.Split(output, "{")
 	id := strings.Split(outputarr[0], ":")[1]
 
-	err, webhook := database.Get(strings.TrimSpace(id))
+	webhook, err := database.Get(strings.TrimSpace(id))
 
 	if "lillehammer" != webhook["ArrivalDestination"] {
 		t.Fatalf("Expected lillehammer; got %v", webhook["ArrivalDestination"])

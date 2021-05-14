@@ -4,31 +4,33 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
+// JsonUnmarshalErrorHandling Universal json unmarshalling error handler
 func JsonUnmarshalErrorHandling(w http.ResponseWriter, err error) {
 	errorString := "Unable to continue your request\n" +
-		"Internal error " + err.Error()
+		"Internal error: " + err.Error()
 	http.Error(w, errorString, http.StatusInternalServerError)
 }
 
-func TomTomErrorHandling(w http.ResponseWriter, status int) error {
+// TomTomErrorHandling Universal TomTom error handler
+func TomTomErrorHandling(status int) error {
 	if status == http.StatusBadRequest {
-		return errors.New("error, Bad Request\nNo valid location requested.")
+		return errors.New("Error, Bad Request: " + strconv.Itoa(status) + "\nNo valid location requested.")
 	} else if status == http.StatusForbidden {
-		return errors.New("error\nThe service is no longer provided.")
+		return errors.New("Error, Status Forbidden: " + strconv.Itoa(status) + "\nThe service is no longer provided.")
 	} else if status == http.StatusInternalServerError {
-		return errors.New("error Internal Server Error\nThe service is for the moment down. Please try again later")
-
+		return errors.New("Error, Internal Server Error: " + strconv.Itoa(status) + "\nThe service is for the moment down. Please try again later.")
 	} else if status == http.StatusOK {
 		return nil
-
 	}
-	return errors.New("error\n An unexpected error has occurred")
+	return errors.New("Error: " + strconv.Itoa(status) + "\n An unexpected error has occurred")
 }
 
-func openRouteError(w http.ResponseWriter, status int) {
+// OpenRouteError Universal OpenRoute error handler
+func OpenRouteError(w http.ResponseWriter, status int) {
 	//Todo make this error function
 	//https://openrouteservice.org/dev/#/api-docs/v2/directions/{profile}/get
 }

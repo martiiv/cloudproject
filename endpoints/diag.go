@@ -10,13 +10,12 @@ import (
 // Uptime of the program
 var Uptime time.Time
 
-// APIs
-// https://developer.tomtom.com/
-// https://openrouteservice.org/
-// https://openweathermap.org/api
-// https://developer.mapquest.com
-
 // Diag shows diagnostics interface
+// APIs in use:
+// 		- https://developer.tomtom.com/
+// 		- https://openrouteservice.org/
+// 		- https://openweathermap.org/api
+// 		- https://developer.mapquest.com
 func Diag(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var tomtomStatusCode int
@@ -24,10 +23,10 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 	var openWeatherMapStatusCode int
 	var mapQuestStatusCode int
 
-	// Does a request to the TomTom API.
-	respTomTom, err := http.Get("https://api.tomtom.com/search/2/search/pizza.json?key=gOorFpmbH5GPKh6uGqcfJN76oKFKfswA&lat=37.8085&lon=-122.4239")
-	// If any errors occur, log it and set the status code to 500,
-	// otherwise set the status code to the received status code
+	// Sends a request to the TomTom API.
+	respTomTom, err := http.Get("https://developer.tomtom.com/")
+	// If any errors occur, log it and set the status code to StatusInternalServerError (500),
+	// otherwise set the status code to the received status code (for instance StatusOK, 200).
 	if err != nil {
 		log.Printf("Something went wrong with the TomTom API, %v", err)
 		tomtomStatusCode = http.StatusInternalServerError
@@ -36,10 +35,10 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 		defer respTomTom.Body.Close()
 	}
 
-	// Does a request to the OpenRouteService API.
+	// Sends a request to the OpenRouteService API.
 	respOpenRouteService, err := http.Get("https://openrouteservice.org")
-	// If any errors occur, log it and set the status code to 500,
-	// otherwise set the status code to the received status code
+	// If any errors occur, log it and set the status code to StatusInternalServerError (500),
+	// otherwise set the status code to the received status code (for instance StatusOK, 200).
 	if err != nil {
 		log.Printf("Something went wrong with the OpenRouteService API, %v", err)
 		openRouteServiceStatusCode = http.StatusInternalServerError
@@ -48,10 +47,10 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 		defer respOpenRouteService.Body.Close()
 	}
 
-	// Does a request to the OpenWeatherMap API.
-	respOpenWeatherMap, err := http.Get("https://api.openweathermap.org/data/2.5/weather?q=Gjovik&appid=92721f2c7ecab4f083189daef6b7f146")
-	// If any errors occur, log it and set the status code to 500,
-	// otherwise set the status code to the received status code
+	// Sends a request to the OpenWeatherMap API.
+	respOpenWeatherMap, err := http.Get("https://api.openweathermap.org/")
+	// If any errors occur, log it and set the status code to StatusInternalServerError (500),
+	// otherwise set the status code to the received status code (for instance StatusOK, 200).
 	if err != nil {
 		log.Printf("Something went wrong with the OpenWeatherMap API, %v", err)
 		openWeatherMapStatusCode = http.StatusInternalServerError
@@ -60,10 +59,10 @@ func Diag(w http.ResponseWriter, r *http.Request) {
 		defer respOpenWeatherMap.Body.Close()
 	}
 
-	// Does a request to the MapQuest API.
-	respMapQuest, err := http.Get("http://open.mapquestapi.com/geocoding/v1/address?key=UvCctIMBPNYcpfiAkTCkVjakeCjoPpPR&location=1600+Pennsylvania+Ave+NW,Washington,DC,20500")
-	// If any errors occur, log it and set the status code to 500,
-	// otherwise set the status code to the received status code
+	// Sends a request to the MapQuest API.
+	respMapQuest, err := http.Get("https://open.mapquestapi.com/")
+	// If any errors occur, log it and set the status code to StatusInternalServerError (500),
+	// otherwise set the status code to the received status code (for instance StatusOK, 200).
 	if err != nil {
 		log.Printf("Something went wrong with the MapQuest API, %v", err)
 		mapQuestStatusCode = http.StatusInternalServerError

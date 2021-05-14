@@ -44,7 +44,7 @@ func Messages(w http.ResponseWriter, request *http.Request) {
 	response, err := http.Get("https://api.tomtom.com/traffic/services/5/incidentDetails?bbox=" + url.QueryEscape(box) +
 		"&fields=%7Bincidents%7Btype%2Cgeometry%7Btype%2Ccoordinates%7D%2Cproperties%7Bid%2CiconCategory%2CmagnitudeOfDelay%2Cevents%7Bdescription%2Ccode%7D%2CstartTime%2Cend" +
 		"Time%2Cfrom%2Cto%2Clength%2Cdelay%2CroadNumbers%2Caci%7BprobabilityOfOccurrence%2CnumberOfReports%2ClastReportTime%7D%7D%7D%7D&key=" + utils.TomtomKey)
-	err = utils.TomTomErrorHandling(w, response.StatusCode)
+	err = utils.TomTomErrorHandling(response.StatusCode)
 	if err != nil {
 		http.Error(w, err.Error(), response.StatusCode)
 		return

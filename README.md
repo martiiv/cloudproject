@@ -13,15 +13,15 @@ incidents and flow*. **UPDATE IF MORE INFORMATION IS USED**
 
 <h1>Project Report</h1>
 
-<h4>Startup</h4>
+<h3>Startup</h3>
 
 Our initial idea was to make an entertainment hub allowing a user to access information about movies, tv-shows, music, and comics. We wanted to implment webhooks and firestore letting the user register which movie/music genres and get notified when new entertainment gets released. Sadly we encountered a problem when trying to implment the music api in golang. We decided that a workaround would be time consuming and decided to change topic. 
 
-<h4>The road-trip-planner</h4>
+<h3>The road-trip-planner</h3>
 
 We decided on a road-trip travel planner, where we give a user information about the route they are going to travel, for instance where the nearest charging stations are, the shortest path from one destination to another, it will calculate a time of departure depending on the weather conditions. It will also provide the user with points of interest if desired. We had to change the "gps" api of the project from the Statens vegvesen API to the tomtom api since Statens Vegvesen did not respond to our email and since their login functionality did not work. 
 
-<h4>Technologies</h4>
+<h3>Technologies</h3>
 
 The technologies that we decided to implement were Open Stack, Firebase, Cloud functions and Docker. We have been able to implement the wanted functions to our route planner such as finding the route to the users' destination, find EV stations,
 filling stations, avoid traffic, describe the weather and points of interest a long your route such as restaurants, hotels and road attractions. 

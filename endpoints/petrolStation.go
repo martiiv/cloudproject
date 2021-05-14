@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -26,12 +27,14 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 	latitude, longitude, err := database.LocationPresent(url.QueryEscape(address)) //Receives the latitude and longitude of the place passed in the url
 	if err != nil {
+		log.Println("Unable to retrieve latitude and longitude for location: " + address + "\n" + err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	filter, err := utils.GetOptionalFilter(request.URL) //Getting the optional filters
 	if err != nil {
+		log.Println("Unable to retrieve filters from url: " + "\n" + err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -40,6 +43,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 	if len(filter) != 0 {
 		radius, err := checkFilter(filter) //Getting filters
 		if err != nil {
+			log.Println("Unable to check filters for filter " + "\n" + err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -53,6 +57,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 	body, err := ioutil.ReadAll(response.Body) //Reading body
 	if err != nil {
+		log.Println("Unable to read body for body:" + string(body) + "\n" + err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 
@@ -61,6 +66,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 	var petrol structs.Petrol
 	if err = json.Unmarshal(body, &petrol); err != nil { //Unmarshalling the body to json form
 		jsonError := utils.JsonUnmarshalErrorHandling(err)
+		log.Println("Unable to unmarshall body into petrol for body: " + string(body) + "\n" + err.Error())
 		http.Error(w, jsonError.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -82,6 +88,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 	output, err := json.Marshal(total) //Marshalling the array to JSON
 	if err != nil {
 		jsonError := utils.JsonUnmarshalErrorHandling(err)
+		log.Println("Unable marshall object, output: " + string(output) + "\n" + err.Error())
 		http.Error(w, jsonError.Error(), http.StatusInternalServerError)
 		return
 	}

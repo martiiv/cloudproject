@@ -1,4 +1,4 @@
-# CloudProject
+# Road Trip Companion
 
 Welcome to the project for the PROG2005 Cloud Technologies course. 
 

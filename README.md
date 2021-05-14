@@ -13,7 +13,6 @@ incidents and flow*. **UPDATE IF MORE INFORMATION IS USED**
 
 <h1>Project Report</h1>
 
-<h3>Orginal project plan</h3>
 <h4>Startup</h4>
 
 Our initial idea was to make an entertainment hub allowing a user to access information about movies, tv-shows, music, and comics. We wanted to implment webhooks and firestore letting the user register which movie/music genres and get notified when new entertainment gets released. Sadly we encountered a problem when trying to implment the music api in golang. We decided that a workaround would be time consuming and decided to change topic. 

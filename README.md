@@ -9,6 +9,53 @@ creation and use of webhooks. It is created with the programming language Golang
 OpenStack **SHOULD WE USE DOCKER?**, which provides the client with the possibility to retrieve information about a 
 travel plan using car. Here the client can get information about *route*, *nearby filling- and EV stations*, *traffic 
 incidents and flow*. **UPDATE IF MORE INFORMATION IS USED**
+
+
+<h1>Project Report</h1>
+
+<h4>Startup</h4>
+
+Our initial idea was to make an entertainment hub allowing a user to access information about movies, tv-shows, music, and comics. We wanted to implment webhooks and firestore letting the user register which movie/music genres and get notified when new entertainment gets released. Sadly we encountered a problem when trying to implment the music api in golang. We decided that a workaround would be time consuming and decided to change topic. 
+
+<h4>The road-trip-planner</h4>
+
+We decided on a road-trip travel planner, where we give a user information about the route they are going to travel, for instance where the nearest charging stations are, the shortest path from one destination to another, it will calculate a time of departure depending on the weather conditions. It will also provide the user with points of interest if desired. We had to change the "gps" api of the project from the Statens vegvesen API to the tomtom api since Statens Vegvesen did not respond to our email and since their login functionality did not work. 
+
+<h4>Technologies</h4>
+
+The technologies that we decided to implement were Open Stack, Firebase, Cloud functions and Docker. We have been able to implement the wanted functions to our route planner such as finding the route to the users' destination, find EV stations,
+filling stations, avoid traffic, describe the weather and points of interest a long your route such as restaurants, hotels and road attractions. 
+
+**Our final product has almost all the functionality we sought out to implement skriv her når koden er ferdig ALEKS OG TORMOD PLIS HJÆLP ikkeno filter for bensin og diesel**
+
+<h4>Reflection</h4>
+
+There was a lot of back and forth in the early stages of our project. No one had any specific ideas in mind which resulted in us having a hard time collectively deciding on something. This on top of the problems with different APIs, keys and paywalls. Once we had decided to go for the route planner we had problems with the location api we used however we quickly found another location api providing us with accurate coordinates. 
+
+One of the things the group benefited from was starting the project early, arranging meetings and discussing topics. Our decision to start coding early on benefited us when trying to find good api's. When we decided to use an api we started poking it immediately, sending requests and understanding it's structure. This made troubleshooting early on easy since we were able to find problems with the api's fast. 
+
+We held frequent meetings with the entire group present on to two times a week in order to maintain an overview of the project, what people were working on, problems encountere and to discuss intended functionality. To maintain a solid project structure, we decided to give each member a git branch to not overwrite eachothers code in addition to separate different aspects of the project and prevent buggy/breaking code in the master branch. We also used git issues and the issue board frequently to document workflow. By using this board each group member could easily check the status of the project. Creating the different endpoints we needed for the implementation of our application went really well since we thoroughly tested each api before implementation.
+
+If we were to do to something differently in our project we would have chosen to use milestones. By using milestones we would have been able to track the overall progression of the project. Since the milestone tool in GitLab, groups issues corresponding to the project. Thus, it would have been easier to set different time periods on the different issues to when they needed to be complete. This would have given us a better overview of the different parts of the project that needs to be completed.  
+
+We would also have more informative meeting summaries where each group member documented what they have been doing since the last session in addition to defining what parts of the project are missing. Splitting workload properly and clearly defining tasks for each member using our issue tracker is also something we would have done. We also think using test driven development would have benefited us in terms of time, project structure and general scope in the project.
+**Mer her alle?**
+
+Our biggest struggle throughout the project has been communication in terms of functionality, clearly defining what an endpoint is supposed to do and what it currently does has been hard and prevented us from getting a clear overview of the project making the final stages of development hectic and confusing.  
+
+There have been some other hard aspects in the project: Firstly we struggled with webhook implementation, clearly defining what features we wanted it to have, when to invoke and notify. Furthermore we tried to implement a client in our project which also resulted in some difficulties, our problem was that in order to get a the notification, the user had to refresh the provided url. We concluded that this was not very user-friendly, and annoying. Therefore, we removed it and instead implemented Slack, now the user gets a Slack notification with messages given that they provide a Slack url.
+
+Another hard aspect of the project was the problem of api calls. Due to the way we designed api calls, the api had to call the location api in order to get coordinates for almost all of our endpoints. However we were able to implement caching in the end by creating an additional collection in firebase containing previously used locations. The unit-testing has also been difficult, we wanted to test the webhook invoke and to do so we needed to skip the sleep function which was hard. We  also struggled with implementing Docker and needed to do some research on Dockerfiles and Docker-compose in order to implement this properly. Another hard aspect of the project was how to deal with personal traces in the code, every group member has their own way of coding. Implementing functions differently, and uses different variable names. Therefore, it can be hard sometimes to understand what other group members have done without sufficent commenting.  
+
+<h4>Learning outcome</h4>
+
+We have become better at collaborating on programming tasks with eachother. The GitLab issues has been a great tool for the communication in our group. By creating issues in Git and labeling, assigning them to group members. We have learned that good group communication is very important in order to be able to finish a project like this one, we also became better at using GitLabs different tools like issues, branching, WIKI implementation, merge requests and labels. 
+
+We found that having a good foundation with hard policies and principles is important for project work, especially in our field. Not having a good grasp of our project will result in alot of extra work and confusion. Frequently meeting and discussing the state of the project is crucial for delivering a working application. We have also learned a lot in regards to programming, especially the webhooks and Docker implementation. Expanding on our knowledge of webhooks, how to invoke, cache and structure code to use this technology properly. Learning how to implement Docker, using best practice for Docker compose and Dockerfiles has been challenging but nevertheless rewarding. 
+ 
+###Total work hours dedicated to the project cumulatively by the group:
+The total hours the group has worked on the project has been hours. 
+
 ___
 ### The REST services in use are:
 
@@ -205,78 +252,3 @@ Body (Example):
    "uptime": 412 seconds
 }
 ```
-
-# Extra:
-- If snowing - notify 15 minutes before planned take-off. If not, sleep and notify at take-off.
-- 
-
-#Project report:
-###Original project plan:
-Brief description of the original project plan, and what has and has not been achieved/changed in the final product.
-
-Our first plan was to make an entertainment service to access information about movies, Spotify music, and comics. 
-In addition, the user should be able to register webhooks to get notified about new movies, Spotify music or comics, of their interest. 
-There were some problems with the use of the Spotify API together with GO, so we had to change the topic. We then decided to make a 
-"car" travel planner, where we give a user information about the route they are going to travel, for instance where the nearest charging 
-stations are, the shortest path from one destination to another, possibility to get notification about weather conditions or car accidents on 
-their route when these are registered for instance, and also more information (some of these are given that we get access to the Norwegian 
-Public Roads Administration (Statens vegvesen) API). We had to change the topic of the project again from Statens vegvesen API to Open route service API, 
-developer API and position stack API. Because we were not able to get the Statens vegvesen API. We therefore landed on creating a route planner 
-that will help you find the best route to your destinations. At the same time, it will help you find EV stations, filling stations, avoid traffic/road work,
-describe the weather, restaurants, hotels and roads attractions on your route to your destination. 
-
-The technology that we were planning to use were Open Stack, Firebase and Cloud functions. We ended up using that technology, and we were also able 
-to implement Docker. We have been able to implement the wanted functions to our route planner such as finding the route to the users' destination, find EV stations,
-filling stations, avoid traffic, describe the weather and points of interest a long your route such as restaurants, hotels and road attractions. 
-
-###Reflection of what went well and what went wrong with the project:
-There was a lot of back and forth in the beginning of our project, when it comes to deciding the project topic of our project. The problem was that there was 
-a few problems with different APIs we need to be able to create the wanted functionalities for our early plans on project topics. Once we had decided to go for 
-the route planner we had problems with the geo API, but luckily it went very well to change to another API. 
-**Ealy start, coded early to find api problems, met frequently to work and discuss, use of git branches**
-
-
-
-If we were to do to something different with our project we would have chosen to use the GitLab tool milestone. 
-By using milestones we would have been able to track better our issues. Since the milestone tool groups issues that corresponds to a project, 
-feature or time period. Thus, it would be easier to set different time periods on the different issues to when they needed to be complete and this would
-have given us a better overview of the different parts of the project that needs to be completed. 
-**More frequent issue updates, proper meeting summary discussion, split workload properly, document more (what we tried what failed when coding), decide on topic earlier, use a more test driven approach when coding**
-
-Communication within the group is something that went well in the project. Every group member were good at creating issues in GitLab and 
-thus it made it easy for everyone to see what has been implemented and what has not been done yet. **Nja egt ikke?** Creating the different endpoints we needed
-for the implementation of our application went really well. The learning outcome of the project part of the course has been rewarding for us in getting a better 
-understanding of what we have learned during the course. In the project part we have had to use a lot of the knowledge we got from 
-assignment 1 and assignment 2, and we have been able to improve our skills and knowledge in parts like webhooks and error handling due to working on this more in the project. 
-Another thing that also worked well was using branches in Gitlab and pushing and pulling the different work the group members had done. And at the end 
-merging it all together.
-
-###Reflection on the hard aspects of the project:
-The hard aspects of the project has been a few things. First we struggled with the webhook implementation. The hard part has been to understand what we wanted the users to get notifications on and how to 
-implement this to our project. Further we tried to implement client API to our project which also resulted in some difficulties, the problem of using a client was that the user had to refresh the site to receive
-notifications. This is not very user-friendly, and annoying for the user. Therefore, we changed it, so that the user gets a Slack notification with messages. Then the user will get the messages in
-time on their phone, computer or clock. Another hard aspect of the project was the caching. Due to the file structure in our project the persistence of location data was problematic to implement, 
-but we were able to implement it in the end by fixing the file structure. The unit-testing has also been difficult because we wanted to test the webhook invoke, and to do so we needed to ship over 
-the sleep function which was hard finding a solution to. We have also struggled with implementing Docker, and needed to do some research on that topic. We studied the examples on Docker
-provided in the course, to get a better understanding of how to use it. 
-
-Another hard part of the project was that everyone has their own way of coding. We all implement functions differently and uses different syntax. Therefore, it can be hard sometimes to understand what
-other group members have done. Thus, we have been strict on the commenting part of code quality, so that it is easy for everyone else to understand different functions and variables group members 
-have made. 
-
-
-
-
-###What new has the group learned?:
-We have become better in collaborating on programming tasks with other students. The GitLab issues has been a great tool for the communication in our group.
-By creating issues in Git and labeling and assigning them to group members, we have been able to see what people are working on. We have also been 
-able to see what needs to be done and what is finished. We have written meeting summaries for every meeting we have had during the project in Cloud.
-This has given us the possibility to read a short summary of what we did the last time and what needs to be done. These summaries are provided in 
-the project WIKI. We have learned that good group communication is very important for us to be able to finish the project, and we also became
-better in using GitLabs different tools like issues. 
-
-We have also learned a lot more programming especially the webhooks implementation part has been where we have learned the most during this project. 
- **Skriv om unit testing, docker og docker compose, using gitlab, caching data from api's**
- 
-###Total work hours dedicated to the project cumulatively by the group:
-The total hours the group has worked on the project has been hours. 

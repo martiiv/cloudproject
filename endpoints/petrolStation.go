@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-//Function that will display all the electric-vehicle charging stations from a location, within 1km
+//PetrolStation Function that will display all the electric-vehicle charging stations from a location, within 1km
 func PetrolStation(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -35,7 +35,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	var response *http.Response
+	var response *http.Response //Defines a response object
 
 	if len(filter) != 0 {
 		radius, err := checkFilter(filter) //Getting filters
@@ -43,7 +43,8 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		//http.get with radius
+
+		//http.get with radius using the latitude and longitude
 		response, err = http.Get("https://api.tomtom.com/search/2/nearbySearch/.json?lat=" + latitude + "&lon=" + longitude + radius + "&categorySet=7311&fuelSet=&key=" + utils.TomtomKey)
 	} else {
 		//http.get without user specified radius
@@ -65,7 +66,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 	}
 
 	var total []structs.OutputPetrol
-	for i := 0; i < len(petrol.Results); i++ {
+	for i := 0; i < len(petrol.Results); i++ { //For each of the stations
 
 		stationName := petrol.Results[i].Poi.Name //Variable storing the station name
 		var stationBrand string
@@ -89,7 +90,7 @@ func PetrolStation(w http.ResponseWriter, request *http.Request) {
 
 }
 
-//Function to check if the filter is valid and has the proper input
+//checkFilter Function to check if the filter is valid and has the proper input
 func checkFilter(filter map[string]string) (string, error) {
 	_, foundRadius := filter["radius"]
 	//If statement to check if the user passed in a correct filter, and with a value

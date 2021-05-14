@@ -33,7 +33,7 @@ func openRouteError(w http.ResponseWriter, status int) {
 	//https://openrouteservice.org/dev/#/api-docs/v2/directions/{profile}/get
 }
 
-func GetOptionalFilter(url *url.URL) map[string]string {
+func GetOptionalFilter(url *url.URL) (map[string]string, error) {
 	var optionals = map[string]string{}
 	optional := strings.Split(url.RawQuery, "?")
 	if len(optional) != 0 && optional[0] != "" {
@@ -46,7 +46,7 @@ func GetOptionalFilter(url *url.URL) map[string]string {
 			optionals[mapName] = valueName
 
 		}
-		return optionals
+		return optionals, nil
 	}
-	return nil
+	return nil, nil
 }

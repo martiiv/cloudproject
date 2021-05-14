@@ -1,21 +1,20 @@
 package utils
 
 import (
-	"fmt"
+	"errors"
 	"time"
 )
 
 // Checks of the arrival time input is valid for the webhook registration
-func isValidInput(arrivalTime string) bool {
+
+func IsValidInput(arrivalTime string) error {
 	if len(arrivalTime) != 0 {
-		aTime, err := time.Parse(time.RFC822, arrivalTime)
+		_, err := time.Parse(time.RFC822, arrivalTime)
 		if err != nil {
-			fmt.Println(aTime)
-			return false
+			return err
 		}
-		return true
+		return nil
 	} else {
-		fmt.Println("Arrival time cannot be null")
-		return false
+		return errors.New("Time cannot be null")
 	}
 }

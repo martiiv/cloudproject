@@ -54,7 +54,7 @@ We have become better at collaborating on programming tasks with eachother. The 
 We found that having a good foundation with hard policies and principles is important for project work, especially in our field. Not having a good grasp of our project will result in alot of extra work and confusion. Frequently meeting and discussing the state of the project is crucial for delivering a working application. We have also learned a lot in regards to programming, especially the webhooks and Docker implementation. Expanding on our knowledge of webhooks, how to invoke, cache and structure code to use this technology properly. Learning how to implement Docker, using best practice for Docker compose and Dockerfiles has been challenging but nevertheless rewarding. 
  
 <h3>Total work hours dedicated to the project cumulatively by the group:</h3>
-The total hours the group has worked on the project has been 78 hours. 
+The total hours the group has worked on the project has been 83 hours. 
 
 ___
 ### The REST services in use are:

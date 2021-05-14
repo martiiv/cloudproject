@@ -9,10 +9,10 @@ import (
 )
 
 // JsonUnmarshalErrorHandling Universal json unmarshalling error handler
-func JsonUnmarshalErrorHandling(w http.ResponseWriter, err error) {
+func JsonUnmarshalErrorHandling(err error) error {
 	errorString := "Unable to continue your request\n" +
 		"Internal error: " + err.Error()
-	http.Error(w, errorString, http.StatusInternalServerError)
+	return errors.New(errorString)
 }
 
 // TomTomErrorHandling Universal TomTom error handler
@@ -30,25 +30,37 @@ func TomTomErrorHandling(status int) error {
 }
 
 // OpenRouteError Universal OpenRoute error handler
-func OpenRouteError(w http.ResponseWriter, status int) {
-	//Todo make this error function
-	//https://openrouteservice.org/dev/#/api-docs/v2/directions/{profile}/get
+func OpenRouteError(status int) error {
+	if status == http.StatusBadRequest {
+		return errors.New("Error, Bad Request: " + strconv.Itoa(status) + "\nNo valid location requested.")
+	} else if status == http.StatusForbidden {
+		return errors.New("Error, Status Forbidden: " + strconv.Itoa(status) + "\nThe service is no longer provided.")
+	} else if status == http.StatusInternalServerError {
+		return errors.New("Error, Internal Server Error: " + strconv.Itoa(status) + "\nThe service is for the moment down. Please try again later.")
+	} else if status == http.StatusOK {
+		return nil
+	} else if status == http.StatusServiceUnavailable {
+		return errors.New("Error, Internal Server Error: " + strconv.Itoa(status) + "\nThe service is for the moment down due to overload or maintenance. Please try again later.")
+	}
+	return errors.New("Error: " + strconv.Itoa(status) + "\n An unexpected error has occurred")
 }
 
-func GetOptionalFilter(url *url.URL) map[string]string {
+//Function to get all the filters from a url Query
+func GetOptionalFilter(url *url.URL) (map[string]string, error) {
 	var optionals = map[string]string{}
-	optional := strings.Split(url.RawQuery, "?")
-	if len(optional) != 0 && optional[0] != "" {
-
+	optional := strings.Split(url.RawQuery, "?") //Splits the url by '?'
+	if len(optional) != 0 && optional[0] != "" { //Checking if the user has passed a filter
 		for i := 0; i <= len(optional)-1; i++ {
-			nameOfFilter := strings.Split(optional[i], "=")
-			valueName := nameOfFilter[1]
-			mapName := nameOfFilter[0]
-
-			optionals[mapName] = valueName
-
+			nameOfFilter := strings.Split(optional[i], "=") //Separating the 'key' and 'value'
+			if len(nameOfFilter) == 2 {
+				valueName := nameOfFilter[1]   //Defining value
+				mapName := nameOfFilter[0]     //Defining key
+				optionals[mapName] = valueName //Adding in the map
+			} else {
+				return optionals, errors.New("Invalid format on filter\nMissing '=' in statement")
+			}
 		}
-		return optionals
+		return optionals, nil
 	}
-	return nil
+	return nil, nil
 }
